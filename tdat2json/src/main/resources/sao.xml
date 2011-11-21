@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="sao">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="saoname" dropAfterCopy="false" />
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+    <copy fromField="proper_motion_ra" toField="rapm" dropAfterCopy="true" />
+    <copy fromField="proper_motion_dec" toField="decpm" dropAfterCopy="true" />
+    <copy fromField="hd" toField="hdname" dropAfterCopy="true" />
+    <copy fromField="dm" toField="dmname" dropAfterCopy="true" />
+    <copy fromField="gc" toField="gcname" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude pattern="^(.+)_error"/>
+        <exclude pattern="^(.+)_epoch"/>
+        <exclude pattern="^ref_"/>
+        <exclude pattern="^(.+)_fk5"/>
+        <exclude name="remarks"/>
+        <exclude name="pg_mag"/>
+        <exclude name="spect_type" />
+        <exclude name="num_source_cat" />
+    </exclusions>
+
+    <prefix field="hdname" text="HD " />
+    <prefix field="gcname" text="GC " />
+</catalog>

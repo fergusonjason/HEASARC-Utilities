@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="tycho2">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="tycho2name" dropAfterCopy="false"/>
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true"/>
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true"/>
+    <copy fromField="pm_ra" toField="rapm" dropAfterCopy="true"/>
+    <copy fromField="pm_dec" toField="decpm" dropAfterCopy="true"/>
+    <copy fromField="hip_number" toField="hipname" dropAfterCopy="true"/>
+    <copy fromField="vt_mag" toField="vmag" dropAfterCopy="true"/>
+
+    <exclusions>
+        <exclude pattern="^mean_"/>
+        <exclude pattern="^(.+)_error"/>
+        <exclude pattern="^gof_"/>
+        <exclude pattern="^observed_"/>
+        <exclude pattern="^(.+)_epoch"/>
+        <exclude pattern="position_flag"/>
+        <exclude name="num_positions"/>
+        <exclude name="solution_type"/>
+        <exclude name="ra_dec_corr"/>
+        <exclude name="proximity"/>
+        <exclude name="bt_mag"/>
+        <exclude name="tycho1_star"/>
+    </exclusions>
+
+    <prefix field="hipname" text="HIP "/>
+
+</catalog>

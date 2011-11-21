@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="ugc">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+
+    <copy fromField="name" toField="ugcname" dropAfterCopy="false"/>
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true"/>
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true"/>
+
+    <exclusions>
+        <exclude name="ugc_number"/>
+        <exclude name="mcg"/>
+        <exclude name="poss_field"/>
+        <exclude pattern="blue_"/>
+        <exclude name="position_angle"/>
+        <exclude name="hubble_type"/>
+        <exclude name="phot_mag"/>
+        <exclude pattern="red_(.+)_axis"/>
+        <exclude name="inclination_code"/>
+    </exclusions>
+</catalog>

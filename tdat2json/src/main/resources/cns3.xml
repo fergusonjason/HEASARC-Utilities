@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="cns3">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="gliesename" dropAfterCopy="false" />
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+    <copy fromField="hd_number" toField="hdname" dropAfterCopy="true" />
+    <copy fromField="dm_number" toField="dmnumber" dropAfterCopy="true" />
+    <copy fromField="abs_vmag" toField="vmag" dropAfterCopy="true" />
+    <copy fromField="trig_parallax" toField="parallax" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude pattern="(.+)_proper_motion"/>
+        <exclude pattern="radial_velocity"/>
+        <exclude pattern="(.+)_color"/>
+        <exclude pattern="[a-z]+vel"/>
+        <exclude pattern="_error$"/>
+        <exclude pattern="_code$"/>
+        <exclude name="remarks"/>
+        <exclude name="spect_type" />
+        <exclude name="app_mag" />
+        <exclude name="result_parallax" />
+        <exclude name="ref_spect_type" />
+        <exclude name="other_name" />
+        <exclude name="component" />
+    </exclusions>
+
+    <prefix field="hdname" text="HD " />
+</catalog>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="hd">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="hd_number" toField="name" dropAfterCopy="false" />
+    <copy fromField="hd_number" toField="hdname" dropAfterCopy="true" />
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude name="pgmag" />
+        <exclude pattern="(dircos[0-9]+)" />
+        <exclude name="spectral_type" />
+        <exclude pattern="^(.+)_flag" />
+    </exclusions>
+
+    <prefix field="hdname" text="HD " />
+</catalog>

@@ -1,0 +1,22 @@
+This application is similar in concept to my earlier tdat2mysql app, also on Github.
+
+Here's the story behind it. One fine Sunday morning, I'm reading Reddit. I notice something from
+/r/programming has actually made it to the front page. The title is "Don't use MongoDB". I was a bit
+intrigued and read it.
+
+The author made some valid points, but his points seemed to be related to the 1.8 version of Mongo. The
+2.0 supposedly addressed most of them. I realize: if I could use Mongo, I would be able to stop trying
+to force the Astronomical Catalogs into a relational format. However, the TDAT files are bang-delineated
+and needed to be put in JSON format. Hence this app.
+
+Usage
+
+java -jar tdate2json-0.1-jar (heasarc file) (output directory)
+
+Warning: the file will be big.
+
+To pull the file into MongoDB:
+
+mongoimport --host localhost --db (dbname) --collection (collection name) --file (filename)
+
+Have fun, hope this is of use to someone.

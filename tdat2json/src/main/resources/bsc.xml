@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<catalog name="bsc">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="bscname" dropAfterCopy="false" />
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+    <copy fromField="sao" toField="saoname" dropAfterCopy="true" />
+    <copy fromField="hd" toField="hdname" dropAfterCopy="true" />
+    <copy fromField="pmra" toField="rapm" dropAfterCopy="true" />
+    <copy fromField="pmdec" toField="decpm" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude pattern="bv_" />
+        <exclude pattern="cdec" />
+        <exclude pattern="dec_" />
+        <exclude pattern="ra_" />
+        <exclude name="glat" />
+        <exclude name="glon" />
+        <exclude pattern="radvel" />
+        <exclude pattern="rotvel" />
+        <exclude pattern="spect_" />
+        <exclude name="par_code" />
+        <exclude pattern="m_" />
+        <exclude pattern="ri_" />
+        <exclude name="ub_color" />
+        <exclude name="vmag_uncert" />
+        <exclude pattern="cra" />
+        <exclude name="fk5" />
+        <exclude name="hr" />
+        <exclude name="note" />
+    </exclusions>
+
+    <prefix field="hdname" text="HD " />
+    <prefix field="saoname" text="SAO " />
+</catalog>

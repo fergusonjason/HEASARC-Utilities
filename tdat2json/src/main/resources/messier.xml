@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="messier">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="messiername" dropAfterCopy="false"/>
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude name="notes" />
+        <exclude name="object_type" />
+        <exclude name="vmag_uncert" />
+    </exclusions>
+
+</catalog>

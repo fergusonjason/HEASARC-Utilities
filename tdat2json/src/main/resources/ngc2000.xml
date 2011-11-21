@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="ngc2000">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="ngc2000name" dropAfterCopy="false" />
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+    <copy fromField="app_mag" toField="vmag" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude name="source_type" />
+        <exclude name="ref_revision" />
+        <exclude name="limit_ang_diameter"  />
+        <exclude name="app_mag_flag" />
+        <exclude name="description" />
+    </exclusions>
+    </catalog>

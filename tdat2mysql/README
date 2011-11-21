@@ -1,0 +1,40 @@
+TDAT to MySQL Processor Utility
+
+This app does converts NASA's HEASARC TDAT files into a MySQL script format. The code could be more
+efficient, but then again, so could NASA. I mean, c'mon, 6 freaking billion dollars cost overrun
+on the Webb telescope? Really? Even the DOD isn't that bad, guys.
+
+TDAT files consist of a <HEAD> and a <DATA> section. The app does some ugly regex processing to
+convert some of the data in the <HEAD> into a database schema. Then more processing is done to create
+a LOAD DATA INFILE statement to import into the data. (NOTE: In *NIX environments, you might have to
+add a LOCAL keyword in case you get file not found notices).
+
+The app does NOT gunzip the files for you.
+
+T2M makes use of the Console class, which is a Java 6 introduction. Therefore, you must have a Java 6 JDK
+installed to compile (and/or a Java 6 JRE to run). The project is also Mavenized, so if you have Maven
+2.0 or higher, you can create the JAR as follows:
+
+    mvn package
+
+The output will be in the tager/ subdirectory.
+
+Application usage:
+
+    java -jar tdat2mysql.jar (heasarc_filename) (outputdirectory (optional))
+
+If you do not provide an output directory, the current dir will be used.
+
+The application now asks the user if they wish to use MySQL-specific syntax. If so, the user will also be
+allowed to decide whether to import the data via the LOAD DATA INFILE syntax or by generating multiple
+SQL INSERT statements. If the user does not wish to use MySQL-specific syntax, the application will
+automatically generate INSERT statements.
+
+Once the statements are generated, the user can then decide if they wish to drop columns from the imported
+data. All data is initially imported from the TDAT; this section allows the user to remove data they do
+not want. In the future, I may use MySQL dummy variables to prevent the data from being imported to begin
+with.
+
+I stole the isNumeric() and isEmpty() methods from Apache commons so that I wouldn't have to have any
+external dependencies. Not a big deal, since I use the same license for my code that they do. I just
+don't want to steal credit from those guys.

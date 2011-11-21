@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog name="hipparcos">
+
+    <dropEmptyFields>true</dropEmptyFields>
+
+    <copy fromField="name" toField="hipname" dropAfterCopy="false" />
+    <copy fromField="ra" toField="radeg" dropAfterCopy="true" />
+    <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
+    <copy fromField="pm_ra" toField="rapm" dropAfterCopy="true" />
+    <copy fromField="pm_dec" toField="decpm" dropAfterCopy="true" />
+
+    <exclusions>
+        <exclude pattern="^(.+)_source"/>
+        <exclude pattern="^crl_"/>
+        <exclude name="bt_mag"/>
+        <exclude name="hip_mag"/>
+        <exclude pattern="^(.+)_error"/>
+        <exclude pattern="^dbl_"/>
+        <exclude pattern="^(.+)_type"/>
+        <exclude pattern="^(.+)_color"/>
+        <exclude pattern="^(.+)_type"/>
+        <exclude pattern="^(.+)_matrix"/>
+        <exclude name="number_components"/>
+        <exclude pattern="^(.+)_flag"/>
+        <exclude pattern="^(.+)_annex"/>
+        <exclude name="cosmic_dispersion"/>
+        <exclude pattern="^(.+)_percent"/>
+        <exclude name="quality_fit" />
+        <exclude name="hip_number" />
+        <exclude name="n_obs_hip_mag" />
+        <exclude name="scat_hip_mag" />
+    </exclusions>
+</catalog>

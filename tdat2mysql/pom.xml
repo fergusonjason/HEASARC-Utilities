@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jason.tdat2mysql</groupId>
+    <artifactId>tdat2mysql</artifactId>
+    <packaging>jar</packaging>
+    <version>0.4</version>
+    <name>TDAT2MySQL</name>
+    <description>Utility to convert NASA HEASARC TDAT data files into MySQL script for
+        import into a database.
+    </description>
+
+    <developers>
+        <developer>
+            <name>Jason Ferguson</name>
+            <email>fergusonjason@gmail.com</email>
+            <url>http://stupidgwttricks.wordpress.com</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <compiler.plugin.version>2.3.2</compiler.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <compilerVersion>1.6</compilerVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.jason.tdat2mysql.TdatProcessor</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
