@@ -1,0 +1,4 @@
+This is a consolidated, multi-module package of all of my code to deal with heasarc files, including:
+
+- TDAT2MYSQL (No longer maintained) - convert TDAT files to SQL with a MySQL flavor
+- Tdat2JSON - Convert TDAT files to JSON for use in MongoDB
