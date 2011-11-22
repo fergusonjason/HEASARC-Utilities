@@ -136,17 +136,6 @@ db.catalog.update({alt_name:/^[0-9]+\s*[A-Za-z]{3}/i}, {$unset:{alt_name:1}}, fa
 db.catalog.update({alt_name:{$exists:true}}, {$unset:{alt_name:1}});
 db.catalog.update({other_name:/^W$/i}, {$unset:{other_name:1}}, false, true);
 
-function updateArrays() {
-db.catalog.find().forEach(function(obj) {
-    var objXref = obj.xref;
-    if (objXref.length > 1) {
-        for (var name in objXref) {
-            var doc = db.catalog.find({"name":name});
-            db.catalog.update({"name":name},{$addToSet:{$each:objXref}});
-        }
-    }
-});
-}
 
 // do not use items below this.
 // remove the entire xref collection
