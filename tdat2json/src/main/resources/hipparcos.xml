@@ -8,12 +8,17 @@
     <copy fromField="dec" toField="decdeg" dropAfterCopy="true" />
     <copy fromField="pm_ra" toField="rapm" dropAfterCopy="true" />
     <copy fromField="pm_dec" toField="decpm" dropAfterCopy="true" />
+    <copy fromField="cpd_id" toField="cpdname" dropAfterCopy="true" />
+    <copy fromField="hd_id" toField="hdname" dropAfterCopy="true" />
+    <copy fromField="cod_id" toField="codname" dropAfterCopy="true" />
+    <copy fromField="bd_id" toField="bdname" dropAfterCopy="true" />
+    <copy fromField="ccdm_id" toField="ccdmname" dropAfterCopy="true" />
 
     <exclusions>
         <exclude pattern="^(.+)_source"/>
         <exclude pattern="^crl_"/>
         <exclude name="bt_mag"/>
-        <exclude name="hip_mag"/>
+        <exclude pattern="hip_mag"/>
         <exclude pattern="^(.+)_error"/>
         <exclude pattern="^dbl_"/>
         <exclude pattern="^(.+)_type"/>
@@ -29,5 +34,15 @@
         <exclude name="hip_number" />
         <exclude name="n_obs_hip_mag" />
         <exclude name="scat_hip_mag" />
+        <exclude name="vt_mag" />
+        <exclude name="ra_deg" />
+        <exclude name="dec_deg" />
+        <exclude name="ccdm_n_comp" />
+        <exclude name="survey_star"/>
+        <exclude name="ccdm_n_entries" />
+        <exclude name="ccdm_history" />
     </exclusions>
+
+    <prefix field="hdname" text="HD " />
+    <prefix field="ccdmname" text="CCDM " />
 </catalog>
