@@ -21,6 +21,7 @@
         <exclude name="pg_mag"/>
         <exclude name="spect_type" />
         <exclude name="num_source_cat" />
+        <exclude name="hd_component" />
     </exclusions>
 
     <prefix field="hdname" text="HD " />
