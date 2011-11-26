@@ -10,6 +10,7 @@
     <copy fromField="dm_number" toField="dmnumber" dropAfterCopy="true" />
     <copy fromField="abs_vmag" toField="vmag" dropAfterCopy="true" />
     <copy fromField="trig_parallax" toField="parallax" dropAfterCopy="true" />
+    <copy fromField="lhs_number" toField="lhsname" dropAfterCopy="true" />
 
     <exclusions>
         <exclude pattern="(.+)_proper_motion"/>
@@ -28,4 +29,5 @@
     </exclusions>
 
     <prefix field="hdname" text="HD " />
+    <prefix field="lhsname" text="LHS " />
 </catalog>
