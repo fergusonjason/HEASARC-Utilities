@@ -1,1 +1,1 @@
-db.cns3.update({"lhsname":{$exists:true}}, {$unset:{"lhsname":1}}, false, true);
+db.catalog.update({"lhsname":{$exists:true}}, {$unset:{"lhsname":1}}, false, true);
