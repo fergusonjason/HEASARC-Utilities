@@ -18,9 +18,9 @@ db.catalog.find().forEach(function(obj) {
     if (obj.cpdname != null) {
         obj.xref.push(obj.cpdname);
     }
-    if (obj.dmname != null) {
-        obj.xref.push(obj.dmname);
-    }
+//    if (obj.dmname != null) {
+//        obj.xref.push(obj.dmname);
+//    }
     if (obj.gcname != null) {
         obj.xref.push(obj.gcname);
     }
