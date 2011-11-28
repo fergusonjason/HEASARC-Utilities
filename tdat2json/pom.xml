@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jason.tdat2json</groupId>
+    <groupId>org.jason.heasarcutils</groupId>
     <artifactId>tdat2json</artifactId>
     <packaging>jar</packaging>
-    <version>0.3</version>
-    <name>TDAT2JSON</name>
+    <version>0.3.1</version>
+    <name>tdat2json</name>
     <description>Utility to convert NASA HEASARC TDAT data files into JSON format for use in MongoDB.
     </description>
 
@@ -43,7 +43,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.jason.tdat2json.Tdat2Json</mainClass>
+                            <mainClass>org.jason.heasarcutils.tdat2json.Tdat2Json</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
