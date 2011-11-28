@@ -18,7 +18,7 @@ db.ppm.find({dmname:/^(-[0-9]{2})\s+([0-9]*[A-Z]*)$/i}).forEach(function(obj) {
         return;
     }
     if (firstThree < -23) {
-        obj.dmname = "COD " + obj.dmname;
+        obj.dmname = "CD " + obj.dmname;
     } else {
         obj.dmname = "BD " + obj.dmname;
     }
