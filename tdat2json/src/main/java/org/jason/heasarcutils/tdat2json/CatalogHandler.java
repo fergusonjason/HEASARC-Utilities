@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.tdat2json;
+package org.jason.heasarcutils.tdat2json;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

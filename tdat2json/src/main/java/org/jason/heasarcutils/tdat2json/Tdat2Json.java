@@ -13,8 +13,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.tdat2json;
+package org.jason.heasarcutils.tdat2json;
 
+import org.jason.heasarcutils.tdat2json.CatalogHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
