@@ -3,11 +3,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jason.tdat2mysql</groupId>
+    <groupId>org.jason.heasarcutils</groupId>
     <artifactId>tdat2mysql</artifactId>
     <packaging>jar</packaging>
-    <version>0.4</version>
-    <name>TDAT2MySQL</name>
+    <version>0.4.1</version>
+    <name>tdat2mysql</name>
     <description>Utility to convert NASA HEASARC TDAT data files into MySQL script for
         import into a database.
     </description>
@@ -43,7 +43,7 @@
                     <useDefaultManifestFile>true</useDefaultManifestFile>
                     <archive>
                         <manifest>
-                            <mainClass>org.jason.tdat2mysql.TdatProcessor</mainClass>
+                            <mainClass>org.jason.heasarcutils.tdat2mysql.TdatProcessor</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
