@@ -11,6 +11,7 @@
         <exclude name="notes" />
         <exclude name="object_type" />
         <exclude name="vmag_uncert" />
+        <exclude name="dimension" />
     </exclusions>
 
 </catalog>
