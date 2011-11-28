@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.jason.tdat2json</groupId>
-    <artifactId>heasarc_utils</artifactId>
+    <groupId>org.jason.heasarcutils</groupId>
+    <artifactId>heasarcutils</artifactId>
     <packaging>pom</packaging>
-    <version>0.3</version>
+    <version>0.3.1</version>
     <name>heasarc_utils</name>
     <description>Parent package for my code to deal with the NASA HEASARC files</description>
 
