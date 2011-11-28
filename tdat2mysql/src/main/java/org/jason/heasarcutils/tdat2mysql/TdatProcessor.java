@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.tdat2mysql;
+package org.jason.heasarcutils.tdat2mysql;
 
 import java.io.*;
 import java.util.*;
