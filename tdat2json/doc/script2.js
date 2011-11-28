@@ -25,7 +25,7 @@ db.catalog.ensureIndex({"xref":1});
 
 function fixArray() {
     // get 'em all
-    var cursor = db.cns3.find({}, {xref:true, "_id":false});
+    var cursor = db.catalog.find({}, {xref:true, "_id":false});
     var holdArray = [];
     while (cursor.hasNext()) {
         var doc = cursor.next();
