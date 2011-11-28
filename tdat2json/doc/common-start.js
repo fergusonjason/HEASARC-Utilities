@@ -53,6 +53,19 @@ db.catalog.find().forEach(function(obj) {
     db.catalog.save(obj);
 });
 
+db.catalog.update({"bscname":{$exists:true}}, {$unset:{"bscname":1}}, false, true);
+db.catalog.update({"hdname":{$exists:true}}, {$unset:{"hdname":1}}, false, true);
+db.catalog.update({"saoname":{$exists:true}}, {$unset:{"saoname":1}}, false, true);
+db.catalog.update({"ppmname":{$exists:true}}, {$unset:{"ppmname":1}}, false, true);
+db.catalog.update({"hipname":{$exists:true}}, {$unset:{"hipname":1}}, false, true);
+db.catalog.update({"gcname":{$exists:true}}, {$unset:{"gcname":1}}, false, true);
+db.catalog.update({"gliesename":{$exists:true}}, {$unset:{"gliesename":1}}, false, true);
+db.catalog.update({"cpdname":{$exists:true}}, {$unset:{"cpdname":1}}, false, true);
+db.catalog.update({"messiername":{$exists:true}}, {$unset:{"messiername":1}}, false, true);
+db.catalog.update({"ngc2000name":{$exists:true}}, {$unset:{"ngc2000name":1}}, false, true);
+db.catalog.update({"ugcname":{$exists:true}}, {$unset:{"ugcname":1}}, false, true);
+
 db.catalog.ensureIndex({xref:1});
 
-// at this point, run the catalog-specific scripts, then run the common-finish.js script
+// at this point, run the catalog-specific scripts, then run the common-finish.js script. Now would be a good time to
+// do a mongoexport... just sayin...
