@@ -14,5 +14,6 @@
         <exclude name="limit_ang_diameter"  />
         <exclude name="app_mag_flag" />
         <exclude name="description" />
+        <exclude name="ang_diameter" />
     </exclusions>
     </catalog>
