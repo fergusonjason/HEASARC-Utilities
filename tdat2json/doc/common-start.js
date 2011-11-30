@@ -18,9 +18,6 @@ db.catalog.find().forEach(function(obj) {
     if (obj.cpdname != null) {
         obj.xref.push(obj.cpdname);
     }
-//    if (obj.dmname != null) {
-//        obj.xref.push(obj.dmname);
-//    }
     if (obj.gcname != null) {
         obj.xref.push(obj.gcname);
     }
@@ -50,6 +47,12 @@ db.catalog.find().forEach(function(obj) {
     if (obj.ugcname != null) {
         obj.xref.push(obj.ugcname);
     }
+    if (obj.codname != null) {
+        obj.xref.push(obj.codname);
+    }
+    if (obj.ccdmname != null) {
+        obj.xref.push(obj.ccdmname);
+    }
     db.catalog.save(obj);
 });
 
@@ -64,8 +67,42 @@ db.catalog.update({"cpdname":{$exists:true}}, {$unset:{"cpdname":1}}, false, tru
 db.catalog.update({"messiername":{$exists:true}}, {$unset:{"messiername":1}}, false, true);
 db.catalog.update({"ngc2000name":{$exists:true}}, {$unset:{"ngc2000name":1}}, false, true);
 db.catalog.update({"ugcname":{$exists:true}}, {$unset:{"ugcname":1}}, false, true);
+db.catalog.update({"codname":{$exists:true}}, {$unset:{"codname":1}}, false, true);
+db.catalog.update({"ccdmname":{$exists:true}}, {$unset:{"ccdmname":1}}, false, true);
 
 db.catalog.ensureIndex({xref:1});
 
+
+function fixArray2() {
+    var counter = 0;
+    // I only want the xref for each field, I don't even want the id
+    var cursor = db.catalog.find({}, {xref: true, _id: false});
+
+    // I don't want to init this inside the loop, worried about memory leaks (probably baseless worry)
+    var consolidatedArray = [];
+    while (cursor.hasNext()) {
+        var xref1 = cursor.next().xref;
+        // first pass: create a consolidated array when the cross references match
+        var limitedCursor1 = db.catalog.find({"name":{$in:xref1}});
+        while (limitedCursor1.hasNext()) {
+            var doc1 = limitedCursor1.next();
+            consolidatedArray = consolidatedArray.concat(doc1.xref);
+        }
+        consolidatedArray = consolidatedArray.unique();
+        // now that we have the consolidated array, reset the xref field of the object to it
+        for (var i=0; i<consolidatedArray.length; i++) {
+            db.catalog.update({name:consolidatedArray[i]},{$set:{xref: consolidatedArray}},false, true);
+        }
+
+        consolidatedArray.length = 0;
+
+        counter++;
+        if (counter % 10000 == 0) {
+            print("Processed " + counter + " documents.");
+        }
+    }
+}
 // at this point, run the catalog-specific scripts, then run the common-finish.js script. Now would be a good time to
 // do a mongoexport... just sayin...
+db.catalog.update({"ir_flag":{$exists:true}}, {$unset:{"ir_flag":1}}, false, true);
+db.catalog.update({"astrom_ref_dbl":{$exists:true}}, {$unset:{"astrom_ref_dbl":1}}, false, true);
