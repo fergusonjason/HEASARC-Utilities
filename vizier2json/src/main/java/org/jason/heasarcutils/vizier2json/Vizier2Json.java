@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.vizier2json;
 
+import net.sf.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -23,40 +24,44 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Utility to convert Vizier catalog data to JSON format for use with MongoDB/Other JSON utilities
  *
- * @since 0.1
  * @author Jason Ferguson
+ * @since 0.1
  */
 public class Vizier2Json {
 
-    private static String config=".\\vizier.xml";
+    private static String config = "target\\classes\\vizier.xml";
     private static Document dom;
+    private static Map<String, Catalog> catalogMap = new HashMap<String, Catalog>();
 
     public Vizier2Json() {
 
 
     }
 
-	private static String getTextValue(Element ele, String tagName) {
-		String textVal = null;
-		NodeList nl = ele.getElementsByTagName(tagName);
-		if(nl != null && nl.getLength() > 0) {
-			Element el = (Element)nl.item(0);
-			textVal = el.getFirstChild().getNodeValue();
-		}
+    private static String getTextValue(Element ele, String tagName) {
+        String textVal = null;
+        NodeList nl = ele.getElementsByTagName(tagName);
+        if (nl != null && nl.getLength() > 0) {
+            Element el = (Element) nl.item(0);
+            textVal = el.getFirstChild().getNodeValue();
+        }
 
-		return textVal;
-	}
+        return textVal;
+    }
 
     public static Map<String, Catalog> parseConfig() {
-        Map<String, Catalog> catalogMap = new HashMap<String, Catalog>();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
@@ -66,20 +71,20 @@ public class Vizier2Json {
             // get the <catalog> tags
             NodeList nl = e.getElementsByTagName("catalog");
             if (nl != null && nl.getLength() > 0) {
-                for (int i=0; i< nl.getLength(); i++) {
+                for (int i = 0; i < nl.getLength(); i++) {
                     Catalog catalog = new Catalog();
                     Element element = (Element) nl.item(i);
 
                     // set the easy stuff
-                    catalog.setName(getTextValue(element,"name"));
-                    catalog.setUrl(getTextValue(element,"url"));
+                    catalog.setName(getTextValue(element, "name"));
+                    catalog.setUrl(getTextValue(element, "url"));
 
                     // get the <fields> tag for this catalog
                     Element fields = (Element) e.getElementsByTagName("fields").item(0);
 
                     // get a nodelist of all of the <field> tags within the <fields> parent tag
                     NodeList individualFields = fields.getElementsByTagName("field");
-                    for (int j=0; j<individualFields.getLength(); j++) {
+                    for (int j = 0; j < individualFields.getLength(); j++) {
                         // get the <field> tag
                         Element individualField = (Element) individualFields.item(j);
                         // process the name, start, and end attributes
@@ -95,7 +100,7 @@ public class Vizier2Json {
 
                     NodeList individualPrefixes = prefixes.getElementsByTagName("prefix");
                     Map<String, String> prefixMap = new HashMap<String, String>();
-                    for (int j=0; j<individualPrefixes.getLength();j++) {
+                    for (int j = 0; j < individualPrefixes.getLength(); j++) {
                         // get the <prefix> tag
                         Element individualPrefix = (Element) individualPrefixes.item(j);
                         //process the name and prefix attributes
@@ -105,7 +110,7 @@ public class Vizier2Json {
                         catalog.setPrefixes(prefixMap);
                     }
 
-                    catalogMap.put(catalog.getName(),catalog);
+                    catalogMap.put(catalog.getName(), catalog);
                 }
             }
 
@@ -120,11 +125,58 @@ public class Vizier2Json {
 
     }
 
+    public void parseCatalog(String catalogName) {
+
+        Catalog catalog = catalogMap.get(catalogName);
+        String fileurl = catalog.getUrl();
+        Map<String, FieldData> fieldMap = catalog.getFieldData();
+        Map<String, String> resultMap = new LinkedHashMap<String, String>();
+
+        try {
+            URL url = new URL(fileurl);
+            URLConnection conn = url.openConnection();
+            InputStream is = conn.getInputStream();
+            GZIPInputStream gzis = new GZIPInputStream(is);
+            BufferedReader isReader = new BufferedReader(new InputStreamReader(gzis));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(catalogName + ".json"));
+            String line;
+            while ((line = isReader.readLine()) != null) {
+                int lineLength = line.length();
+                for (String fieldKey : fieldMap.keySet()) {
+                    FieldData fieldData = fieldMap.get(fieldKey);
+                    int start = fieldData.getStart() - 1;
+                    int end = fieldData.getEnd();
+                    // the record may end before the definition in the xml
+                    if (lineLength >= start && lineLength <= end) {
+                        String value = line.substring(start);
+                        resultMap.put(fieldKey, value);
+                    } else {
+                        String value = line.substring(start, end);
+                        resultMap.put(fieldKey, value);
+                    }
+                }
+                String jsonLine = JSONObject.fromObject(resultMap).toString();
+                writer.write(jsonLine);
+            }
+
+            writer.close();
+            isReader.close();
+            gzis.close();
+            is.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (StringIndexOutOfBoundsException e) {
+            // I want this swallowed, even if it is a RuntimeException
+        }
+
+    }
+
     public static void main(String[] args) {
         Vizier2Json v2j = new Vizier2Json();
         Map<String, Catalog> catalogMap = parseConfig();
-        for (String key: catalogMap.keySet()) {
+        v2j.parseCatalog(args[0]);
 
-        }
     }
 }
