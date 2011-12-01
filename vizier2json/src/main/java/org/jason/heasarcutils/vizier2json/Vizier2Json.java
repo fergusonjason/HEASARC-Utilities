@@ -193,12 +193,12 @@ public class Vizier2Json {
     }
 
     public static boolean isNumeric(String value) {
-        String pattern = "^[-]*[0-9]+\\.*[0-9]*$";
+        String pattern = "^[\\+,-]*[0-9]+\\.*[0-9]*$";
         return (value.matches(pattern));
     }
 
     public static boolean isInteger(String value) {
-        String pattern = "^[-]*[0-9]+";
+        String pattern = "^[\\+,-]*[0-9]+";
         return (value.matches(pattern));
     }
 
@@ -228,7 +228,13 @@ public class Vizier2Json {
 
     public static void main(String[] args) {
         Vizier2Json v2j = new Vizier2Json();
-        Map<String, Catalog> catalogMap = parseConfig();
+        if (args.length == 0) {
+            System.out.println("You must identify which catalog you wish to convert. Choices: ");
+            for (String key: catalogMap.keySet()) {
+                System.out.println(key);
+            }
+        }
+        catalogMap = parseConfig();
         v2j.parseCatalog(args[0]);
 
     }
