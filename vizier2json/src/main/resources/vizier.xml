@@ -16,7 +16,7 @@
                 <field name="decsec" start="35" end="39"/>
                 <field name="decpm" start="41" end="47"/>
                 <field name="vmag" start="60" end="64"/>
-                <field name="spectype" start="60" end="67"/>
+                <field name="spectype" start="66" end="67"/>
                 <field name="dmname" start="69" end="78"/>
                 <field name="saoname" start="80" end="85"/>
                 <field name="hdnname" start="87" end="92"/>
