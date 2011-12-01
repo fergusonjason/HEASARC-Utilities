@@ -164,10 +164,11 @@ public class Vizier2Json {
                 // process the values in the result map before we put them into the json output
                 // deal with the prefixes
                 Map<String, String> prefixMap = catalog.getPrefixes();
-                for (String key: prefixMap.keySet()) {
-                    String value = resultMap.get(key);
+                for (String key : prefixMap.keySet()) {
+                    String value = resultMap.get(key).trim();
                     if (value != null) {
-                        value = prefixMap.get(key) + value;
+                        value = value.replaceFirst("^0+","");
+                        value = prefixMap.get(key) + value.trim();
                         resultMap.put(key, value);
                     }
                 }
@@ -196,23 +197,35 @@ public class Vizier2Json {
         return (value.matches(pattern));
     }
 
+    public static boolean isInteger(String value) {
+        String pattern = "^[-]*[0-9]+";
+        return (value.matches(pattern));
+    }
+
+
     public String convertToJson(Map<String, String> map) {
         StringBuffer sb = new StringBuffer();
         sb.append("{");
-        for (String key: map.keySet()) {
+        for (String key : map.keySet()) {
             sb.append("\"").append(key).append("\":");
             if (isNumeric(map.get(key))) {
-                BigDecimal number = new BigDecimal(map.get(key));
-                sb.append(number).append(",");
+                if (isInteger(map.get(key))) {
+                    int number = new Integer(map.get(key).trim());
+                    sb.append(number).append(",");
+                } else {
+                    BigDecimal number = new BigDecimal(map.get(key).trim());
+                    sb.append(number).append(",");
+                }
             } else {
                 sb.append("\"").append(map.get(key)).append("\",");
             }
         }
         // strip the trailing comma
-        sb = new StringBuffer(sb.substring(0,sb.length() - 1));
+        sb = new StringBuffer(sb.substring(0, sb.length() - 1));
         sb.append("}\r\n");
         return sb.toString();
     }
+
     public static void main(String[] args) {
         Vizier2Json v2j = new Vizier2Json();
         Map<String, Catalog> catalogMap = parseConfig();
