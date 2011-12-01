@@ -105,7 +105,7 @@ public class Vizier2Json {
                         Element individualPrefix = (Element) individualPrefixes.item(j);
                         //process the name and prefix attributes
                         String ipName = individualPrefix.getAttribute("name");
-                        String ipPrefix = individualPrefix.getAttribute("prefix");
+                        String ipPrefix = individualPrefix.getAttribute("text");
                         prefixMap.put(ipName, ipPrefix);
                         catalog.setPrefixes(prefixMap);
                     }
@@ -145,6 +145,7 @@ public class Vizier2Json {
             String line;
             while ((line = isReader.readLine()) != null) {
                 int lineLength = line.length();
+                // dump the raw values into the result map based on the configuration data
                 for (String fieldKey : fieldMap.keySet()) {
                     FieldData fieldData = fieldMap.get(fieldKey);
                     int start = fieldData.getStart() - 1;
@@ -158,6 +159,16 @@ public class Vizier2Json {
                             String value = line.substring(start, end);
                             resultMap.put(fieldKey, value.trim());
                         }
+                    }
+                }
+                // process the values in the result map before we put them into the json output
+                // deal with the prefixes
+                Map<String, String> prefixMap = catalog.getPrefixes();
+                for (String key: prefixMap.keySet()) {
+                    String value = resultMap.get(key);
+                    if (value != null) {
+                        value = prefixMap.get(key) + value;
+                        resultMap.put(key, value);
                     }
                 }
                 String jsonLine = convertToJson(resultMap);
