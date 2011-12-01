@@ -133,7 +133,6 @@ public class Vizier2Json {
         }
         String fileurl = catalog.getUrl();
         Map<String, FieldData> fieldMap = catalog.getFieldData();
-        Map<String, String> resultMap = new LinkedHashMap<String, String>();
 
         try {
             URL url = new URL(fileurl);
@@ -144,6 +143,8 @@ public class Vizier2Json {
             BufferedWriter writer = new BufferedWriter(new FileWriter(catalogName + ".json"));
             String line;
             while ((line = isReader.readLine()) != null) {
+                Map<String, String> resultMap = new LinkedHashMap<String, String>();
+
                 int lineLength = line.length();
                 // dump the raw values into the result map based on the configuration data
                 for (String fieldKey : fieldMap.keySet()) {
@@ -165,7 +166,7 @@ public class Vizier2Json {
                 // deal with the prefixes
                 Map<String, String> prefixMap = catalog.getPrefixes();
                 for (String key : prefixMap.keySet()) {
-                    String value = resultMap.get(key).trim();
+                    String value = resultMap.get(key);
                     if (value != null) {
                         value = value.replaceFirst("^0+","");
                         value = prefixMap.get(key) + value.trim();
