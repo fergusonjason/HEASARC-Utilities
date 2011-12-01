@@ -2,7 +2,7 @@
 <vizier>
     <catalogs>
         <catalog>
-            <name>CommonNameCrossIndex</name>
+            <name>crossindex</name>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/IV/22/index.dat.gz</url>
             <fields>
                 <field name="FK5" start="1" end="4"/>
