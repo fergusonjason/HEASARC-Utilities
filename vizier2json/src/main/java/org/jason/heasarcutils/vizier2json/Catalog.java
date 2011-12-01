@@ -16,6 +16,7 @@
 package org.jason.heasarcutils.vizier2json;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,8 +27,8 @@ public class Catalog implements Serializable {
 
     private String name;
     private String url;
-    private Map<String, FieldData> fieldData;
-    private Map<String, String> prefixes;
+    private Map<String, FieldData> fieldData = new HashMap<String, FieldData>();
+    private Map<String, String> prefixes = new HashMap<String, String>();
 
     public String getName() {
         return name;
