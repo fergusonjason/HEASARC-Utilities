@@ -41,7 +41,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class Vizier2Json {
 
-    private static String config = "target\\classes\\vizier.xml";
+    private static String config = "classes\\vizier.xml";
     private static Document dom;
     private static Map<String, Catalog> catalogMap = new HashMap<String, Catalog>();
 
@@ -128,6 +128,9 @@ public class Vizier2Json {
     public void parseCatalog(String catalogName) {
 
         Catalog catalog = catalogMap.get(catalogName);
+        if (catalog == null) {
+            throw new IllegalArgumentException("Catalog Not Found in Configuration: " + catalogName);
+        }
         String fileurl = catalog.getUrl();
         Map<String, FieldData> fieldMap = catalog.getFieldData();
         Map<String, String> resultMap = new LinkedHashMap<String, String>();
@@ -147,16 +150,19 @@ public class Vizier2Json {
                     int start = fieldData.getStart() - 1;
                     int end = fieldData.getEnd();
                     // the record may end before the definition in the xml
-                    if (lineLength >= start && lineLength <= end) {
-                        String value = line.substring(start);
-                        resultMap.put(fieldKey, value);
-                    } else {
-                        String value = line.substring(start, end);
-                        resultMap.put(fieldKey, value);
+                    if (lineLength >= start) {
+                        if (lineLength <= end) {
+                            String value = line.substring(start);
+                            resultMap.put(fieldKey, value);
+                        } else {
+                            String value = line.substring(start, end);
+                            resultMap.put(fieldKey, value);
+                        }
                     }
                 }
                 String jsonLine = JSONObject.fromObject(resultMap).toString();
                 writer.write(jsonLine);
+                writer.write("\r\n");
             }
 
             writer.close();
@@ -169,6 +175,7 @@ public class Vizier2Json {
             e.printStackTrace();
         } catch (StringIndexOutOfBoundsException e) {
             // I want this swallowed, even if it is a RuntimeException
+            e.printStackTrace();
         }
 
     }
