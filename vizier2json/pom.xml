@@ -43,7 +43,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.jason.heasarcutils.tdat2json.Tdat2Json</mainClass>
+                            <mainClass>org.jason.heasarcutils.vizier2json.Vizier2Json</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
