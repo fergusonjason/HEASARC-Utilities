@@ -1,0 +1,3 @@
+VIZIER2JSON
+
+Converts Vizier files for use in MongoDB when a NASA HEASARC TDAT file is not available.

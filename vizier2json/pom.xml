@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jason.heasarcutils</groupId>
+    <artifactId>vizier2json</artifactId>
+    <packaging>jar</packaging>
+    <version>0.1</version>
+    <name>vizier2json</name>
+    <description>Utility to convert Vizier DAT data files into JSON format for use in MongoDB.
+    </description>
+
+    <developers>
+        <developer>
+            <name>Jason Ferguson</name>
+            <email>fergusonjason@gmail.com</email>
+            <url>http://stupidgwttricks.wordpress.com</url>
+        </developer>
+    </developers>
+
+    <properties>
+        <compiler.plugin.version>2.3.2</compiler.plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <compilerVersion>1.6</compilerVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.jason.heasarcutils.tdat2json.Tdat2Json</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
