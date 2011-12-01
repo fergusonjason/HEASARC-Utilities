@@ -26,7 +26,7 @@
             <prefixes>
                 <prefix name="saoname" text="SAO "/>
                 <prefix name="hdname" text="HD "/>
-                <prefix name="fk5" text="FK 5" />
+                <prefix name="fk5" text="FK5 " />
             </prefixes>
 
         </catalog>
