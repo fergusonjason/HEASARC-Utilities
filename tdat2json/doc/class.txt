@@ -1,0 +1,17 @@
+// create the class field
+db.class.find({classdesc:/^STAR/i}).forEach(function(obj){
+   var pattern = /^STAR\s(.+)$/i;
+   if (obj.classdesc.search(pattern) != -1) {
+        var matchArray = obj.classdesc.match(pattern);
+        obj.desc = matchArray[1];
+        db.class.save(obj);
+   }
+});
+
+db.crossindex.find().forEach(function(obj) {
+   var spectype = obj.spectype;
+   var classref = db.class.find({desc:spectype});
+   print(classref.class);
+   obj.class = classref.class;
+   db.crossindex.save(obj);
+});
