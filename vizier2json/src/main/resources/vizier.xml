@@ -40,7 +40,7 @@
                 <field name="decmin" start="62" end="63"/>
                 <field name="decsec" start="64" end="68"/>
                 <field name="decpm" start="94" end="99"/>
-                <field name="dmname" start="101" end="133" />
+                <field name="dmname" start="101" end="113" />
                 <field name="lii" start="114" end="120"/>
                 <field name="bii" start="121" end="127"/>
                 <field name="hdname" start="128" end="133" prefix="HD "/>
