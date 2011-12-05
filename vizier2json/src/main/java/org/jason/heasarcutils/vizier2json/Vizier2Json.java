@@ -91,8 +91,15 @@ public class Vizier2Json {
                         String ifName = individualField.getAttribute("name");
                         Integer ifStart = new Integer(individualField.getAttribute("start"));
                         Integer ifEnd = new Integer(individualField.getAttribute("end"));
+                        String ifPrefix = individualField.getAttribute("prefix");
+
                         // add a new entry to the Catalog's field map
                         catalog.getFieldData().put(ifName, new FieldData(ifStart, ifEnd));
+
+                        // add the name and prefix to the catalog's prefix map
+                        if (ifPrefix != null) {
+                            catalog.getPrefixes().put(ifName, ifPrefix);
+                        }
                     }
 
                     // get the prefixes
@@ -168,7 +175,7 @@ public class Vizier2Json {
                 for (String key : prefixMap.keySet()) {
                     String value = resultMap.get(key);
                     if (value != null) {
-                        value = value.replaceFirst("^0+","");
+                        value = value.replaceFirst("^0+", "");
                         value = prefixMap.get(key) + value.trim();
                         resultMap.put(key, value);
                     }
@@ -231,7 +238,7 @@ public class Vizier2Json {
         Vizier2Json v2j = new Vizier2Json();
         if (args.length == 0) {
             System.out.println("You must identify which catalog you wish to convert. Choices: ");
-            for (String key: catalogMap.keySet()) {
+            for (String key : catalogMap.keySet()) {
                 System.out.println(key);
             }
         }
