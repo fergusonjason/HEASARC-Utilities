@@ -48,7 +48,24 @@
                 <field name="dmname" start="101" end="133" />
                 <field name="lii" start="114" end="120"/>
                 <field name="bii" start="121" end="127"/>
-                <field name="hdname" start="128" end="133" />
+                <field name="hdname" start="128" end="133" prefix="HD "/>
+            </fields>
+        </catalog>
+        <catalog>
+            <name>lhs</name>
+            <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/87B/catalog.dat.gz</url>
+            <fields>
+                <field name="lhsname" start="1" end="5" prefix="LHS " />
+                <field name="othername" start="7" end="21" />
+                <field name="rah" start="23" end="24" />
+                <field name="ramin" start="25" end="26" />
+                <field name="rasec" start="27" end="28" />
+                <field name="decsign" start="29" end="29" />
+                <field name="decdeg" start="30" end="31" />
+                <field name="decdecimin" start="32" end="34" />
+                <field name="vmag" start="54" end="57" />
+                <field name="spectype" start="59" end="61" />
+                <field name="pmra" start="72" end="76" />
             </fields>
         </catalog>
     </catalogs>
