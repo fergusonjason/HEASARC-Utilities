@@ -6,7 +6,7 @@
     <groupId>org.jason.heasarcutils</groupId>
     <artifactId>tdat2json</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.1</version>
+    <version>0.3.2</version>
     <name>tdat2json</name>
     <description>Utility to convert NASA HEASARC TDAT data files into JSON format for use in MongoDB.
     </description>
