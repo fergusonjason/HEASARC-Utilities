@@ -67,43 +67,46 @@ public class Vizier2Json {
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
             dom = db.parse(new File(config));
-            Element e = dom.getDocumentElement();
+            Element document = dom.getDocumentElement();
             // get the <catalog> tags
-            NodeList nl = e.getElementsByTagName("catalog");
-            if (nl != null && nl.getLength() > 0) {
-                for (int i = 0; i < nl.getLength(); i++) {
+            NodeList catalogNodes = document.getElementsByTagName("catalog");
+            if (catalogNodes != null && catalogNodes.getLength() > 0) {
+                // for every catalog element...
+                for (int i = 0; i < catalogNodes.getLength(); i++) {
+                    // get the <catalog> at position i
+                    Element catalogNode = (Element) catalogNodes.item(i);
                     Catalog catalog = new Catalog();
-                    Element element = (Element) nl.item(i);
 
                     // set the easy stuff
-                    catalog.setName(getTextValue(element, "name"));
-                    catalog.setUrl(getTextValue(element, "url"));
+                    catalog.setName(getTextValue(catalogNode, "name"));
+                    catalog.setUrl(getTextValue(catalogNode, "url"));
 
-                    // get the <fields> tag for this catalog
-                    Element fields = (Element) e.getElementsByTagName("fields").item(0);
+                    // get the <fieldsNode> tag for this catalog
+                    Element fieldsNode = (Element) catalogNode.getElementsByTagName("fields").item(0);
 
-                    // get a nodelist of all of the <field> tags within the <fields> parent tag
-                    NodeList individualFields = fields.getElementsByTagName("field");
-                    for (int j = 0; j < individualFields.getLength(); j++) {
+                    // get a nodelist of all of the <field> tags within the <fieldsNode> parent tag
+                    NodeList individualFieldNodes = fieldsNode.getElementsByTagName("field");
+                    // for each field within fieldsNode...
+                    for (int j = 0; j < individualFieldNodes.getLength(); j++) {
                         // get the <field> tag
-                        Element individualField = (Element) individualFields.item(j);
+                        Element individualFieldNode = (Element) individualFieldNodes.item(j);
                         // process the name, start, and end attributes
-                        String ifName = individualField.getAttribute("name");
-                        Integer ifStart = new Integer(individualField.getAttribute("start"));
-                        Integer ifEnd = new Integer(individualField.getAttribute("end"));
-                        String ifPrefix = individualField.getAttribute("prefix");
+                        String ifName = individualFieldNode.getAttribute("name");
+                        Integer ifStart = new Integer(individualFieldNode.getAttribute("start"));
+                        Integer ifEnd = new Integer(individualFieldNode.getAttribute("end"));
+                        String ifPrefix = individualFieldNode.getAttribute("prefix");
 
                         // add a new entry to the Catalog's field map
                         catalog.getFieldData().put(ifName, new FieldData(ifStart, ifEnd));
 
                         // add the name and prefix to the catalog's prefix map
-                        if (ifPrefix != null) {
+                        if (ifPrefix != null && !ifPrefix.isEmpty()) {
                             catalog.getPrefixes().put(ifName, ifPrefix);
                         }
                     }
 
                     // get the prefixes
-                    Element prefixes = (Element) e.getElementsByTagName("prefixes").item(0);
+                    Element prefixes = (Element) document.getElementsByTagName("prefixes").item(0);
 
                     NodeList individualPrefixes = prefixes.getElementsByTagName("prefix");
                     Map<String, String> prefixMap = new HashMap<String, String>();
