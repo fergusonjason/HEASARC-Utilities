@@ -33,7 +33,7 @@
             <name>gc</name>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
             <fields>
-                <field name="gcname" start="1" end="5" />
+                <field name="gcname" start="1" end="5" prefix="GC "/>
                 <field name="vmag" start="7" end="10" />
                 <field name="spectype" start="12" end="15" />
                 <field name="rah" start="16" end="17"/>
