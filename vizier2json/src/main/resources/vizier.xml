@@ -5,7 +5,7 @@
             <name>crossindex</name>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/IV/22/index.dat.gz</url>
             <fields>
-                <field name="fk5" start="1" end="4"/>
+                <field name="fk5" start="1" end="4" prefix="FK5 "/>
                 <field name="rah" start="7" end="8"/>
                 <field name="ramin" start="10" end="11"/>
                 <field name="rasec" start="13" end="18"/>
@@ -18,16 +18,11 @@
                 <field name="vmag" start="60" end="64"/>
                 <field name="spectype" start="66" end="67"/>
                 <field name="dmname" start="69" end="78"/>
-                <field name="saoname" start="80" end="85"/>
-                <field name="hdname" start="87" end="92"/>
+                <field name="saoname" start="80" end="85" prefix="SAO "/>
+                <field name="hdname" start="87" end="92" prefix="HD "/>
                 <field name="bayerflam" start="94" end="102"/>
                 <field name="commonname" start="104" end="123"/>
             </fields>
-            <prefixes>
-                <prefix name="saoname" text="SAO "/>
-                <prefix name="hdname" text="HD "/>
-                <prefix name="fk5" text="FK5 " />
-            </prefixes>
         </catalog>
         <catalog>
             <name>gc</name>
