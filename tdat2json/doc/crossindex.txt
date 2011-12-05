@@ -1,0 +1,57 @@
+
+// split out the bayer and flamsteed designations
+db.crossindex.find({bayerflam:{$exists:1}}).forEach(function(obj){
+    var flamPattern = /^([0-9]+)\s+([A-Z]{3})$/i;
+    var bayerPattern = /^([A-Z]{3})\s+([A-Z]{3})$/i;
+    var bothPattern = /^([A-Z]{3})([0-9]+)\s+([A-Z]{3})$/i;
+
+    var name = obj.bayerflam;
+    if (name.search(flamPattern) != -1) {
+        var matchPattern = name.match(flamPattern);
+        var flamName = matchPattern[1] + " " + matchPattern[2];
+        obj.flamname = flamName;
+        print(obj.flamname);
+        db.crossindex.save(obj);
+    } else if (name.search(bayerPattern) != -1) {
+        var matchPattern = name.match(bayerPattern);
+        var bayerName = matchPattern[1] + " " + matchPattern[2];
+        obj.bayername = bayerName;
+        db.crossindex.save(obj);
+    } else if (name.search(bothPattern) != -1) {
+        var matchPattern = name.match(bothPattern);
+        var bayerName = matchPattern[1] + " " + matchPattern[3];
+        var flamName = matchPattern[2] + " " + matchPattern[3];
+        obj.bayername = bayerName;
+        obj.flamname = flamName;
+        db.crossindex.save(obj);
+    }
+});
+
+db.crossindex.update({bayerflam:{$exists:1}},{$unset:{bayerflam:1}},false,true);
+
+// create the radeg field
+db.crossindex.find({rah:{$exists:1}}).forEach(function(obj) {
+   var radeg = obj.rah * 15 + obj.ramin /4 + obj.rasec /240;
+   radeg = Math.round(radeg*10000)/10000;
+   obj.radeg = radeg;
+   db.crossindex.save(obj);
+});
+db.crossindex.update({rah:{$exists:1}},{$unset:{rah:1}},false,true);
+db.crossindex.update({ramin:{$exists:1}},{$unset:{ramin:1}},false,true);
+db.crossindex.update({rasec:{$exists:1}},{$unset:{rasec:1}},false,true);
+
+// create the decdeg field
+db.crossindex.find({decdeg:{$exists:1}}).forEach(function(obj) {
+   var decdeg = obj.decdeg + obj.decmin/60 + obj.decsec/3600;
+   decdeg = Math.round(decdeg * 10000)/10000;
+   if (obj.decsign=="-") {
+    decdeg *= -1;
+   }
+   obj.decdeg1 = decdeg;
+    db.crossindex.save(obj);
+});
+db.crossindex.update({decdeg:{$exists:1}},{$unset:{decdeg:1}},false,true);
+db.crossindex.update({decmin:{$exists:1}},{$unset:{decmin:1}},false,true);
+db.crossindex.update({decsec:{$exists:1}},{$unset:{decsec:1}},false,true);
+
+// create the class field
