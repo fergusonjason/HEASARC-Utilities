@@ -53,5 +53,5 @@ db.crossindex.find({decdeg:{$exists:1}}).forEach(function(obj) {
 db.crossindex.update({decdeg:{$exists:1}},{$unset:{decdeg:1}},false,true);
 db.crossindex.update({decmin:{$exists:1}},{$unset:{decmin:1}},false,true);
 db.crossindex.update({decsec:{$exists:1}},{$unset:{decsec:1}},false,true);
+db.crossindex.update({decsign:{$exists:1}},{$unset:{decsign:1}},false,true);
 
-// create the class field
