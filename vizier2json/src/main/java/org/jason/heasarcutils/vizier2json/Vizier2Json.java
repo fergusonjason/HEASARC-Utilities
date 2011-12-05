@@ -105,21 +105,6 @@ public class Vizier2Json {
                         }
                     }
 
-                    // get the prefixes
-                    Element prefixes = (Element) document.getElementsByTagName("prefixes").item(0);
-
-                    NodeList individualPrefixes = prefixes.getElementsByTagName("prefix");
-                    Map<String, String> prefixMap = new HashMap<String, String>();
-                    for (int j = 0; j < individualPrefixes.getLength(); j++) {
-                        // get the <prefix> tag
-                        Element individualPrefix = (Element) individualPrefixes.item(j);
-                        //process the name and prefix attributes
-                        String ipName = individualPrefix.getAttribute("name");
-                        String ipPrefix = individualPrefix.getAttribute("text");
-                        prefixMap.put(ipName, ipPrefix);
-                        catalog.setPrefixes(prefixMap);
-                    }
-
                     catalogMap.put(catalog.getName(), catalog);
                 }
             }
