@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<catalog name="class">
+    <copy fromField="class_id" toField="class" dropAfterCopy="true" />
+    <copy fromField="class_name" toField="classdesc" dropAfterCopy="true" />
+</catalog>
