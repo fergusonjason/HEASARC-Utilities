@@ -1,3 +1,4 @@
+// first pass
 // populate the xref array
 db.catalog.find().forEach(function(obj) {
     // star catalogs
@@ -84,3 +85,59 @@ function fixArray2() {
 }
 
 fixArray2();
+
+// second pass
+db.catalog.find().forEach(function(obj) {
+    var pattern = /^([HD, SAO, PPM, GC, HIP, M, NGC, IC, UGC, HR, Gl, Gj, NN, Wo, TYC])/i;
+   var xref = obj.xref;
+   var dbrefs = [];
+   if (xref != null) {
+        for (var i=0; i<xref.length; i++) {
+            var name = xref[i];
+            if (name.search(pattern) != -1) {
+                var matchArray = name.match(pattern);
+                var prefix = matchArray[1];
+                var refObj;
+                var dbRef;
+                if (prefix == "HD") {
+                    refObj = db.hd.findOne(name);
+                    dbRef = new DBRef("hd", refObj._id);
+                } else if (prefix == "SAO") {
+                    refObj = db.sao.findOne(name);
+                    dbRef = new DBRef("sao", refObj._id);
+                } else if (prefix == "PPM") {
+                    refObj = db.ppm.findOne(name);
+                    dbRef = new DBRef("ppm", refObj._id);
+                } else if (prefix == "GC") {
+                    refObj = db.gc.findOne(name);
+                    dbRef = new DBRef("gc", refObj._id);
+                } else if (prefix =="HIP") {
+                    refObj = db.hipparcos.findOne(name);
+                    dbRef = new DBRef("hipparcos", refObj._id);
+                } else if (prefix == "M") {
+                    refObj = db.messier.findOne(name);
+                    dbRef = new DBRef("messier", refObj._id);
+                } else if (prefix == "NGC" || prefix == "IC") {
+                    refObj = db.ngc2000.findOne(name);
+                    dbRef = new DBRef("ngc", refObj._id);
+                } else if (prefix == "UGC") {
+                    refObj = db.ugc.findOne(name);
+                    dbRef = new DBRef("ugc", refObj._id);
+                } else if (prefix == "HR") {
+                    refObj = db.bsc.findOne(name);
+                    dbRef = new DBRef("bsc", refObj._id);
+                } else if (prefix == "TYC") {
+                    refObj = db.tycho2.findOne(name);
+                    dbRef = new DBRef("tycho2", refObj._id);
+                } else {
+                    refObj = db.cns3.findOne(name);
+                    dbRef = new DBRef("cns3", refObj._id);
+                }
+                dbrefs.push(dbRef);
+
+            }
+        }
+   }
+   obj.dbrefs = dbrefs;
+   db.catalog.save(obj);
+});
