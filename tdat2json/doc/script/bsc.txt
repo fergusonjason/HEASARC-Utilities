@@ -1,0 +1,37 @@
+// first pass
+// process the bayer and flamsteed names
+db.catalog.find({alt_name:{$exists:1}}).forEach(function(obj){
+    var flamPattern = /^([0-9]+)\s+([A-Z]{3})$/i;
+    var bayerPattern = /^([A-Z]{3})\s+([A-Z]{3})$/i;
+    var bothPattern = /^([A-Z]{3})([0-9]+)\s+([A-Z]{3})$/i;
+
+    var name = obj.bayerflam;
+    if (name.search(flamPattern) != -1) {
+        var matchPattern = name.match(flamPattern);
+        var flamName = matchPattern[1] + " " + matchPattern[2];
+        obj.flamname = flamName;
+        db.catalog.save(obj);
+    } else if (name.search(bayerPattern) != -1) {
+        var matchPattern = name.match(bayerPattern);
+        var bayerName = matchPattern[1] + " " + matchPattern[2];
+        obj.bayername = bayerName;
+        db.catalog.save(obj);
+    } else if (name.search(bothPattern) != -1) {
+        var matchPattern = name.match(bothPattern);
+        var bayerName = matchPattern[1] + " " + matchPattern[3];
+        var flamName = matchPattern[2] + " " + matchPattern[3];
+        obj.bayername = bayerName;
+        obj.flamname = flamName;
+        db.catalog.save(obj);
+    }
+});
+
+// second pass
+db.bsc.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("bsc",classObj._id);
+        obj.classRef = classRef;
+        db.bsc.save(obj);
+    }
+});
