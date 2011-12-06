@@ -10,6 +10,7 @@
     <copy fromField="hd" toField="hdname" dropAfterCopy="true" />
     <copy fromField="pmra" toField="rapm" dropAfterCopy="true" />
     <copy fromField="pmdec" toField="decpm" dropAfterCopy="true" />
+    <copy fromField="spec_type" toField="spectype" dropAfterCopy="true" />
 
     <exclusions>
         <exclude pattern="bv_" />
