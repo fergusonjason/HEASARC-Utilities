@@ -1,0 +1,19 @@
+// first pass
+// process the alt name
+db.catalog.find({messiername:{$exists:1}}).forEach(function(obj) {
+    var altname = obj.alt_name;
+    if (alt_name != null) {
+        obj.ngc2000name = altname;
+        db.catalog.save(obj);
+    }
+});
+
+// second pass
+db.messier.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("messier",classObj._id);
+        obj.classRef = classRef;
+        db.messier.save(obj);
+    }
+});
