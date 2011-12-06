@@ -1,0 +1,62 @@
+// first pass
+// cross reference the type to the class table. Sort by spectype to try to take advantage of the
+// query cache
+db.gc.find().sort({spectype:1}).forEach(function(obj) {
+    var classObj = db.class.findOne({desc:obj.spectype});
+    if (classObj != null) {
+        var classRef = new DBRef("class",classObj._id);
+        obj.classRef = classRef;
+        db.gc.save(obj);
+    }
+});
+
+// convert the ra and dec to decimal
+db.gc.find({rah:{$exists:1}}).forEach(function(obj) {
+   var radeg = obj.rah * 15 + obj.ramin /4 + obj.rasec /240;
+   radeg = Math.round(radeg*10000)/10000;
+   obj.radeg = radeg;
+   db.gc.save(obj);
+});
+
+db.crossindex.find({decdeg:{$exists:1}}).forEach(function(obj) {
+   var decdeg = obj.decdeg + obj.decmin/60 + obj.decsec/3600;
+   decdeg = Math.round(decdeg * 10000)/10000;
+   if (obj.decsign=="-") {
+    decdeg *= -1;
+   }
+   obj.decdeg1 = decdeg;
+    db.crossindex.save(obj);
+});
+
+// fix the spacing issue
+db.gc.find({dmname:/^CD-[0-9]+[A-Z]*$/i}).forEach(function(obj) {
+   var pattern = /^CD-([0-9]{2})([0-9]+[A-Z]*)/i;
+   var matchArray = obj.dmname.match(pattern);
+   if (matchArray != null && matchArray.length > 0) {
+        var rewrite = "CD-" + matchArray[1] + " " + matchArray[2];
+        obj.dmname = rewrite;
+        db.gc.save(obj);
+   }
+});
+
+// second pass
+// add an epoch field since this catalog uses 1950 as the epoch (a DBRef would take more space than a string)
+db.gc.update({},{$set:{epoch:1950}},false,true);
+
+// set the dbref on both sides of the relationship
+db.gc.ensureIndex({name:1});
+db.gc.update({},{catalogRef:null});
+db.gc.find().forEach(function(obj) {
+    var catalogObj = db.catalog.findOne({name:obj.name});
+
+    var thisRef = new DBRef("gc",this._id);
+    var thisRefObj = {name:"gc",dbref:thisRef};
+    var thatRef = new DBRef("catalog",catalogObj._id);
+
+    catalogObj.dbref.push(thisRefObj);
+    this.catalogRef = thatRef;
+
+    db.catalog.save(catalogObj);
+    db.gc.save(obj);
+});
+
