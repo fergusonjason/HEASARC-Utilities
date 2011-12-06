@@ -1,3 +1,5 @@
+// First pass
+
 // hd catalog
 // reprocess the HD names
 db.hd.find({"name":/^HD[0-9]+/i}).forEach(function(obj) {
@@ -5,6 +7,8 @@ db.hd.find({"name":/^HD[0-9]+/i}).forEach(function(obj) {
     db.hd.save(obj);
 });
 db.hd.update({}, {$unset:{hdname:1}},false, true);
+
+// second pass
 
 // set the hd catalog dbreferences
 db.hd.ensureIndex({name:1});
@@ -17,4 +21,7 @@ db.hd.find().forEach(function(obj) {
 
     catalogObj.dbref.push(thisRef);
     this.catalogRef = thatRef;
+
+    db.catalog.save(catalogObj);
+    db.hd.save(obj);
 });
