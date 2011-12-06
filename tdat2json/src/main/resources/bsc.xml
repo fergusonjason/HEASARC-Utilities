@@ -21,18 +21,17 @@
         <exclude name="glon" />
         <exclude pattern="radvel" />
         <exclude pattern="rotvel" />
-        <exclude pattern="spect_" />
         <exclude name="par_code" />
         <exclude pattern="m_" />
         <exclude pattern="ri_" />
         <exclude name="ub_color" />
         <exclude name="vmag_uncert" />
         <exclude pattern="cra" />
-        <exclude name="fk5" />
-        <exclude name="hr" />
         <exclude name="note" />
     </exclusions>
 
     <prefix field="hdname" text="HD " />
     <prefix field="saoname" text="SAO " />
+    <prefix field="fk5" text="FK5 " />
+    <prefix field="hr" text="HR " />
 </catalog>
