@@ -1,0 +1,11 @@
+// first pass
+
+// second pass
+db.ngc2000.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("ngc2000",classObj._id);
+        obj.classRef = classRef;
+        db.ngc2000.save(obj);
+    }
+});
