@@ -17,7 +17,7 @@ without arguments to show which ones are available.
 .js files)
 
 6. Each catalog should have a specific file for java script that needs to be run on them. Open it an run
-the scripts for the first pass only.
+the scripts for the first pass only. Run the class script first, the rest can probably de run in any order.
 
 7. Run the javascript in the postprocess.txt file.
 
@@ -26,3 +26,9 @@ At this point, the second pass of processing should begin.
 8. Import the catalogs to their own collections. Example:
 
     mongoimport -d astro -c hd hd.json
+
+9. Run the "second pass" scripts from the the individual files.
+
+10. Run the second pass from the postprocess file.
+
+11. Run the mapreduce.
