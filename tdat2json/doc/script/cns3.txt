@@ -8,9 +8,10 @@ db.cns3.find().forEach(function(obj) {
     var mainCatalogRef = db.catalog.findOne({name:obj.name});
 
     var thisRef = new DBRef("cns3",this._id);
+    var thisRefObj = {name:"cns3",dbref:thisRef};
     var thatRef = new DBRef("catalog", mainCatalogRef._id);
 
-    ref.dbref.push(thisRef);
+    ref.dbref.push(thisRefObj);
     this.catalogRef = thatRef;
     db.catalog.save(ref);
 }
