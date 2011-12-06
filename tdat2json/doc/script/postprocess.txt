@@ -41,6 +41,12 @@ db.catalog.find().forEach(function(obj) {
     if (obj.ugcname != null) {
         obj.xref.push(obj.ugcname);
     }
+    if (obj.flamname !=null) {
+        obj.xref.push(flamname);
+    }
+    if (obj.bayername != null) {
+        obj.xref.push(bayername);
+    }
     db.catalog.save(obj);
 });
 
