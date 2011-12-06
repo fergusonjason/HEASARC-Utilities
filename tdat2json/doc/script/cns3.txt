@@ -1,4 +1,12 @@
 // pass 1
+db.cns3.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("class",classObj._id);
+        obj.classRef = classRef;
+        db.cns3.save(obj);
+    }
+});
 
 // pass 2
 // cns3 catalog
