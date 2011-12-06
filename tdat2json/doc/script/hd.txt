@@ -8,6 +8,16 @@ db.hd.find({"name":/^HD[0-9]+/i}).forEach(function(obj) {
 });
 db.hd.update({}, {$unset:{hdname:1}},false, true);
 
+// set dbrefs for the class
+db.hd.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("class",classObj._id);
+        obj.classRef = classRef;
+        db.hd.save(obj);
+    }
+});
+
 // second pass
 
 // set the hd catalog dbreferences
