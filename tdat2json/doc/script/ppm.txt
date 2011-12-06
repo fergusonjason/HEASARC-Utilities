@@ -42,7 +42,7 @@ db.catalog.find({dmname:/-([0-9]{2})([0-9]+[A-Z])$/i}).forEach(function(obj) {
 });
 
 // second pass
-db.cns3.find().forEach(function(obj) {
+db.ppm.find().forEach(function(obj) {
     var classObj = db.class.findOne({class:obj.class});
     if (classObj != null) {
         var classRef = new DBRef("ppm",classObj._id);
