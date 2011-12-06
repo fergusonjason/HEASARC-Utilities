@@ -1,0 +1,22 @@
+// instructions for generating the catalog
+1. Run the tdat2json utility for all targets you want to import. Run without command line arguments to
+show which targets are available. Make sure to get the class list.
+2. Run the vizier2json utility for any targets you want that are not available via the HEASARC. Run
+without arguments to show which ones are available.
+3. Using mongoimport, import the files into a single collection named catalog (sample below):
+
+    mongoimport -d astro -c catalog <file>.json
+
+4. Run the javascript in the createCatalog.txt file. (It's in a txt file because of a bug in IDEA with
+.js files)
+
+5. Import the catalogs to their own collections. Example:
+
+    mongoimport -d astro -c hd hd.json
+
+6. Run the catalog-specific javascript on them (i.e. hd.txt). Each catalog-specific file is responsible
+for generating dbref's on both sides of the catalog-(individual) relationship.
+
+7. Run the javascript in the postprocess.txt file.
+
+

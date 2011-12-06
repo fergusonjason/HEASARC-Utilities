@@ -1,0 +1,7 @@
+
+// make sure the xref array has only unique values
+db.catalog.find().forEach(function(obj) {
+    tempXref = obj.xref.unique();
+    obj.xref = tempXref;
+    db.catalog.save(obj);
+});
