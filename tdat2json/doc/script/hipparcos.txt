@@ -1,0 +1,12 @@
+// first pass
+
+
+// second pass
+db.hipparcos.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("hipparcos",classObj._id);
+        obj.classRef = classRef;
+        db.hipparcos.save(obj);
+    }
+});
