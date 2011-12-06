@@ -1,0 +1,13 @@
+// first pass
+
+
+// second pass
+// process the catalog references
+db.sao.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("sao",classObj._id);
+        obj.classRef = classRef;
+        db.sao.save(obj);
+    }
+});
