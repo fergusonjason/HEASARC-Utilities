@@ -4,6 +4,9 @@ db.catalog.find().forEach(function(obj) {
     if (obj.bscname != null) {
         obj.xref.push(obj.bscname);
     }
+    if (obj.ccdmname != null) {
+        obj.xref.push(obj.ccdmname);
+    }
     if (obj.cpdname != null) {
         obj.xref.push(obj.cpdname);
     }
