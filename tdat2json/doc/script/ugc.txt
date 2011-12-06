@@ -1,0 +1,11 @@
+// first pass
+
+// second pass
+db.ugc.find().forEach(function(obj) {
+    var classObj = db.class.findOne({class:obj.class});
+    if (classObj != null) {
+        var classRef = new DBRef("ugc",classObj._id);
+        obj.classRef = classRef;
+        db.ugc.save(obj);
+    }
+});
