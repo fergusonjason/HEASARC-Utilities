@@ -17,9 +17,10 @@ db.hd.find().forEach(function(obj) {
     var catalogObj = db.catalog.findOne({name:obj.name});
 
     var thisRef = new DBRef("hd",this._id);
+    var thisRefObj = {name:"hd",dbref:thisRef});
     var thatRef = new DBRef("catalog",catalogObj._id);
 
-    catalogObj.dbref.push(thisRef);
+    catalogObj.dbref.push(thisRefObj);
     this.catalogRef = thatRef;
 
     db.catalog.save(catalogObj);
