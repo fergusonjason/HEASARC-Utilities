@@ -25,6 +25,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -124,18 +125,36 @@ public class ConfigParser {
     }
 
     private String[] getFieldNamesFromTdatHeader(String headerFile) {
+
+        URL fileUrl = null;
+        String filenamePattern = "(tdat_headers/)(.+\\.gz)$";
+        Pattern pattern = Pattern.compile(filenamePattern);
+        Matcher matcher = pattern.matcher(headerFile);
+        try {
+            if (matcher.find()) {
+                String filename = matcher.group(2);
+                File localFile = new File(filename);
+                if (localFile.exists()) {
+                    fileUrl = new URL("classes" + System.getProperty("file.separator") + filename);
+                } else {
+                    fileUrl = new URL(headerFile);
+                }
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         String[] fields = null;
         try {
-            URL url = new URL(headerFile);
-            GZIPInputStream gzis = new GZIPInputStream(new BufferedInputStream(url.openStream()));
+            //URL url = new URL(headerFile);
+            GZIPInputStream gzis = new GZIPInputStream(new BufferedInputStream(fileUrl.openStream()));
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
             String line = reader.readLine();
             while (line != null) {
                 if (line.matches("line\\[1\\] = (.*)")) {
-                    Pattern pattern = Pattern.compile("line\\[1\\] = (.*)");
-                    Matcher matcher = pattern.matcher(line);
-                    if (matcher.find()) {
-                        fields = matcher.group(1).split("\\s");
+                    Pattern pattern1 = Pattern.compile("line\\[1\\] = (.*)");
+                    Matcher matcher1 = pattern1.matcher(line);
+                    if (matcher1.find()) {
+                        fields = matcher1.group(1).split("\\s");
                         break;
                     }
                 }
