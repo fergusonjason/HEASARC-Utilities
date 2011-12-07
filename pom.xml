@@ -19,7 +19,9 @@
     </developers>
 
     <modules>
-	<module>tdat2mysql</module>
-	<module>tdat2json</module>
+        <module>tdat2mysql</module>
+        <module>tdat2json</module>
+        <module>vizier2json</module>
+        <module>catalogparser</module>
     </modules>
 </project>
