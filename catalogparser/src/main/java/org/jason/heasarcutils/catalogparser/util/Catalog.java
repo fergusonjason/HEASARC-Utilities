@@ -27,6 +27,10 @@ public class Catalog implements Serializable {
 
     private String name;
     private String url;
+    private String headerUrl;
+    private String epoch;
+    private int linesToSkip;
+
     private Map<String, FieldData> fieldData = new HashMap<String, FieldData>();
     private Map<String, String> prefixes = new HashMap<String, String>();
 
@@ -44,6 +48,30 @@ public class Catalog implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getHeaderUrl() {
+        return headerUrl;
+    }
+
+    public void setHeaderUrl(String headerUrl) {
+        this.headerUrl = headerUrl;
+    }
+
+    public String getEpoch() {
+        return epoch;
+    }
+
+    public void setEpoch(String epoch) {
+        this.epoch = epoch;
+    }
+
+    public int getLinesToSkip() {
+        return linesToSkip;
+    }
+
+    public void setLinesToSkip(int linesToSkip) {
+        this.linesToSkip = linesToSkip;
     }
 
     public Map<String, FieldData> getFieldData() {
