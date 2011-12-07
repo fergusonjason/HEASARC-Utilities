@@ -41,7 +41,7 @@ import java.util.zip.GZIPInputStream;
  */
 public class Vizier2Json {
 
-    private static String config = "classes\\vizier.xml";
+    private static String config = "classes" + System.getProperty("file.separator") + "vizier.xml";
     private static Document dom;
     private static Map<String, Catalog> catalogMap = new HashMap<String, Catalog>();
 
