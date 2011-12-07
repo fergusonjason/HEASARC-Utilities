@@ -27,6 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,27 +50,25 @@ public class ConfigParser {
             for (int i = 0; i < catalogNodes.getLength(); i++) {
                 Catalog catalog = new Catalog();
                 Element catalogNode = (Element) catalogNodes.item(i);
+
                 String name = catalogNode.getAttribute("name");
                 if (name.isEmpty()) {
                     throw new ConfigurationParseException("Attribute 'name' of tag 'catalog' cannot be empty");
                 }
-                String skipLines = catalogNode.getAttribute("skipLines");
                 String type = catalogNode.getAttribute("type");
                 if (type == null || type.isEmpty()) {
-                    throw new ConfigurationParseException("Attribute 'type' cannot be null or empty");
+                    throw new ConfigurationParseException("Attribute 'type' of tag 'catalog' cannot be null or empty");
                 }
                 if (!(type.equals("tdat") || type.equals("dat"))) {
                     throw new ConfigurationParseException("Attribute value for 'type' must be 'tdat' or 'dat");
                 }
                 catalog.setName(name);
                 if (type.equals("tdat")) {
-                    // download the header file
-
-                    // parse the header file for the field names
-                    // field lengths are variable, need to parse via breaking on pipes
+                    catalog = getTdatConfig(catalogNode);
                 } else {
                     // field lengths are constant
                 }
+                resultMap.put(name, catalog);
             }
         } catch (ParserConfigurationException e) {
         } catch (SAXException e) {
@@ -79,16 +78,28 @@ public class ConfigParser {
         return resultMap;
     }
 
-    private Catalog getTdatConfig(Catalog catalog) {
-        // regex pattern to find the field names
-        Pattern fieldNameRegexPattern = Pattern.compile("line\\[1\\] = (.*)");
+    private Catalog getTdatConfig(Element catalogNode) {
 
-        // open the header file
+        Catalog catalog = new Catalog();
+        // set the initial values
+        catalog.setName(catalogNode.getAttribute("name"));
+        catalog.setUrl(getUrl(catalogNode));
+        catalog.setHeaderUrl(getHeaderUrl(catalogNode));
+        catalog.setEpoch(getEpoch(catalogNode));
+        catalog.setFieldData(getFieldData(catalogNode));
 
-        // read until the line matches the pattern
+        // update catalog with exceptions to basic data
+        Set<String> includedFields= catalog.getFieldData().keySet();
+        String[] fields = getFieldNamesFromTdatHeader(getTextValue(catalogNode, "name"));
+        for (String field: fields) {
+            if (!includedFields.contains(field)) {
+                FieldData holder = new FieldData();
+                holder.setExcluded(true);
+                catalog.getFieldData().put(field, holder);
+            }
+        }
 
-        // split the line on the spaces
-        return null;
+        return catalog;
     }
 
     private String[] getFieldNamesFromTdatHeader(String headerFile) {
