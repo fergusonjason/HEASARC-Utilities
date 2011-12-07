@@ -25,11 +25,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Parsers for configuration XML. Uses DOM for XML processing, not SAX
@@ -39,7 +41,13 @@ import java.util.regex.Pattern;
  */
 public class ConfigParser {
 
-    public Map<String, Object> getConfig(String configFile) {
+    String configFile;
+
+    public ConfigParser(String configFile) {
+        this.configFile = "classes" + System.getProperty("file.separator") + configFile;
+    }
+
+    public Map<String, Object> getConfig() {
         Map<String, Object> resultMap = new HashMap<String, Object>();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -48,7 +56,7 @@ public class ConfigParser {
             Document document = db.parse(new File(configFile)); // TODO: This should probably use getResourceAsStream
             NodeList catalogNodes = document.getElementsByTagName("catalog");
             for (int i = 0; i < catalogNodes.getLength(); i++) {
-                Catalog catalog = new Catalog();
+                Catalog catalog;
                 Element catalogNode = (Element) catalogNodes.item(i);
 
                 String name = catalogNode.getAttribute("name");
@@ -70,8 +78,11 @@ public class ConfigParser {
                 resultMap.put(name, catalog);
             }
         } catch (ParserConfigurationException e) {
+            e.printStackTrace();
         } catch (SAXException e) {
+            e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return resultMap;
@@ -89,7 +100,7 @@ public class ConfigParser {
 
         // update catalog with exceptions to basic data
         Set<String> includedFields = catalog.getFieldData().keySet();
-        String[] fields = getFieldNamesFromTdatHeader(getTextValue(catalogNode, "name"));
+        String[] fields = getFieldNamesFromTdatHeader(catalog.getHeaderUrl());
         for (String field : fields) {
             if (!includedFields.contains(field)) {
                 FieldData holder = new FieldData();
@@ -115,19 +126,24 @@ public class ConfigParser {
     private String[] getFieldNamesFromTdatHeader(String headerFile) {
         String[] fields = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(headerFile));
+            URL url = new URL(headerFile);
+            GZIPInputStream gzis = new GZIPInputStream(new BufferedInputStream(url.openStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
             String line = reader.readLine();
             while (line != null) {
                 if (line.matches("line\\[1\\] = (.*)")) {
                     Pattern pattern = Pattern.compile("line\\[1\\] = (.*)");
                     Matcher matcher = pattern.matcher(line);
-                    fields = matcher.group(1).split("\\s");
-                    break;
+                    if (matcher.find()) {
+                        fields = matcher.group(1).split("\\s");
+                        break;
+                    }
                 }
 
                 line = reader.readLine();
             }
             reader.close();
+            gzis.close();
         } catch (FileNotFoundException e) {
 
         } catch (IOException e) {
