@@ -22,4 +22,68 @@ import java.io.Serializable;
  * @author Jason Ferguson
  */
 public class FieldData implements Serializable{
+
+    private String name;
+    private String renameTo;
+    private boolean keepAfterCopy;
+    private String prefix;
+    private int start;
+    private int end;
+    private boolean excluded = false;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRenameTo() {
+        return renameTo;
+    }
+
+    public void setRenameTo(String renameTo) {
+        this.renameTo = renameTo;
+    }
+
+    public boolean isKeepAfterCopy() {
+        return keepAfterCopy;
+    }
+
+    public void setKeepAfterCopy(boolean keepAfterCopy) {
+        this.keepAfterCopy = keepAfterCopy;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public boolean isExcluded() {
+        return excluded;
+    }
+
+    public void setExcluded(boolean excluded) {
+        this.excluded = excluded;
+    }
 }
