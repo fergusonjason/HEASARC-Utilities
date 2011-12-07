@@ -2,12 +2,15 @@
 <catalogs>
     <catalog name="bsc" type="tdat">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_bsc5p.tdat.gz</url>
+        <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_bsc5p.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
         <fields>
-            <field name="name" renameTo="bscname" keepAfterCopy="true"/>
+            <field name="name" renameTo="bscname" keepAfterCopy="true" prefix="HR "/>
         </fields>
     </catalog>
-    <catalog name="gc" type="dat">
+    <catalog name="gc" type="dat" skiplines="0">
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
+        <epoch>J2000</epoch>
         <fields>
             <field name="fk5" renameTo="fk5name" keepAfterCopy="false" start="1" end="4" prefix="FK5 "/>
         </fields>
