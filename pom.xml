@@ -21,5 +21,6 @@
     <modules>
 	<module>tdat2mysql</module>
 	<module>tdat2json</module>
+    <module>vizier2json</module>
     </modules>
 </project>
