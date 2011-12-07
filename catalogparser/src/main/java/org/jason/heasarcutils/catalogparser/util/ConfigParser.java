@@ -62,11 +62,10 @@ public class ConfigParser {
                 if (!(type.equals("tdat") || type.equals("dat"))) {
                     throw new ConfigurationParseException("Attribute value for 'type' must be 'tdat' or 'dat");
                 }
-                catalog.setName(name);
                 if (type.equals("tdat")) {
                     catalog = getTdatConfig(catalogNode);
                 } else {
-                    // field lengths are constant
+                    catalog = getDatConfig(catalogNode);
                 }
                 resultMap.put(name, catalog);
             }
@@ -89,15 +88,26 @@ public class ConfigParser {
         catalog.setFieldData(getFieldData(catalogNode));
 
         // update catalog with exceptions to basic data
-        Set<String> includedFields= catalog.getFieldData().keySet();
+        Set<String> includedFields = catalog.getFieldData().keySet();
         String[] fields = getFieldNamesFromTdatHeader(getTextValue(catalogNode, "name"));
-        for (String field: fields) {
+        for (String field : fields) {
             if (!includedFields.contains(field)) {
                 FieldData holder = new FieldData();
                 holder.setExcluded(true);
                 catalog.getFieldData().put(field, holder);
             }
         }
+
+        return catalog;
+    }
+
+    private Catalog getDatConfig(Element catalogNode) {
+
+        Catalog catalog = new Catalog();
+        catalog.setName(catalogNode.getAttribute("name"));
+        catalog.setUrl(getUrl(catalogNode));
+        catalog.setEpoch(getEpoch(catalogNode));
+        catalog.setFieldData(getFieldData(catalogNode));
 
         return catalog;
     }
@@ -125,10 +135,7 @@ public class ConfigParser {
         }
         return fields;
     }
-    private Catalog getDatConfig() {
 
-        return null;
-    }
 
     private static String getTextValue(Element ele, String tagName) {
         String textVal = null;
