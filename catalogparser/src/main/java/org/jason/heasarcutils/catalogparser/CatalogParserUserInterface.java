@@ -15,6 +15,9 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
+import org.jason.heasarcutils.catalogparser.util.Catalog;
+import org.jason.heasarcutils.catalogparser.util.JsonExporter;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -34,7 +37,7 @@ import java.util.Set;
  */
 public class CatalogParserUserInterface {
 
-    private static JTree createTreeControl(Map<String, Object> config) {
+    private static JTree createTreeControl(final Map<String, Object> config) {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
@@ -55,7 +58,7 @@ public class CatalogParserUserInterface {
                 if (treePaths != null && treePaths.length > 0) {
                     TreePath path = treePaths[0];
                     String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                    System.out.println("Clicked export for " + catalog + " catalog");
+                    JsonExporter.exportToJSON((Catalog) config.get(catalog));
                 }
 
             }
