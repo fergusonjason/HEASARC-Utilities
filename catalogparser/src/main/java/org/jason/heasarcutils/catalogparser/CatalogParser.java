@@ -21,18 +21,25 @@ import java.util.Map;
 
 /**
  * GUI-based application to import data from the HEASARC and Vizier archives
- *
+ * <p/>
  * Configuration is currently based on an XML file, unless I can figure out how to embed a configuration
  * database that can be updated by the user.
  *
- * @since 0.1
  * @author Jason Ferguson
+ * @since 0.1
  */
 public class CatalogParser {
+
+    private static void createAndShowGUI(Map<String, Object> config) {
+        CatalogParserUserInterface ui = new CatalogParserUserInterface();
+        ui.createAndShowGUI(config);
+    }
 
     public static void main(String[] args) {
         CatalogParser app = new CatalogParser();
         ConfigParser configParser = new ConfigParser("config.xml");
         Map<String, Object> config = configParser.getConfig();
+
+        createAndShowGUI(config);
     }
 }
