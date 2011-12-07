@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<catalogs>
+    <catalog name="bsc" type="tdat">
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_bsc5p.tdat.gz</url>
+        <fields>
+            <field name="name" renameTo="bscname" keepAfterCopy="true"/>
+        </fields>
+    </catalog>
+    <catalog name="gc" type="dat">
+        <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
+        <fields>
+            <field name="fk5" renameTo="fk5name" keepAfterCopy="false" start="1" end="4" prefix="FK5 "/>
+        </fields>
+    </catalog>
+</catalogs>
