@@ -15,6 +15,10 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
+import org.jason.heasarcutils.catalogparser.util.ConfigParser;
+
+import java.util.Map;
+
 /**
  * GUI-based application to import data from the HEASARC and Vizier archives
  *
@@ -28,5 +32,7 @@ public class CatalogParser {
 
     public static void main(String[] args) {
         CatalogParser app = new CatalogParser();
+        ConfigParser configParser = new ConfigParser("config.xml");
+        Map<String, Object> config = configParser.getConfig();
     }
 }
