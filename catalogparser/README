@@ -1,0 +1,10 @@
+This is a replacement for the old tdat2json and vizier2json utilities. They worked pretty well, but had
+some annoyances:
+
+1. Kept having to switch directories to use separate utilities.
+2. Different XML config formats
+
+This app is supposed to replace those two command line utilities with a nice GUI-based app, with a
+common XML format for configuration.
+
+Initial versions will only output to json format, but eventually I might support other formats.
