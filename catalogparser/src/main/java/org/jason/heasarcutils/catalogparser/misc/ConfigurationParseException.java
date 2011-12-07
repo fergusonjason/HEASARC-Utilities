@@ -23,4 +23,20 @@ package org.jason.heasarcutils.catalogparser.misc;
  * @author Jason Ferguson
  */
 public class ConfigurationParseException extends RuntimeException {
+
+    public ConfigurationParseException() {
+        super();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public ConfigurationParseException(String message) {
+        super(message);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public ConfigurationParseException(String message, Throwable cause) {
+        super(message, cause);    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    public ConfigurationParseException(Throwable cause) {
+        super(cause);    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }
