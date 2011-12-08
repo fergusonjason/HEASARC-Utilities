@@ -19,8 +19,7 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -43,6 +42,7 @@ public class JsonExporter {
         if (catalog.getType().equals("tdat")) {
             // import tdat file
             String filename = catalog.getUrl();
+            processTdatFile(filename);
         } else {
             // import dat file
             String filename = catalog.getUrl();
@@ -52,7 +52,49 @@ public class JsonExporter {
     }
 
     private void processTdatFile(String filename) {
+        try {
+            URL url = new URL(filename);
 
+            // set up input
+            GZIPInputStream gzis = new GZIPInputStream(url.openStream());
+            BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
+
+            // set up output
+            BufferedWriter writer = new BufferedWriter(new FileWriter(catalog.getName() + ".json"));
+
+            // create a template so I only have to create a map once
+            Map<String, String> template = new LinkedHashMap<String, String>(catalog.getFieldData().size());
+            for (String fieldName : catalog.getFieldData().keySet()) {
+                template.put(fieldName, null);
+            }
+
+            // start processing
+            while (reader.ready()) {
+                String line = reader.readLine();
+                if (line.matches("^(.*?\\|)*$")) {
+                    //String[] fieldNames = null;
+                    Map<String, String> result = new HashMap<String, String>();
+                    String[] fieldNames = (String[]) catalog.getFieldData().keySet().toArray();
+                    String[] fieldValues = line.split("|");
+
+                    for (int i=0; i<fieldNames.length; i++) {
+                        result.put(fieldNames[i], fieldValues[i]);
+                    }
+
+                    result = removeNulls(result);
+                    writer.write(getJsonLine(result));
+
+                }
+            }
+
+            writer.close();
+            reader.close();
+            gzis.close();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void processDatFile(String filename) {
@@ -62,7 +104,6 @@ public class JsonExporter {
             // set up the data input
             GZIPInputStream gzis = new GZIPInputStream(url.openStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
-            //String line = reader.readLine();
 
             // set up the data output
             BufferedWriter writer = new BufferedWriter(new FileWriter(catalog.getName() + ".json"));
