@@ -26,6 +26,7 @@ import java.util.Map;
 public class Catalog implements Serializable {
 
     private String name;
+    private String type;
     private String url;
     private String headerUrl;
     private String epoch;
@@ -40,6 +41,14 @@ public class Catalog implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getUrl() {
