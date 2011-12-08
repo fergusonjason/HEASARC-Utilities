@@ -16,8 +16,7 @@
 package org.jason.heasarcutils.catalogparser.util;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @since 0.1
@@ -33,7 +32,7 @@ public class Catalog implements Serializable {
     private int linesToSkip;
 
     private Map<String, FieldData> fieldData = new HashMap<String, FieldData>();
-    private Map<String, String> prefixes = new HashMap<String, String>();
+    private SortedSet<FieldData> fieldDataSet = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
 
     public String getName() {
         return name;
@@ -91,11 +90,12 @@ public class Catalog implements Serializable {
         this.fieldData = fieldData;
     }
 
-    public Map<String, String> getPrefixes() {
-        return prefixes;
+    public SortedSet<FieldData> getFieldDataSet() {
+        return fieldDataSet;
     }
 
-    public void setPrefixes(Map<String, String> prefixes) {
-        this.prefixes = prefixes;
+    public void setFieldDataSet(SortedSet<FieldData> fieldDataSet) {
+        this.fieldDataSet = fieldDataSet;
     }
+
 }
