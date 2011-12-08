@@ -72,16 +72,20 @@ public class JsonExporter {
             while (reader.ready()) {
                 String line = reader.readLine();
                 if (line.matches("^(.*?\\|)*$")) {
-                    //String[] fieldNames = null;
                     Map<String, String> result = new HashMap<String, String>();
-                    String[] fieldNames = (String[]) catalog.getFieldData().keySet().toArray();
+                    String[] fieldNames = catalog.getFieldData().keySet().toArray(new String[]{});
                     String[] fieldValues = line.split("|");
 
-                    for (int i=0; i<fieldNames.length; i++) {
-                        result.put(fieldNames[i], fieldValues[i]);
+                    for (int i = 0; i < fieldNames.length; i++) {
+                        FieldData fd = catalog.getFieldData().get(fieldNames[i]);
+                        if (catalog.getFieldDataSet().contains(fd)) {
+                            result.put(fieldNames[i], fieldValues[i]);
+                        }
                     }
 
                     result = removeNulls(result);
+                    result = removeUnwantedFields(result, catalog);
+
                     writer.write(getJsonLine(result));
 
                 }
@@ -143,7 +147,7 @@ public class JsonExporter {
 
         Map<String, String> result = new LinkedHashMap<String, String>();
 
-        for (String key: map.keySet()) {
+        for (String key : map.keySet()) {
             if (map.get(key) != null) {
                 result.put(key, map.get(key));
             }
@@ -151,6 +155,19 @@ public class JsonExporter {
 
         return result;
     }
+
+    private Map<String, String> removeUnwantedFields(Map<String, String> data, Catalog catalog) {
+        Map<String, String> result = new HashMap<String, String>();
+        for (String key : catalog.getFieldData().keySet()) {
+            FieldData fd = catalog.getFieldData().get(key);
+            if (fd.isIncluded()) {
+                result.put(key, fd.getPrefix() + data.get(key));
+            }
+        }
+
+        return result;
+    }
+
     private String getJsonLine(Map<String, String> data) {
         StringBuffer sb = new StringBuffer();
         sb.append("{");
