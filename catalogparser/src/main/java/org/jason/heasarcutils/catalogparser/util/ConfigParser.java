@@ -93,6 +93,7 @@ public class ConfigParser {
 
         Catalog catalog = new Catalog();
         // set the initial values
+        catalog.setType("tdat");
         catalog.setName(catalogNode.getAttribute("name"));
         catalog.setUrl(getUrl(catalogNode));
         catalog.setHeaderUrl(getHeaderUrl(catalogNode));
@@ -116,6 +117,7 @@ public class ConfigParser {
     private Catalog getDatConfig(Element catalogNode) {
 
         Catalog catalog = new Catalog();
+        catalog.setType("dat");
         catalog.setName(catalogNode.getAttribute("name"));
         catalog.setUrl(getUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
