@@ -49,7 +49,6 @@ public class CatalogParserUserInterface {
         }
         final JTree tree = new JTree(topNode);
         tree.setSize(200, 600);
-
         final JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem exportToJsonItem = new JMenuItem("Export to JSON");
         exportToJsonItem.addActionListener(new ActionListener() {
@@ -114,11 +113,17 @@ public class CatalogParserUserInterface {
     }
 
     public void createAndShowGUI(Map<String, Object> config) {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         JFrame frame = new JFrame("Astronomical Catalog Parser");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addComponentsToPane(frame.getContentPane(), config);
-        frame.pack();
+        //frame.pack();
+        frame.setSize(600, 400);
         frame.setVisible(true);
 
     }
