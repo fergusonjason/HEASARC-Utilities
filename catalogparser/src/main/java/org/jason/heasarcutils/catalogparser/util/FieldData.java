@@ -29,7 +29,14 @@ public class FieldData implements Serializable{
     private String prefix;
     private int start;
     private int end;
-    private boolean excluded = false;
+    private boolean included = false;
+
+    public FieldData() {
+    }
+
+    public FieldData(boolean excluded) {
+        this.included = excluded;
+    }
 
     public String getName() {
         return name;
@@ -79,11 +86,11 @@ public class FieldData implements Serializable{
         this.end = end;
     }
 
-    public boolean isExcluded() {
-        return excluded;
+    public boolean isIncluded() {
+        return included;
     }
 
-    public void setExcluded(boolean excluded) {
-        this.excluded = excluded;
+    public void setIncluded(boolean included) {
+        this.included = included;
     }
 }
