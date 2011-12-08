@@ -19,6 +19,7 @@ import org.jason.heasarcutils.catalogparser.misc.ConfigurationParseException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,9 +28,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -42,10 +41,16 @@ import java.util.zip.GZIPInputStream;
  */
 public class ConfigParser {
 
-    String configFile;
+    private String configFile;
+    private InputSource configFileInputSource;
 
     public ConfigParser(String configFile) {
         this.configFile = "classes" + System.getProperty("file.separator") + configFile;
+        try {
+            this.configFileInputSource = new InputSource(new FileReader(this.configFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public Map<String, Object> getConfig() {
@@ -98,17 +103,17 @@ public class ConfigParser {
         catalog.setUrl(getUrl(catalogNode));
         catalog.setHeaderUrl(getHeaderUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
-        catalog.setFieldData(getFieldData(catalogNode));
+        catalog.setFieldDataSet(getFieldData2(catalogNode));  // get the "wanted" fields from the config
 
-        // update catalog with exceptions to basic data
-        Set<String> includedFields = catalog.getFieldData().keySet();
         String[] fields = getFieldNamesFromTdatHeader(catalog.getHeaderUrl());
-        for (String field : fields) {
-            if (!includedFields.contains(field)) {
-                FieldData holder = new FieldData();
-                holder.setExcluded(true);
-                catalog.getFieldData().put(field, holder);
-            }
+        // create empty FD objects for each field. By default, we won't include them
+        for (String field: fields) {
+            catalog.getFieldData().put(field, new FieldData(false));
+        }
+
+        Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
+        for (FieldData fd: fieldDataSet) {
+            catalog.getFieldData().put(fd.getName(), fd);
         }
 
         return catalog;
@@ -121,8 +126,13 @@ public class ConfigParser {
         catalog.setName(catalogNode.getAttribute("name"));
         catalog.setUrl(getUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
-        catalog.setFieldData(getFieldData(catalogNode));
+        catalog.setFieldDataSet(getFieldData2(catalogNode));
+        //catalog.setFieldData(getFieldData(catalogNode));
 
+        Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
+        for (FieldData fd: fieldDataSet) {
+            catalog.getFieldData().put(fd.getName(), fd);
+        }
         return catalog;
     }
 
@@ -209,6 +219,56 @@ public class ConfigParser {
             throw new ConfigurationParseException("Attribute 'epoch' cannot be empty");
         }
         return epoch;
+    }
+
+    /**
+     * Method to get field data as a Sorted Set. The sorted set has to be defined using a comparator
+     * that sorted on the FieldData object's start field in order to keep them in proper order when the
+     * file is being read later.
+     *
+     * @param catalogNode
+     * @return
+     */
+    private SortedSet<FieldData> getFieldData2(Element catalogNode) {
+        SortedSet<FieldData> result = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
+
+        Element fields = (Element) catalogNode.getElementsByTagName("fields").item(0);
+        NodeList fieldNodeList = fields.getElementsByTagName("field");
+        for (int i = 0; i < fieldNodeList.getLength(); i++) {
+            Element fieldNode = (Element) fieldNodeList.item(i);
+            String name = fieldNode.getAttribute("name");
+            if (name.isEmpty()) {
+                throw new ConfigurationParseException("Attribute 'name' of tag 'field' cannot be empty.");
+            }
+            String rename = fieldNode.getAttribute("renameTo");
+            String prefix = fieldNode.getAttribute("prefix");
+            String keepAfterCopy = fieldNode.getAttribute("keepAfterCopy");
+            String start = fieldNode.getAttribute("start");
+            String end = fieldNode.getAttribute("end");
+
+            FieldData fd = new FieldData();
+            fd.setName(name);
+            if (!rename.isEmpty()) {
+                fd.setRenameTo(rename);
+            }
+            if (!prefix.isEmpty()) {
+                fd.setPrefix(prefix);
+            }
+            if (!keepAfterCopy.isEmpty()) {
+                boolean kac = Boolean.valueOf(keepAfterCopy);
+                fd.setKeepAfterCopy(kac);
+            }
+            if (isInteger(start)) {
+                fd.setStart(Integer.parseInt(start));
+            }
+            if (isInteger(end)) {
+                fd.setEnd(Integer.parseInt(end));
+            }
+            fd.setIncluded(true);
+            result.add(fd);
+        }
+
+        return result;
     }
 
     private Map<String, FieldData> getFieldData(Element catalogNode) {
