@@ -31,7 +31,7 @@ public class Catalog implements Serializable {
     private String epoch;
     private int linesToSkip;
 
-    private Map<String, FieldData> fieldData = new HashMap<String, FieldData>();
+    private Map<String, FieldData> fieldData = new LinkedHashMap<String, FieldData>();
     private SortedSet<FieldData> fieldDataSet = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
 
     public String getName() {
