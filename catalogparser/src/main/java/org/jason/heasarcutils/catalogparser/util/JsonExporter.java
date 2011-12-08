@@ -16,6 +16,7 @@
 package org.jason.heasarcutils.catalogparser.util;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
@@ -61,7 +62,7 @@ public class JsonExporter {
             // set up the data input
             GZIPInputStream gzis = new GZIPInputStream(url.openStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
-            String line = reader.readLine();
+            //String line = reader.readLine();
 
             // set up the data output
             BufferedWriter writer = new BufferedWriter(new FileWriter(catalog.getName() + ".json"));
@@ -72,17 +73,18 @@ public class JsonExporter {
                 template.put(fieldName, null);
             }
 
-            while (line != null) {
+            while (reader.ready()) {
+                String line = reader.readLine();
                 Map<String, String> fieldMap = template;
                 for (String key : catalog.getFieldData().keySet()) {
                     FieldData fd = catalog.getFieldData().get(key);
-                    fieldMap.put(key, line.substring(fd.getStart(), fd.getEnd()));
+                    fieldMap.put(key, line.substring(fd.getStart(), fd.getEnd() + 1));
                 }
 
                 fieldMap = removeNulls(fieldMap);
 
                 writer.write(getJsonLine(fieldMap));
-                line = reader.readLine();
+                //line = reader.readLine();
             }
 
             writer.close();
@@ -115,7 +117,13 @@ public class JsonExporter {
             sb.append(key);
             sb.append(":");
             if (isNumber(data.get(key))) {
-                sb.append(data.get(key));
+                if (isInteger(data.get(key))) {
+                    sb.append(new Integer(data.get(key).trim()));
+                } else {
+                    BigDecimal number = new BigDecimal(data.get(key).trim());
+                    number = number.setScale(4, BigDecimal.ROUND_HALF_EVEN);
+                    sb.append(number);
+                }
             } else {
                 sb.append("\"");
                 sb.append(data.get(key));
@@ -124,18 +132,18 @@ public class JsonExporter {
             sb.append(",");
         }
         sb = new StringBuffer(sb.substring(0, sb.length() - 1)); // stupid trailing comma
-        sb.append("}");
+        sb.append("}\r\n");
 
         return sb.toString();
     }
 
     private boolean isInteger(String value) {
-        String pattern = "^[0-9]+$";
+        String pattern = "^\\s*[0-9]+$";
         return value.matches(pattern);
     }
 
     private boolean isDouble(String value) {
-        String pattern = "^[0-9]+\\.[0-9]*$";
+        String pattern = "^\\s*[0-9]+\\.[0-9]*$";
         return value.matches(pattern);
     }
 
