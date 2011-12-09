@@ -164,6 +164,8 @@ public class JsonExporter {
             if (fd.isIncluded()) {
                 if (data.get(key).indexOf(fd.getPrefix())==-1) {
                     result.put(key, fd.getPrefix() + data.get(key));
+                } else {
+                    result.put(key, data.get(key));
                 }
             }
         }
