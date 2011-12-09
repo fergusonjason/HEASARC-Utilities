@@ -93,6 +93,7 @@ public class JsonExporter {
 
                     result = removeNulls(result);
                     result = removeUnwantedFields(result, catalog);
+                    result = fixFieldPrefixes(result, catalog);
 
                     writer.write(getJsonLine(result));
 
@@ -131,11 +132,15 @@ public class JsonExporter {
                 Map<String, String> fieldMap = template;
                 for (String key : catalog.getFieldData().keySet()) {
                     FieldData fd = catalog.getFieldData().get(key);
-                    fieldMap.put(key, line.substring(fd.getStart() - 1, fd.getEnd()).trim());
+                    if (fd.getPrefix() != null) {
+                        fieldMap.put(fd.getRenameTo(), line.substring(fd.getStart() - 1, fd.getEnd()).trim());
+                    } else {
+                        fieldMap.put(key, line.substring(fd.getStart() - 1, fd.getEnd()).trim());
+                    }
                 }
 
                 fieldMap = removeNulls(fieldMap);
-
+                fieldMap = fixFieldPrefixes(fieldMap, catalog);
                 writer.write(getJsonLine(fieldMap));
                 //line = reader.readLine();
             }
@@ -170,6 +175,20 @@ public class JsonExporter {
             FieldData fd = catalog.getFieldData().get(key);
             if (fd.isIncluded()) {
                 if (data.get(key) != null) {
+                    result.put(key, data.get(key));
+                }
+            }
+
+        }
+        return result;
+    }
+
+    private Map<String, String> fixFieldPrefixes(Map<String, String> data, Catalog catalog) {
+        Map<String, String> result = new HashMap<String, String>();
+        for (String key : catalog.getFieldData().keySet()) {
+            FieldData fd = catalog.getFieldData().get(key);
+            if (fd.isIncluded()) {
+                if (data.get(key) != null) {
                     if (fd.getPrefix() != null && data.get(key).indexOf(fd.getPrefix()) == -1) {
                         result.put(key, fd.getPrefix() + data.get(key));
                     } else {
@@ -179,6 +198,7 @@ public class JsonExporter {
             }
 
         }
+
         return result;
     }
 
