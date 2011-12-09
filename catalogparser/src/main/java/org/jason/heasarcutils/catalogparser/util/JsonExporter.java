@@ -24,7 +24,7 @@ import java.util.zip.GZIPInputStream;
 
 /**
  * Class to handle the export to JSON
- *
+ * <p/>
  * Implemented (kind of) as a Builder pattern
  *
  * @author Jason Ferguson
@@ -131,7 +131,7 @@ public class JsonExporter {
                 Map<String, String> fieldMap = template;
                 for (String key : catalog.getFieldData().keySet()) {
                     FieldData fd = catalog.getFieldData().get(key);
-                    fieldMap.put(key, line.substring(fd.getStart()-1, fd.getEnd()).trim());
+                    fieldMap.put(key, line.substring(fd.getStart() - 1, fd.getEnd()).trim());
                 }
 
                 fieldMap = removeNulls(fieldMap);
@@ -169,14 +169,16 @@ public class JsonExporter {
         for (String key : catalog.getFieldData().keySet()) {
             FieldData fd = catalog.getFieldData().get(key);
             if (fd.isIncluded()) {
-                if (data.get(key).indexOf(fd.getPrefix()) == -1) {
-                    result.put(key, fd.getPrefix() + data.get(key));
-                } else {
-                    result.put(key, data.get(key));
+                if (data.get(key) != null) {
+                    if (fd.getPrefix() != null && data.get(key).indexOf(fd.getPrefix()) == -1) {
+                        result.put(key, fd.getPrefix() + data.get(key));
+                    } else {
+                        result.put(key, data.get(key));
+                    }
                 }
             }
-        }
 
+        }
         return result;
     }
 
@@ -208,12 +210,18 @@ public class JsonExporter {
     }
 
     private boolean isInteger(String value) {
-        String pattern = "^\\s*[0-9]+$";
+        if (value == null) {
+            return false;
+        }
+        String pattern = "^\\s*[\\+,-]?[0-9]+$";
         return value.matches(pattern);
     }
 
     private boolean isDouble(String value) {
-        String pattern = "^\\s*[0-9]+\\.[0-9]*$";
+        if (value == null) {
+            return false;
+        }
+        String pattern = "^\\s*[\\+,-]?[0-9]+\\.[0-9]*$";
         return value.matches(pattern);
     }
 
