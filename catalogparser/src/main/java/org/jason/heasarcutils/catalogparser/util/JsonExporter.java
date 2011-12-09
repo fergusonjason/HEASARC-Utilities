@@ -263,7 +263,7 @@ public class JsonExporter {
         if (value == null) {
             return false;
         }
-        String pattern = "^\\s*[\\+,-]?[0-9]+\\.[0-9]*$";
+        String pattern = "^\\s*[\\+,-]?[0-9]*\\.[0-9]*$";
         return value.matches(pattern);
     }
 
