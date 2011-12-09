@@ -131,7 +131,7 @@ public class JsonExporter {
                 Map<String, String> fieldMap = template;
                 for (String key : catalog.getFieldData().keySet()) {
                     FieldData fd = catalog.getFieldData().get(key);
-                    fieldMap.put(key, line.substring(fd.getStart(), fd.getEnd() + 1));
+                    fieldMap.put(key, line.substring(fd.getStart()-1, fd.getEnd()).trim());
                 }
 
                 fieldMap = removeNulls(fieldMap);
