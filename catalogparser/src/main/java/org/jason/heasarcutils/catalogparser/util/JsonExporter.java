@@ -35,6 +35,7 @@ public class JsonExporter {
     public JsonExporter(Catalog catalog) {
         this.catalog = catalog;
     }
+    // todo: do a getinstance() setup here
 
     public void exportToJSON() {
 
@@ -74,9 +75,9 @@ public class JsonExporter {
                 if (line.matches("^(.*?\\|)*$")) {
                     Map<String, String> result = new HashMap<String, String>();
                     String[] fieldNames = catalog.getFieldData().keySet().toArray(new String[]{});
-                    String[] fieldValues = line.split("|");
+                    String[] fieldValues = line.split("\\|");
 
-                    for (int i = 0; i < fieldNames.length; i++) {
+                    for (int i = 0; i < fieldValues.length; i++) {
                         FieldData fd = catalog.getFieldData().get(fieldNames[i]);
                         if (catalog.getFieldDataSet().contains(fd)) {
                             result.put(fieldNames[i], fieldValues[i]);
@@ -148,7 +149,7 @@ public class JsonExporter {
         Map<String, String> result = new LinkedHashMap<String, String>();
 
         for (String key : map.keySet()) {
-            if (map.get(key) != null) {
+            if (map.get(key) != null && map.get(key).length() > 0) {
                 result.put(key, map.get(key));
             }
         }
