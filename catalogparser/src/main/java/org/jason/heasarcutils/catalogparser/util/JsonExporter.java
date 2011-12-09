@@ -94,6 +94,7 @@ public class JsonExporter {
                     result = removeNulls(result);
                     result = removeUnwantedFields(result, catalog);
                     result = fixFieldPrefixes(result, catalog);
+                    result = fixFieldNames(result, catalog);
 
                     writer.write(getJsonLine(result));
 
@@ -140,6 +141,7 @@ public class JsonExporter {
                 }
 
                 fieldMap = removeNulls(fieldMap);
+                fieldMap = fixFieldPrefixes(fieldMap, catalog);
                 fieldMap = fixFieldPrefixes(fieldMap, catalog);
                 writer.write(getJsonLine(fieldMap));
                 //line = reader.readLine();
@@ -194,6 +196,26 @@ public class JsonExporter {
                     } else {
                         result.put(key, data.get(key));
                     }
+                }
+            }
+
+        }
+
+        return result;
+    }
+
+    private Map<String, String> fixFieldNames(Map<String, String> data, Catalog catalog) {
+        Map<String, String> result = new HashMap<String, String>();
+        for (String key : catalog.getFieldData().keySet()) {
+            FieldData fd = catalog.getFieldData().get(key);
+            if (fd.isIncluded()) {
+                if (fd.getRenameTo() != null) {
+                    result.put(fd.getRenameTo(), data.get(key));
+                    if (fd.isKeepAfterCopy()) {
+                        result.put(key, data.get(key));
+                    }
+                } else {
+                    result.put(key, data.get(key));
                 }
             }
 
