@@ -57,7 +57,7 @@ public class CatalogParserUserInterface {
                 if (treePaths != null && treePaths.length > 0) {
                     TreePath path = treePaths[0];
                     String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                    JsonExporter.exportToJSON((Catalog) config.get(catalog));
+                    new JsonExporter((Catalog) config.get(catalog)).exportToJSON();
                 }
 
             }
