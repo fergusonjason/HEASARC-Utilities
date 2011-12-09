@@ -37,7 +37,7 @@ import java.util.Set;
  */
 public class CatalogParserUserInterface {
 
-    private static JTree createTreeControl(final Map<String, Object> config) {
+    private static JTree createTreeControl(final Map<String, Catalog> config) {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
@@ -57,7 +57,8 @@ public class CatalogParserUserInterface {
                 if (treePaths != null && treePaths.length > 0) {
                     TreePath path = treePaths[0];
                     String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                    new JsonExporter((Catalog) config.get(catalog)).exportToJSON();
+                    JsonExporter jsonExporter = new JsonExporter().setCatalog((Catalog) config.get(catalog));
+                    jsonExporter.exportToJSON();
                 }
 
             }
@@ -106,13 +107,13 @@ public class CatalogParserUserInterface {
         return menuBar;
     }
 
-    private static void addComponentsToPane(Container pane, Map<String, Object> config) {
+    private static void addComponentsToPane(Container pane, Map<String, Catalog> config) {
         pane.add(createMenuBarControl(), BorderLayout.PAGE_START);
         pane.add(createTreeControl(config), BorderLayout.BEFORE_LINE_BEGINS);
 
     }
 
-    public void createAndShowGUI(Map<String, Object> config) {
+    public void createAndShowGUI(Map<String, Catalog> config) {
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception e) {

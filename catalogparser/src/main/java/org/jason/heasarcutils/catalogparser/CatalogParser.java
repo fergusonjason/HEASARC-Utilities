@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
+import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.ConfigParser;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 public class CatalogParser {
 
-    private static void createAndShowGUI(Map<String, Object> config) {
+    private static void createAndShowGUI(Map<String, Catalog> config) {
         CatalogParserUserInterface ui = new CatalogParserUserInterface();
         ui.createAndShowGUI(config);
     }
@@ -38,7 +39,7 @@ public class CatalogParser {
     public static void main(String[] args) {
         CatalogParser app = new CatalogParser();
         ConfigParser configParser = new ConfigParser("config.xml");
-        Map<String, Object> config = configParser.getConfig();
+        Map<String, Catalog> config = configParser.getConfig();
 
         createAndShowGUI(config);
     }

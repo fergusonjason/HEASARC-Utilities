@@ -53,8 +53,8 @@ public class ConfigParser {
         }
     }
 
-    public Map<String, Object> getConfig() {
-        Map<String, Object> resultMap = new HashMap<String, Object>();
+    public Map<String, Catalog> getConfig() {
+        Map<String, Catalog> resultMap = new HashMap<String, Catalog>();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {

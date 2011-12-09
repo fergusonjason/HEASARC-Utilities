@@ -25,6 +25,8 @@ import java.util.zip.GZIPInputStream;
 /**
  * Class to handle the export to JSON
  *
+ * Implemented (kind of) as a Builder pattern
+ *
  * @author Jason Ferguson
  * @since 0.1
  */
@@ -32,10 +34,15 @@ public class JsonExporter {
 
     private Catalog catalog;
 
-    public JsonExporter(Catalog catalog) {
-        this.catalog = catalog;
+    public JsonExporter getJsonExporter() {
+        return this;
     }
-    // todo: do a getinstance() setup here
+
+    public JsonExporter setCatalog(Catalog catalog) {
+        this.catalog = catalog;
+        return this;
+    }
+
 
     public void exportToJSON() {
 
@@ -162,7 +169,7 @@ public class JsonExporter {
         for (String key : catalog.getFieldData().keySet()) {
             FieldData fd = catalog.getFieldData().get(key);
             if (fd.isIncluded()) {
-                if (data.get(key).indexOf(fd.getPrefix())==-1) {
+                if (data.get(key).indexOf(fd.getPrefix()) == -1) {
                     result.put(key, fd.getPrefix() + data.get(key));
                 } else {
                     result.put(key, data.get(key));
