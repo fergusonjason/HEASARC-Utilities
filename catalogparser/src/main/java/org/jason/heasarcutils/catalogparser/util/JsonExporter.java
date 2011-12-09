@@ -162,7 +162,9 @@ public class JsonExporter {
         for (String key : catalog.getFieldData().keySet()) {
             FieldData fd = catalog.getFieldData().get(key);
             if (fd.isIncluded()) {
-                result.put(key, fd.getPrefix() + data.get(key));
+                if (data.get(key).indexOf(fd.getPrefix())==-1) {
+                    result.put(key, fd.getPrefix() + data.get(key));
+                }
             }
         }
 
