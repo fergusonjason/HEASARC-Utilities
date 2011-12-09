@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @since 0.1
  * @author Jason Ferguson
  */
-public class FieldData implements Serializable{
+public class FieldData implements Serializable, Comparable<FieldData>{
 
     private String name;
     private String renameTo;
@@ -92,5 +92,26 @@ public class FieldData implements Serializable{
 
     public void setIncluded(boolean included) {
         this.included = included;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        FieldData fieldData = (FieldData) o;
+
+        if (!name.equals(fieldData.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    public int compareTo(FieldData o) {
+        return this.getName().compareTo(o.getName());
     }
 }
