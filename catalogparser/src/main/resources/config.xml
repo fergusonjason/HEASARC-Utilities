@@ -6,6 +6,23 @@
         <epoch>J2000</epoch>
         <fields>
             <field name="name" renameTo="bscname" keepAfterCopy="true" prefix="HR "/>
+            <field name="ads" />
+            <field name="class" />
+            <field name="dec" renameTo="decDeg" keepAfterCopy="false"/>
+            <field name="dmcat" />
+            <field name="dmnum" />
+            <field name="fk5" renameTo="fk5name" keepAfterCopy="false" prefix="FK5 " />
+            <field name="bii" />
+            <field name="hd" renameTo="hdname" keepAfterCopy="false" prefix="HD " />
+            <field name="lii" />
+            <field name="multiple" />
+            <field name="parallax" />
+            <field name="pmdec" renameTo="decpm" keepAfterCopy="false"/>
+            <field name="pmra" renameTo="rapm" keepAfterCopy="false" />
+            <field name="ra" renameTo="radeg" keepAfterCopy="false" />
+            <field name="sao" renameTo="saoname" keepAfterCopy="false" prefix="SAO " />
+            <field name="spect_type" renameTo="specttype" keepAfterCopy="false" />
+            <field name="vmag" />
         </fields>
     </catalog>
     <catalog name="gc" type="dat" skiplines="0">
