@@ -35,7 +35,7 @@ import java.util.Set;
  * @author Jason Ferguson
  * @since 0.1
  */
-public class CatalogParserUserInterface {
+public class CatalogParserUserInterface extends JFrame {
 
     private static JTree createTreeControl(final Map<String, Catalog> config) {
 
@@ -90,7 +90,7 @@ public class CatalogParserUserInterface {
         return tree;
     }
 
-    private static JMenuBar createMenuBarControl() {
+    private JMenuBar createMenuBarControl() {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("File");
@@ -107,12 +107,6 @@ public class CatalogParserUserInterface {
         return menuBar;
     }
 
-    private static void addComponentsToPane(Container pane, Map<String, Catalog> config) {
-        pane.add(createMenuBarControl(), BorderLayout.PAGE_START);
-        pane.add(createTreeControl(config), BorderLayout.BEFORE_LINE_BEGINS);
-
-    }
-
     public void createAndShowGUI(Map<String, Catalog> config) {
         // set to windows look and feel if we are running in windows.
         if (System.getProperty("os.name").contains("indows")) {
@@ -123,12 +117,17 @@ public class CatalogParserUserInterface {
             }
         }
 
-        JFrame frame = new JFrame("Astronomical Catalog Parser");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addComponentsToPane(frame.getContentPane(), config);
-        //frame.pack();
-        frame.setSize(600, 400);
-        frame.setVisible(true);
+        setTitle("Astronomical Catalog Parser");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+
+        JMenuBar appMenuBar = createMenuBarControl();
+        add(appMenuBar, BorderLayout.NORTH);
+
+        JTree jTree = createTreeControl(config);
+        add(jTree, BorderLayout.WEST);
+
+        setVisible(true);
 
     }
 }
