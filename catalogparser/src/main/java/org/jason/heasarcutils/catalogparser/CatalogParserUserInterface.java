@@ -125,6 +125,7 @@ public class CatalogParserUserInterface extends JFrame {
         add(appMenuBar, BorderLayout.NORTH);
 
         JTree jTree = createTreeControl(config);
+        jTree.setPreferredSize(new Dimension(100,600));
         add(jTree, BorderLayout.WEST);
 
         setVisible(true);
