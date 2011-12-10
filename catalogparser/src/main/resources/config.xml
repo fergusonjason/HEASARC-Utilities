@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<catalogs>
+    <catalog name="bsc" type="tdat">
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_bsc5p.tdat.gz</url>
+        <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_bsc5p.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
+        <fields>
+            <field name="name" renameTo="bscname" keepAfterCopy="true" prefix="HR "/>
+            <field name="ads"/>
+            <field name="class"/>
+            <field name="dec" renameTo="decDeg" keepAfterCopy="false"/>
+            <field name="dmcat"/>
+            <field name="dmnum"/>
+            <field name="fk5" renameTo="fk5name" keepAfterCopy="false" prefix="FK5 "/>
+            <field name="bii"/>
+            <field name="hd" renameTo="hdname" keepAfterCopy="false" prefix="HD "/>
+            <field name="lii"/>
+            <field name="multiple"/>
+            <field name="parallax"/>
+            <field name="pmdec" renameTo="decpm" keepAfterCopy="false"/>
+            <field name="pmra" renameTo="rapm" keepAfterCopy="false"/>
+            <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
+            <field name="sao" renameTo="saoname" keepAfterCopy="false" prefix="SAO "/>
+            <field name="spect_type" renameTo="specttype" keepAfterCopy="false"/>
+            <field name="vmag"/>
+        </fields>
+    </catalog>
+    <catalog name="gc" type="dat" skiplines="0">
+        <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
+        <epoch>J2000</epoch>
+        <fields>
+            <field name="gcname" start="1" end="5" prefix="GC "/>
+            <field name="vmag" start="7" end="10"/>
+            <field name="spectype" start="12" end="15"/>
+            <field name="rah" start="16" end="17"/>
+            <field name="ramin" start="18" end="19"/>
+            <field name="rasec" start="20" end="25"/>
+            <field name="rapm" start="53" end="58"/>
+            <field name="decsign" start="59" end="59"/>
+            <field name="decdeg" start="60" end="61"/>
+            <field name="decmin" start="62" end="63"/>
+            <field name="decsec" start="64" end="68"/>
+            <field name="decpm" start="94" end="99"/>
+            <field name="dmname" start="101" end="113"/>
+            <field name="lii" start="114" end="120"/>
+            <field name="bii" start="121" end="127"/>
+            <field name="hdname" start="128" end="133" prefix="HD "/>
+        </fields>
+    </catalog>
+</catalogs>
