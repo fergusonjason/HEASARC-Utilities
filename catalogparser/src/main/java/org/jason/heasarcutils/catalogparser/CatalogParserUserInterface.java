@@ -114,10 +114,13 @@ public class CatalogParserUserInterface {
     }
 
     public void createAndShowGUI(Map<String, Catalog> config) {
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
+        // set to windows look and feel if we are running in windows.
+        if (System.getProperty("os.name").contains("indows")) {
+            try {
+                UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         JFrame frame = new JFrame("Astronomical Catalog Parser");
