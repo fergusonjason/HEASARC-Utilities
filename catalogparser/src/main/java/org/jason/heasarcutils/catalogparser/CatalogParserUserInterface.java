@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
+import org.jason.heasarcutils.catalogparser.misc.Statusbar;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.JsonExporter;
 
@@ -37,7 +38,7 @@ import java.util.Set;
  */
 public class CatalogParserUserInterface extends JFrame {
 
-    private static JTree createTreeControl(final Map<String, Catalog> config) {
+    private static JScrollPane createTreePane(final Map<String, Catalog> config) {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
@@ -87,7 +88,9 @@ public class CatalogParserUserInterface extends JFrame {
             public void mouseExited(MouseEvent e) {
             }
         });
-        return tree;
+
+        JScrollPane scrollPane = new JScrollPane(tree, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        return scrollPane;
     }
 
     private JMenuBar createMenuBarControl() {
@@ -107,6 +110,15 @@ public class CatalogParserUserInterface extends JFrame {
         return menuBar;
     }
 
+    private JScrollPane createEditorPane() {
+        JEditorPane editorPane = new JEditorPane();
+        editorPane.setEditable(true);
+        editorPane.setBorder(BorderFactory.createLoweredBevelBorder());
+
+        JScrollPane scrollPane = new JScrollPane(editorPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        return scrollPane;
+    }
+
     public void createAndShowGUI(Map<String, Catalog> config) {
         // set to windows look and feel if we are running in windows.
         if (System.getProperty("os.name").contains("indows")) {
@@ -124,9 +136,15 @@ public class CatalogParserUserInterface extends JFrame {
         JMenuBar appMenuBar = createMenuBarControl();
         add(appMenuBar, BorderLayout.NORTH);
 
-        JTree jTree = createTreeControl(config);
-        jTree.setPreferredSize(new Dimension(100,600));
-        add(jTree, BorderLayout.WEST);
+        JScrollPane treePane = createTreePane(config);
+        treePane.setPreferredSize(new Dimension(100,600));
+        add(treePane, BorderLayout.WEST);
+
+        JScrollPane editorPane = createEditorPane();
+        add(editorPane, BorderLayout.CENTER);
+
+        Statusbar statusbar = new Statusbar();
+        add(statusbar, BorderLayout.SOUTH);
 
         setVisible(true);
 
