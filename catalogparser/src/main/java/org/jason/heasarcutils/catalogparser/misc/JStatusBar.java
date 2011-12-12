@@ -28,7 +28,7 @@ import javax.swing.border.Border;
  *
  * @author <A HREF="mailto:colbell@users.sourceforge.net">Colin Bell</A>
  */
-public class Statusbar extends JPanel
+public class JStatusBar extends JPanel
 {
   /**
    * Message to display if there is no msg to display. Defaults to a
@@ -51,7 +51,7 @@ public class Statusbar extends JPanel
   /**
    * Default ctor.
    */
-  public Statusbar()
+  public JStatusBar()
   {
     super(new GridBagLayout());
     createGUI();
