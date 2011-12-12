@@ -23,9 +23,9 @@ import java.io.Serializable;
  */
 public class FieldData implements Serializable, Comparable<FieldData>{
 
-    private String name;
+    private String name = "noname";
     private String renameTo;
-    private boolean keepAfterCopy;
+    private boolean keepAfterCopy = false;
     private String prefix;
     private int start;
     private int end;
