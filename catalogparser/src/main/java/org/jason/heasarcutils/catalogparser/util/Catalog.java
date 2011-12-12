@@ -32,7 +32,7 @@ public class Catalog implements Serializable {
     private int linesToSkip;
 
     private Map<String, FieldData> fieldData = new LinkedHashMap<String, FieldData>();
-    private SortedSet<FieldData> fieldDataSet = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
+    private Set<FieldData> fieldDataSet = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
 
     public String getName() {
         return name;
@@ -90,11 +90,11 @@ public class Catalog implements Serializable {
         this.fieldData = fieldData;
     }
 
-    public SortedSet<FieldData> getFieldDataSet() {
+    public Set<FieldData> getFieldDataSet() {
         return fieldDataSet;
     }
 
-    public void setFieldDataSet(SortedSet<FieldData> fieldDataSet) {
+    public void setFieldDataSet(Set<FieldData> fieldDataSet) {
         this.fieldDataSet = fieldDataSet;
     }
 
