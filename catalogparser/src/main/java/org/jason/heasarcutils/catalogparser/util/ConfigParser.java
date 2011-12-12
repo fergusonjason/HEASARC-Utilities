@@ -152,7 +152,6 @@ public class ConfigParser {
 
         String[] fields = null;
         try {
-            //URL url = new URL(headerFile);
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
             String line = reader.readLine();
             while (line != null) {
@@ -170,9 +169,9 @@ public class ConfigParser {
             reader.close();
             gzis.close();
         } catch (FileNotFoundException e) {
-
+            e.printStackTrace();
         } catch (IOException e) {
-
+            e.printStackTrace();
         }
         return fields;
     }
