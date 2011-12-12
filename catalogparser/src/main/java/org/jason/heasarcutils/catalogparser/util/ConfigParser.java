@@ -111,8 +111,7 @@ public class ConfigParser {
             catalog.getFieldData().put(field, new FieldData(false));
         }
 
-        Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
-        for (FieldData fd: fieldDataSet) {
+        for (FieldData fd: catalog.getFieldDataSet()) {
             catalog.getFieldData().put(fd.getName(), fd);
         }
 
@@ -229,11 +228,11 @@ public class ConfigParser {
      * @param catalogNode
      * @return
      */
-    private SortedSet<FieldData> getFieldData2(Element catalogNode) {
-        SortedSet<FieldData> result = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
+    private Set<FieldData> getFieldData2(Element catalogNode) {
+        Set<FieldData> result = new HashSet<FieldData>();
 
-        Element fields = (Element) catalogNode.getElementsByTagName("fields").item(0);
-        NodeList fieldNodeList = fields.getElementsByTagName("field");
+        Element fieldsNode = (Element) catalogNode.getElementsByTagName("fields").item(0);
+        NodeList fieldNodeList = fieldsNode.getElementsByTagName("field");
         for (int i = 0; i < fieldNodeList.getLength(); i++) {
             Element fieldNode = (Element) fieldNodeList.item(i);
             String name = fieldNode.getAttribute("name");
