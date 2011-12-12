@@ -38,10 +38,12 @@ import java.util.Set;
  */
 public class CatalogParserUserInterface extends JFrame {
 
+    private BorderLayout borderLayout = new BorderLayout();
+    JPanel mainApplicationPanel = new JPanel(new BorderLayout());
+
     private static JScrollPane createTreePane(final Map<String, Catalog> config) {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
-
 
         Set<String> catalogNameSet = config.keySet();
         for (String catalogName : catalogNameSet) {
@@ -58,7 +60,8 @@ public class CatalogParserUserInterface extends JFrame {
                 if (treePaths != null && treePaths.length > 0) {
                     TreePath path = treePaths[0];
                     String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                    JsonExporter jsonExporter = new JsonExporter().setCatalog((Catalog) config.get(catalog));
+                    JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
+
                     jsonExporter.exportToJSON();
                 }
 
@@ -134,18 +137,19 @@ public class CatalogParserUserInterface extends JFrame {
         setSize(600, 400);
 
         JMenuBar appMenuBar = createMenuBarControl();
-        add(appMenuBar, BorderLayout.NORTH);
+        mainApplicationPanel.add(appMenuBar, BorderLayout.NORTH);
 
         JScrollPane treePane = createTreePane(config);
         treePane.setPreferredSize(new Dimension(100,600));
-        add(treePane, BorderLayout.WEST);
+        mainApplicationPanel.add(treePane, BorderLayout.WEST);
 
         JScrollPane editorPane = createEditorPane();
-        add(editorPane, BorderLayout.CENTER);
+        mainApplicationPanel.add(editorPane, BorderLayout.CENTER);
 
         Statusbar statusbar = new Statusbar();
-        add(statusbar, BorderLayout.SOUTH);
+        mainApplicationPanel.add(statusbar, BorderLayout.SOUTH);
 
+        add(mainApplicationPanel);
         setVisible(true);
 
     }
