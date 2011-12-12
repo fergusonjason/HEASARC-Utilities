@@ -140,7 +140,10 @@ public class CatalogParserUserInterface extends JFrame {
         mainApplicationPanel.add(editorPane, BorderLayout.CENTER);
 
         statusBar = new JStatusBar();
-        mainApplicationPanel.add(statusBar, BorderLayout.SOUTH);
+        statusBarPanel.add(statusBar);
+        statusBarPanel.setPreferredSize(new Dimension(400, 25));
+
+        mainApplicationPanel.add(statusBarPanel, BorderLayout.SOUTH);
 
         add(mainApplicationPanel);
         setVisible(true);
@@ -168,17 +171,23 @@ public class CatalogParserUserInterface extends JFrame {
             this.config = config;
         }
 
+        // todo: too much logic for just a listener!
         public void actionPerformed(ActionEvent e) {
 
             JScrollPane scrollPane = (JScrollPane) treePanel.getComponent(0);
             JTree tree = (JTree) ((JViewport) scrollPane.getComponent(0)).getView();
+
+            JStatusBar statusBar = (JStatusBar) statusBarPanel.getComponent(0);
+
             TreePath[] treePaths = tree.getSelectionPaths();
             if (treePaths != null && treePaths.length > 0) {
                 TreePath path = treePaths[0];
                 String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
                 JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
-
+                statusBar.setTextWhenEmpty("");
+                statusBar.setText("Exporting...");
                 jsonExporter.exportToJSON();
+                statusBar.setText("Export Complete.");
             }
         }
     }
