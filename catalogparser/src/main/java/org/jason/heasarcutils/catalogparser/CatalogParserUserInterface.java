@@ -15,7 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
-import org.jason.heasarcutils.catalogparser.misc.Statusbar;
+import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.JsonExporter;
 
@@ -38,8 +38,8 @@ import java.util.Set;
  */
 public class CatalogParserUserInterface extends JFrame {
 
-    private BorderLayout borderLayout = new BorderLayout();
-    JPanel mainApplicationPanel = new JPanel(new BorderLayout());
+    protected JPanel mainApplicationPanel = new JPanel(new BorderLayout());
+    protected JStatusBar statusBar = new JStatusBar();
 
     private static JScrollPane createTreePane(final Map<String, Catalog> config) {
 
@@ -146,11 +146,19 @@ public class CatalogParserUserInterface extends JFrame {
         JScrollPane editorPane = createEditorPane();
         mainApplicationPanel.add(editorPane, BorderLayout.CENTER);
 
-        Statusbar statusbar = new Statusbar();
-        mainApplicationPanel.add(statusbar, BorderLayout.SOUTH);
+        statusBar = new JStatusBar();
+        mainApplicationPanel.add(statusBar, BorderLayout.SOUTH);
 
         add(mainApplicationPanel);
         setVisible(true);
 
+    }
+
+    public JPanel getMainApplicationPanel() {
+        return mainApplicationPanel;
+    }
+
+    public JStatusBar getStatusBar() {
+        return statusBar;
     }
 }
