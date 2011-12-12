@@ -8,3 +8,20 @@ This app is supposed to replace those two command line utilities with a nice GUI
 common XML format for configuration.
 
 Initial versions will only output to json format, but eventually I might support other formats.
+
+XML Format Description:
+<catalogs> - top-level tag, no attributes
+<catalog> - identifies an individual catalog. Two attributes:
+    name - name of catalog (mandatory)
+    type - "tdat" for HEASARC files, "dat" for vizier files (mandatory)
+<url> - URL of file
+<headerUrl> - URL of tdat header file
+<fields> - container for <field> elements
+<field> - identifies a single field to be imported. Attributes:
+    name - name of field (mandatory). For dat files, this can be whatever you want, but TDAT files must
+            match the format defined in the TDAT file
+    renameTo - what to rename the field to
+    keepAfterCopy - whether to keep the original field after it's renamed
+    prefix - prefix for a field name (if field was originally only a number)
+    start - start index of the field (dat only)
+    end - end index of the field (dat only)
