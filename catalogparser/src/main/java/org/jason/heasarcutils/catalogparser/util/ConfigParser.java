@@ -26,9 +26,11 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
@@ -107,11 +109,11 @@ public class ConfigParser {
 
         String[] fields = getFieldNamesFromTdatHeader(catalog.getHeaderUrl());
         // create empty FD objects for each field. By default, we won't include them
-        for (String field: fields) {
+        for (String field : fields) {
             catalog.getFieldData().put(field, new FieldData(false));
         }
 
-        for (FieldData fd: catalog.getFieldDataSet()) {
+        for (FieldData fd : catalog.getFieldDataSet()) {
             catalog.getFieldData().put(fd.getName(), fd);
         }
 
@@ -126,10 +128,9 @@ public class ConfigParser {
         catalog.setUrl(getUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
         catalog.setFieldDataSet(getFieldData2(catalogNode));
-        //catalog.setFieldData(getFieldData(catalogNode));
 
         Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
-        for (FieldData fd: fieldDataSet) {
+        for (FieldData fd : fieldDataSet) {
             catalog.getFieldData().put(fd.getName(), fd);
         }
         return catalog;
@@ -137,27 +138,21 @@ public class ConfigParser {
 
     private String[] getFieldNamesFromTdatHeader(String headerFile) {
 
-        URL fileUrl = null;
-        String filenamePattern = "(tdat_headers/)(.+\\.gz)$";
-        Pattern pattern = Pattern.compile(filenamePattern);
-        Matcher matcher = pattern.matcher(headerFile);
+        GZIPInputStream gzis = null;
         try {
-            if (matcher.find()) {
-                String filename = matcher.group(2);
-                File localFile = new File(filename);
-                if (localFile.exists()) {
-                    fileUrl = new URL("classes" + System.getProperty("file.separator") + filename);
-                } else {
-                    fileUrl = new URL(headerFile);
-                }
+            String filename = headerFile.substring(headerFile.lastIndexOf("/") + 1, headerFile.length());
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream(filename);
+            if (is == null) {
+                is = new URL(headerFile).openStream();
             }
-        } catch (MalformedURLException e) {
+            gzis = new GZIPInputStream(is);
+        } catch (IOException e) {
             e.printStackTrace();
         }
+
         String[] fields = null;
         try {
             //URL url = new URL(headerFile);
-            GZIPInputStream gzis = new GZIPInputStream(new BufferedInputStream(fileUrl.openStream()));
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
             String line = reader.readLine();
             while (line != null) {
