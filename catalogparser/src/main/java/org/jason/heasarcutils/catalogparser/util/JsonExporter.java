@@ -152,7 +152,7 @@ public class JsonExporter {
                 }
 
                 fieldMap = removeNulls(fieldMap);
-                fieldMap = fixFieldPrefixes(fieldMap, catalog);
+                fieldMap = fixFieldNames(fieldMap, catalog);
                 fieldMap = fixFieldPrefixes(fieldMap, catalog);
                 writer.write(getJsonLine(fieldMap));
                 //line = reader.readLine();
@@ -196,6 +196,12 @@ public class JsonExporter {
         return result;
     }
 
+    /**
+     * Determine if the field name needs to be prefixed and do so if necessary
+     * @param data
+     * @param catalog
+     * @return
+     */
     private Map<String, String> fixFieldPrefixes(Map<String, String> data, Catalog catalog) {
         Map<String, String> result = new HashMap<String, String>();
         for (String key : catalog.getFieldData().keySet()) {
@@ -215,22 +221,44 @@ public class JsonExporter {
         return result;
     }
 
+    /**
+     * Determine if the field needs to be renamed and fix it if necessary
+     *
+     * @param data
+     * @param catalog
+     * @return
+     */
     private Map<String, String> fixFieldNames(Map<String, String> data, Catalog catalog) {
-        Map<String, String> result = new HashMap<String, String>();
+        // Set result to be the input value, we'll remove values rather than add
+        Map<String, String> result = data;
+        // loop through the map of field data for the catalog configuration
         for (String key : catalog.getFieldData().keySet()) {
+            // get the field data for the field identified by the key
             FieldData fd = catalog.getFieldData().get(key);
-            if (fd.isIncluded()) {
-                if (fd.getRenameTo() != null) {
-                    result.put(fd.getRenameTo(), data.get(key));
-                    if (fd.isKeepAfterCopy()) {
-                        result.put(key, data.get(key));
-                    }
-                } else {
-                    result.put(key, data.get(key));
+
+            // get the value to rename to
+            String renameValue = fd.getRenameTo();
+
+            // if there is a value to rename to, copy it to a new key representing the renamed value
+            if (renameValue != null && renameValue.length() > 0) {
+                result.put(renameValue, data.get(key));
+                // if we don't keep it after the rename, drop the key
+                if (!fd.isKeepAfterCopy()) {
+                    result.remove(key);
                 }
             }
 
-        }
+            // we only want the fields where the FD object's included member is true
+//            if (fd.isIncluded() && key != null) {
+//                if (fd.getRenameTo() != null) {
+//                    result.put(fd.getRenameTo(), data.get(key));
+//                }
+//                else {
+//                    result.put(key, data.get(key));
+//                }
+            }
+
+        //}
 
         return result;
     }
