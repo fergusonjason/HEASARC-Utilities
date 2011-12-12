@@ -270,47 +270,6 @@ public class ConfigParser {
         return result;
     }
 
-    private Map<String, FieldData> getFieldData(Element catalogNode) {
-        Map<String, FieldData> resultMap = new HashMap<String, FieldData>();
-
-        Element fields = (Element) catalogNode.getElementsByTagName("fields").item(0);
-        NodeList fieldNodeList = fields.getElementsByTagName("field");
-        for (int i = 0; i < fieldNodeList.getLength(); i++) {
-            Element fieldNode = (Element) fieldNodeList.item(i);
-            String name = fieldNode.getAttribute("name");
-            if (name.isEmpty()) {
-                throw new ConfigurationParseException("Attribute 'name' of tag 'field' cannot be empty.");
-            }
-            String rename = fieldNode.getAttribute("renameTo");
-            String prefix = fieldNode.getAttribute("prefix");
-            String keepAfterCopy = fieldNode.getAttribute("keepAfterCopy");
-            String start = fieldNode.getAttribute("start");
-            String end = fieldNode.getAttribute("end");
-
-            FieldData fd = new FieldData();
-            fd.setName(name);
-            if (!rename.isEmpty()) {
-                fd.setRenameTo(rename);
-            }
-            if (!prefix.isEmpty()) {
-                fd.setPrefix(prefix);
-            }
-            if (!keepAfterCopy.isEmpty()) {
-                boolean kac = Boolean.valueOf(keepAfterCopy);
-                fd.setKeepAfterCopy(kac);
-            }
-            if (isInteger(start)) {
-                fd.setStart(Integer.parseInt(start));
-            }
-            if (isInteger(end)) {
-                fd.setEnd(Integer.parseInt(end));
-            }
-            resultMap.put(name, fd);
-        }
-
-        return resultMap;
-    }
-
     private boolean isInteger(String value) {
         String pattern = "^[0-9]+$";
         return value.matches(pattern);
