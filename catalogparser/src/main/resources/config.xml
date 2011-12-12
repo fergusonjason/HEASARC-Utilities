@@ -25,7 +25,82 @@
             <field name="vmag"/>
         </fields>
     </catalog>
-    <catalog name="gc" type="dat" skiplines="0">
+    <catalog name="cns3" type="tdat">
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_cns3.tdat.gz</url>
+        <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_cns3.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
+        <fields>
+            <field name="name" renameTo="cns3name" keepAfterCopy="true" />
+            <field name="component" />
+            <field name="ra" renameTo="radeg" keepAfterCopy="false" />
+            <field name="dec" renameTo="decdeg" keepAfterCopy="false" />
+            <field name="lii" />
+            <field name="bii" />
+            <field name="spect_type" renameTo="specttype" keepAfterCopy="false" />
+            <field name="trig_parallax" renameTo="parallax" keepAfterCopy="false" />
+            <field name="abs_vmag" renameTo="vmag" keepAfterCopy="false" />
+            <field name="hd_number" renameTo="hdname" prefix="HD " keepAfterCopy="false"/>
+            <field name="dm_number" renameTo="dmname" keepAfterCopy="false" />
+            <field name="lhs_number" renameTo="lhsname" prefix="LHS" keepAfterCopy="false" />
+            <field name="other_name" renameTo="alt_name" keepAfterCopy="false" />
+            <field name="class" />
+        </fields>
+    </catalog>
+    <catalog name="hd" type="tdat">
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_hd.tdat.gz</url>
+        <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_hd.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
+        <fields>
+            <field name="bii" />
+            <field name="class" />
+            <field name="dec" renameTo="decdeg" keepAfterCopy="false" />
+            <field name="lii" />
+            <field name="name" renameTo="hdname" keepAfterCopy="true" prefix="HD " />
+            <field name="ra" renameTo="radeg" keepAfterCopy="false" />
+            <field name="spectral_type" renameTo="specttype" keepAfterCopy="false" />
+            <field name="vmag" />
+        </fields>
+    </catalog>
+    <catalog name="hipparcos" type="tdat">
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_hipparcos.tdat.gz</url>
+        <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_hipparcos.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
+        <fields>
+            <field name="name" renameTo="hipname" keepAfterCopy="true" />
+            <field name="ra" renameTo="radeg" keepAfterCopy="false" />
+            <field name="dec" renameTo="decdeg" keepAfterCopy="false" />
+            <field name="lii" />
+            <field name="bii" />
+            <field name="vmag" />
+            <field name="pm_ra" renameTo="rapm" keepAfterCopy="false" />
+            <field name="pm_dec" renameTo="decpm" keepAfterCopy="false" />
+            <field name="ccdm_id" renameTo="ccdmname" keepAfterCopy="false" />
+            <field name="dbl_mult_annex" />
+            <field name="hd_id" renameTo="hdname" keepAfterCopy="false" prefix="HD " />
+            <field name="bd_id" renameTo="bdname" keepAfterCopy="false" />
+            <field name="cod_id" renameTo="codname" keepAfterCopy="false" />
+            <field name="cpd_id" renameTo="cpdname" keepAfterCopy="false" />
+            <field name="spect_type" renameTo="specttype" keepAfterCopy="false" />
+            <field name="class" />
+        </fields>
+    </catalog>
+    <catalog name="messier" type="tdat">
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_messier.tdat.gz</url>
+        <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_messier.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
+        <fields>
+            <field name="alt_name" />
+            <field name="bii" />
+            <field name="class" />
+            <field name="constell" renameTo="constellation" keepAfterCopy="false" />
+            <field name="dec" renameTo="decpm" keepAfterCopy="false" />
+            <field name="lii" />
+            <field name="name" />
+            <field name="ra" renameTo="radeg" keepAfterCopy="false" />
+            <field name="vmag" />
+        </fields>
+    </catalog>
+    <catalog name="gc" type="dat">
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
         <epoch>J2000</epoch>
         <fields>
