@@ -59,12 +59,23 @@ public class JsonExporter {
 
     }
 
-    private void processTdatFile(String filename) {
+    private void processTdatFile(String fileURL) {
+
+        //String filename = "classes" + System.getProperty("file.separator") + getFilename(fileURL) + ".gz";
+        String filename = getFilename(fileURL) + ".gz";
+
         try {
-            URL url = new URL(filename);
+            URL url = new URL(fileURL);
 
             // set up input
-            GZIPInputStream gzis = new GZIPInputStream(url.openStream());
+            GZIPInputStream gzis;
+            if (new File(filename).isFile()) {
+                InputStream is = ClassLoader.getSystemResourceAsStream(fileURL);
+                gzis = new GZIPInputStream(is);
+                System.out.println("Using tdat header from classes directory");
+            } else {
+                gzis = new GZIPInputStream(url.openStream());
+            }
             BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
 
             // set up output
@@ -249,6 +260,10 @@ public class JsonExporter {
         sb.append("}\r\n");
 
         return sb.toString();
+    }
+
+    protected String getFilename(String url) {
+        return url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
     }
 
     private boolean isInteger(String value) {
