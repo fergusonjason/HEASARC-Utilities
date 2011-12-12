@@ -40,33 +40,25 @@ public class CatalogParserUserInterface extends JFrame {
 
     protected JPanel mainApplicationPanel = new JPanel(new BorderLayout());
     protected JStatusBar statusBar = new JStatusBar();
+    protected JPanel treePanel = new JPanel();
+    protected JPanel statusBarPanel = new JPanel();
 
-    private static JScrollPane createTreePane(final Map<String, Catalog> config) {
+    private JScrollPane createTreePane(final Map<String, Catalog> config) {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
+        // Create a  node for each catalog in the config file
         Set<String> catalogNameSet = config.keySet();
         for (String catalogName : catalogNameSet) {
             DefaultMutableTreeNode node = new DefaultMutableTreeNode(catalogName);
             topNode.add(node);
         }
+
         final JTree tree = new JTree(topNode);
         tree.setSize(200, 600);
         final JPopupMenu popupMenu = new JPopupMenu();
         JMenuItem exportToJsonItem = new JMenuItem("Export to JSON");
-        exportToJsonItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                TreePath[] treePaths = tree.getSelectionPaths();
-                if (treePaths != null && treePaths.length > 0) {
-                    TreePath path = treePaths[0];
-                    String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                    JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
-
-                    jsonExporter.exportToJSON();
-                }
-
-            }
-        });
+        exportToJsonItem.addActionListener(new ExportToJsonListener(config));
         popupMenu.add(exportToJsonItem);
 
         tree.addMouseListener(new MouseListener() {
@@ -140,8 +132,9 @@ public class CatalogParserUserInterface extends JFrame {
         mainApplicationPanel.add(appMenuBar, BorderLayout.NORTH);
 
         JScrollPane treePane = createTreePane(config);
-        treePane.setPreferredSize(new Dimension(100,600));
-        mainApplicationPanel.add(treePane, BorderLayout.WEST);
+        treePane.setPreferredSize(new Dimension(100, 600));
+        treePanel.add(treePane);
+        mainApplicationPanel.add(treePanel, BorderLayout.WEST);
 
         JScrollPane editorPane = createEditorPane();
         mainApplicationPanel.add(editorPane, BorderLayout.CENTER);
@@ -151,7 +144,7 @@ public class CatalogParserUserInterface extends JFrame {
 
         add(mainApplicationPanel);
         setVisible(true);
-
+        getComponents();
     }
 
     public JPanel getMainApplicationPanel() {
@@ -160,5 +153,33 @@ public class CatalogParserUserInterface extends JFrame {
 
     public JStatusBar getStatusBar() {
         return statusBar;
+    }
+
+    /**
+     * Actual implementation of an ActionListener for the Export to JSON option. A real implementation
+     * gets around the static context issues with an anonymous implementation of ActionListener. Once
+     * again, thank the Oracle/Sun dudes for lack of closures in the language.
+     */
+    public class ExportToJsonListener implements ActionListener {
+
+        private Map<String, Catalog> config;
+
+        public ExportToJsonListener(Map<String, Catalog> config) {
+            this.config = config;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            JScrollPane scrollPane = (JScrollPane) treePanel.getComponent(0);
+            JTree tree = (JTree) ((JViewport) scrollPane.getComponent(0)).getView();
+            TreePath[] treePaths = tree.getSelectionPaths();
+            if (treePaths != null && treePaths.length > 0) {
+                TreePath path = treePaths[0];
+                String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+                JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
+
+                jsonExporter.exportToJSON();
+            }
+        }
     }
 }
