@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
+ * Represents configuration data for a single astronomical catalog
+ *
  * @since 0.1
  * @author Jason Ferguson
  */
@@ -26,10 +28,11 @@ public class Catalog implements Serializable {
 
     private String name;
     private String type;
+    private String title;
+    private String description;
     private String url;
     private String headerUrl;
     private String epoch;
-    private int linesToSkip;
 
     private Map<String, FieldData> fieldData = new LinkedHashMap<String, FieldData>();
     private Set<FieldData> fieldDataSet = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
@@ -48,6 +51,22 @@ public class Catalog implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUrl() {
@@ -72,14 +91,6 @@ public class Catalog implements Serializable {
 
     public void setEpoch(String epoch) {
         this.epoch = epoch;
-    }
-
-    public int getLinesToSkip() {
-        return linesToSkip;
-    }
-
-    public void setLinesToSkip(int linesToSkip) {
-        this.linesToSkip = linesToSkip;
     }
 
     public Map<String, FieldData> getFieldData() {
