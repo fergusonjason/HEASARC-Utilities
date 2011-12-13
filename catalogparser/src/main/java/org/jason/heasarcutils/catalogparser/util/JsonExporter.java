@@ -242,6 +242,12 @@ public class JsonExporter {
 
             // if there is a value to rename to, copy it to a new key representing the renamed value
             if (renameValue != null && renameValue.length() > 0) {
+                // this is kind of a big-hammer approach, but I don't want to write null values to the
+                // map containing the data, which may be returned from the following statement
+                if (result.get(key) == null) {
+                    continue;
+                }
+
                 result.put(renameValue, data.get(key));
                 // if we don't keep it after the rename, drop the key
                 if (!fd.isKeepAfterCopy()) {
