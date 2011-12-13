@@ -96,6 +96,12 @@ public class ConfigParser {
         return resultMap;
     }
 
+    /**
+     * Read configuration for TDAT file
+     *
+     * @param catalogNode   Element containing contents of a <catalog> element
+     * @return
+     */
     private Catalog getTdatConfig(Element catalogNode) {
 
         Catalog catalog = new Catalog();
@@ -103,6 +109,8 @@ public class ConfigParser {
         catalog.setType("tdat");
         catalog.setName(catalogNode.getAttribute("name"));
         catalog.setUrl(getUrl(catalogNode));
+        catalog.setTitle(getTextValue(catalogNode, "title"));
+        catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setHeaderUrl(getHeaderUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
         catalog.setFieldDataSet(getFieldData2(catalogNode));  // get the "wanted" fields from the config
@@ -120,11 +128,19 @@ public class ConfigParser {
         return catalog;
     }
 
+    /**
+     * Read configuration for a file in DAT format
+     *
+     * @param catalogNode   Element containing <catalog> contents
+     * @return
+     */
     private Catalog getDatConfig(Element catalogNode) {
 
         Catalog catalog = new Catalog();
         catalog.setType("dat");
         catalog.setName(catalogNode.getAttribute("name"));
+        catalog.setTitle(getTextValue(catalogNode, "title"));
+        catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setUrl(getUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
         catalog.setFieldDataSet(getFieldData2(catalogNode));
