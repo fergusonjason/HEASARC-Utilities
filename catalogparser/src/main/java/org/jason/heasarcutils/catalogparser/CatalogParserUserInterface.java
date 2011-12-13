@@ -43,7 +43,7 @@ public class CatalogParserUserInterface extends JFrame {
     protected JPanel treePanel = new JPanel();
     protected JPanel statusBarPanel = new JPanel();
 
-    private JScrollPane createTreePane(final Map<String, Catalog> config) {
+    private JScrollPane createTreePane(Map<String, Catalog> config) {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
