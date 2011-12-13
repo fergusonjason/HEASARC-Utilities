@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <catalogs>
     <catalog name="bsc" type="tdat">
+        <title>Bright Star Catalog</title>
+        <description>Harvard Bright Star Catalog</description>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_bsc5p.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_bsc5p.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -26,6 +28,7 @@
         </fields>
     </catalog>
     <catalog name="cns3" type="tdat">
+        <title>Catalog of Nearby Stars</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_cns3.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_cns3.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -47,6 +50,7 @@
         </fields>
     </catalog>
     <catalog name="hd" type="tdat">
+        <title>Henry Draper</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_hd.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_hd.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -62,6 +66,7 @@
         </fields>
     </catalog>
     <catalog name="hipparcos" type="tdat">
+        <title>Hipparcos</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_hipparcos.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_hipparcos.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -85,6 +90,7 @@
         </fields>
     </catalog>
     <catalog name="messier" type="tdat">
+        <title>Messier</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_messier.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_messier.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -101,6 +107,7 @@
         </fields>
     </catalog>
     <catalog name="ngc2000" type="tdat">
+        <title>NGC2000</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ngc2000.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ngc2000.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -118,6 +125,7 @@
         </fields>
     </catalog>
     <catalog name="ppm" type="tdat">
+        <title>Positions and Proper Motions</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ppm.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_pmn.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -139,6 +147,7 @@
         </fields>
     </catalog>
     <catalog name="sao" type="tdat">
+        <title>Smithsonian Astrophysics Observatory</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_sao.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_sao.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -160,6 +169,7 @@
         </fields>
     </catalog>
     <catalog name="tycho2" type="tdat">
+        <title>Tycho2</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_tycho2.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_tycho2.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -173,6 +183,7 @@
         </fields>
     </catalog>
     <catalog name="ugc" type="tdat">
+        <title>UGC</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ugc.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ugc.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -187,6 +198,7 @@
         </fields>
     </catalog>
     <catalog name="wds" type="tdat">
+        <title>Washington Double Star</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_wds.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_wds.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -201,6 +213,7 @@
         </fields>
     </catalog>
     <catalog name="woolley" type="tdat">
+        <title>Woolley</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_woolley.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_woolley.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -223,6 +236,7 @@
         </fields>
     </catalog>
     <catalog name="gc" type="dat">
+        <title>Boss</title>
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
         <epoch>J2000</epoch>
         <fields>
@@ -245,6 +259,7 @@
         </fields>
     </catalog>
     <catalog name="crossindex" type="dat">
+        <title>Cross Reference Index</title>
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/IV/22/index.dat.gz</url>
         <epoch>J2000</epoch>
         <fields>
@@ -268,6 +283,7 @@
         </fields>
     </catalog>
         <catalog name="lhs" type="dat">
+            <title>Lutyen</title>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/87B/catalog.dat.gz</url>
             <epoch>J2000</epoch>
             <fields>
@@ -285,6 +301,7 @@
             </fields>
         </catalog>
         <catalog name="sharpless" type="dat">
+            <title>Sharpless</title>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/VII/20/catalog.dat.gz</url>
             <epoch>J2000</epoch>
             <fields>
