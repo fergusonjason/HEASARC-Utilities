@@ -122,19 +122,19 @@
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_pmn.hdr.gz</headerUrl>
         <fields>
             <field name="name" renameTo="ppmname" keepAfterCopy="true"/>
-            <field name="dm_number" renameTo="dmname" keepAfterCopy="false" />
-            <field name="vmag" />
+            <field name="dm_number" renameTo="dmname" keepAfterCopy="false"/>
+            <field name="vmag"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
             <field name="dec" renameTo="decdeg" keepAfterCopy="false"/>
             <field name="lii"/>
             <field name="bii"/>
-            <field name="ra_prop" renameTo="rapm" />
-            <field name="dec_prop" renameTo="decpm" />
-            <field name="sao" renameTo="saoname" keepAfterCopy="false" />
-            <field name="hd" renameTo="hdname" keepAfterCopy="false" prefix="HD " />
-            <field name="agk3" renameTo="agk3name" keepAfterCopy="false" prefix="AGK3 " />
-            <field name="cpd" renameTo="cpdname" keepAfterCopy="false" prefix="CPD-" />
-            <field name="class" />
+            <field name="ra_prop" renameTo="rapm"/>
+            <field name="dec_prop" renameTo="decpm"/>
+            <field name="sao" renameTo="saoname" keepAfterCopy="false"/>
+            <field name="hd" renameTo="hdname" keepAfterCopy="false" prefix="HD "/>
+            <field name="agk3" renameTo="agk3name" keepAfterCopy="false" prefix="AGK3 "/>
+            <field name="cpd" renameTo="cpdname" keepAfterCopy="false" prefix="CPD-"/>
+            <field name="class"/>
         </fields>
     </catalog>
     <catalog name="sao" type="tdat">
@@ -142,30 +142,30 @@
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_sao.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
         <fields>
-            <field name="name" renameTo="saoname" keepAfterCopy="false" />
+            <field name="name" renameTo="saoname" keepAfterCopy="false"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
             <field name="proper_motion_ra" renameTo="rapm" keepAfterCopy="false"/>
             <field name="dec" renameTo="decdeg" keepAfterCopy="false"/>
-            <field name="proper_motion_dec" renameTo="decpm" keepAfterCopy="false" />
+            <field name="proper_motion_dec" renameTo="decpm" keepAfterCopy="false"/>
             <field name="lii"/>
             <field name="bii"/>
-            <field name="vmag" />
-            <field name="spect_type" renameTo="specttype" keepAfterCopy="false" />
-            <field name="dm" renameTo="dmname" keepAfterCopy="false" />
-            <field name="hd" renameTo="hdname" keepAfterCopy="false" prefix="HD " />
-            <field name="hd_component" />
-            <field name="gc" renameTo="gcname" keepAfterCopy="false" prefix="GC " />
-            <field name="class" />
+            <field name="vmag"/>
+            <field name="spect_type" renameTo="specttype" keepAfterCopy="false"/>
+            <field name="dm" renameTo="dmname" keepAfterCopy="false"/>
+            <field name="hd" renameTo="hdname" keepAfterCopy="false" prefix="HD "/>
+            <field name="hd_component"/>
+            <field name="gc" renameTo="gcname" keepAfterCopy="false" prefix="GC "/>
+            <field name="class"/>
         </fields>
     </catalog>
     <catalog name="tycho2" type="tdat">
         <url></url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_tycho2.hdr.gz</headerUrl>
         <fields>
-            <field name="name" renameTo="t2name" keepAfterCopy="true" prefix="TYC " />
-            <field name="mean_ra" renameTo="radeg" keepAfterCopy="false" />
-            <field name="mean_dec" renameTo="decdeg" keepAfterCopy="false" />
-            <field name="hip_number" renameTo="hipname" keepAfterCopy="false" prefix="HIP " />
+            <field name="name" renameTo="t2name" keepAfterCopy="true" prefix="TYC "/>
+            <field name="mean_ra" renameTo="radeg" keepAfterCopy="false"/>
+            <field name="mean_dec" renameTo="decdeg" keepAfterCopy="false"/>
+            <field name="hip_number" renameTo="hipname" keepAfterCopy="false" prefix="HIP "/>
             <field name="lii"/>
             <field name="bii"/>
         </fields>
@@ -174,47 +174,47 @@
         <url></url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ugc.hdr.gz</headerUrl>
         <fields>
-            <field name="name" renameTo="ugcname" keepAfterCopy="true" />
+            <field name="name" renameTo="ugcname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
             <field name="dec" renameTo="decdeg" keepAfterCopy="false"/>
             <field name="lii"/>
             <field name="bii"/>
-            <field name="phot_mag" renameTo="vmag" keepAfterCopy="false" />
-            <field name="class" />
+            <field name="phot_mag" renameTo="vmag" keepAfterCopy="false"/>
+            <field name="class"/>
         </fields>
     </catalog>
     <catalog name="wds" type="tdat">
         <url></url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_wds.hdr.gz</headerUrl>
         <fields>
-            <field name="name" renameTo="wdsname" keepAfterCopy="true" />
+            <field name="name" renameTo="wdsname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
             <field name="dec" renameTo="decdeg" keepAfterCopy="false"/>
             <field name="lii"/>
             <field name="bii"/>
-            <field name="dm" renameTo="dmname" keepAfterCopy="false" />
-            <field name="class" />
+            <field name="dm" renameTo="dmname" keepAfterCopy="false"/>
+            <field name="class"/>
         </fields>
     </catalog>
     <catalog name="woolley">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_woolley.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_woolley.hdr.gz</headerUrl>
         <fields>
-            <field name="name" renameTo="gliesename" keepAfterCopy="true" />
+            <field name="name" renameTo="gliesename" keepAfterCopy="true"/>
             <field name="parallax"/>
-            <field name="proper_motion_ra" renameTo="rapm" keepAfterCopy="false" />
-            <field name="proper_motion_dec" renameTo="decpm" keepAfterCopy="false" />
-            <field name="radial_velocity" />
-            <field name="spect_type" renameTo="specttype" keepAfterCopy="false" />
-            <field name="abs_vmag" renameTo="vmag" keepAfterCopy="false" />
+            <field name="proper_motion_ra" renameTo="rapm" keepAfterCopy="false"/>
+            <field name="proper_motion_dec" renameTo="decpm" keepAfterCopy="false"/>
+            <field name="radial_velocity"/>
+            <field name="spect_type" renameTo="specttype" keepAfterCopy="false"/>
+            <field name="abs_vmag" renameTo="vmag" keepAfterCopy="false"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
             <field name="dec" renameTo="decdeg" keepAfterCopy="false"/>
             <field name="lii"/>
             <field name="bii"/>
-            <field name="hd_number" renameTo="hdname" keepAfterCopy="false" prefix="HD " />
-            <field name="dm_name" renameTo="dmname" keepAfterCopy="false" />
-            <field name="alt_name" />
-            <field name="hr_number" renameTo="bscname" keepAfterCopy="false" prefix="HR " />
+            <field name="hd_number" renameTo="hdname" keepAfterCopy="false" prefix="HD "/>
+            <field name="dm_name" renameTo="dmname" keepAfterCopy="false"/>
+            <field name="alt_name"/>
+            <field name="hr_number" renameTo="bscname" keepAfterCopy="false" prefix="HR "/>
         </fields>
     </catalog>
     <catalog name="gc" type="dat">
@@ -239,4 +239,58 @@
             <field name="hdname" start="128" end="133" prefix="HD "/>
         </fields>
     </catalog>
+    <catalog name="crossindex" type="dat">
+        <url>ftp://cdsarc.u-strasbg.fr/pub/cats/IV/22/index.dat.gz</url>
+        <fields>
+            <field name="fk5" start="1" end="4" prefix="FK5 "/>
+            <field name="rah" start="7" end="8"/>
+            <field name="ramin" start="10" end="11"/>
+            <field name="rasec" start="13" end="18"/>
+            <field name="rapm" start="20" end="26"/>
+            <field name="decsign" start="28" end="28"/>
+            <field name="decdeg" start="29" end="30"/>
+            <field name="decmin" start="32" end="33"/>
+            <field name="decsec" start="35" end="39"/>
+            <field name="decpm" start="41" end="47"/>
+            <field name="vmag" start="60" end="64"/>
+            <field name="spectype" start="66" end="67"/>
+            <field name="dmname" start="69" end="78"/>
+            <field name="saoname" start="80" end="85" prefix="SAO "/>
+            <field name="hdname" start="87" end="92" prefix="HD "/>
+            <field name="bayerflam" start="94" end="102"/>
+            <field name="commonname" start="104" end="123"/>
+        </fields>
+    </catalog>
+        <catalog name="lhs" type="dat">
+            <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/87B/catalog.dat.gz</url>
+            <fields>
+                <field name="lhsname" start="1" end="5" prefix="LHS " />
+                <field name="othername" start="7" end="21" />
+                <field name="rah" start="23" end="24" />
+                <field name="ramin" start="25" end="26" />
+                <field name="rasec" start="27" end="28" />
+                <field name="decsign" start="29" end="29" />
+                <field name="decdeg" start="30" end="31" />
+                <field name="decdecimin" start="32" end="34" />
+                <field name="vmag" start="54" end="57" />
+                <field name="spectype" start="59" end="61" />
+                <field name="pmra" start="72" end="76" />
+            </fields>
+        </catalog>
+        <catalog name="sharpless" type="dat">
+            <url>ftp://cdsarc.u-strasbg.fr/pub/cats/VII/20/catalog.dat.gz</url>
+            <fields>
+                <field name="sharpname" start="1" end="4" prefix="Sh2-" />
+                <field name="bii" start="13" end="16" />
+                <field name="lii" start="17" end="20" />
+                <field name="rah" start="35" end="36" />
+                <field name="ramin" start="37" end="38" />
+                <field name="rasec" start="39" end="41" />
+                <field name="decsign" start="42" end="42" />
+                <field name="decdeg" start="43" end="44" />
+                <field name="decmin" start="45" end="46" />
+                <field name="decsec" start="47" end="48" />
+                <field name="classification" start="53" end="53" />
+            </fields>
+        </catalog>
 </catalogs>
