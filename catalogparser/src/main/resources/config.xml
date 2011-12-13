@@ -101,7 +101,7 @@
         </fields>
     </catalog>
     <catalog name="ngc2000" type="tdat">
-        <url></url>
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ngc2000.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ngc2000.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
         <fields>
@@ -118,7 +118,7 @@
         </fields>
     </catalog>
     <catalog name="ppm" type="tdat">
-        <url></url>
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ppm.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_pmn.hdr.gz</headerUrl>
         <fields>
             <field name="name" renameTo="ppmname" keepAfterCopy="true"/>
@@ -138,7 +138,7 @@
         </fields>
     </catalog>
     <catalog name="sao" type="tdat">
-        <url></url>
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_sao.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_sao.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
         <fields>
@@ -159,7 +159,7 @@
         </fields>
     </catalog>
     <catalog name="tycho2" type="tdat">
-        <url></url>
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_tycho2.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_tycho2.hdr.gz</headerUrl>
         <fields>
             <field name="name" renameTo="t2name" keepAfterCopy="true" prefix="TYC "/>
@@ -171,7 +171,7 @@
         </fields>
     </catalog>
     <catalog name="ugc" type="tdat">
-        <url></url>
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ugc.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ugc.hdr.gz</headerUrl>
         <fields>
             <field name="name" renameTo="ugcname" keepAfterCopy="true"/>
@@ -184,7 +184,7 @@
         </fields>
     </catalog>
     <catalog name="wds" type="tdat">
-        <url></url>
+        <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_wds.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_wds.hdr.gz</headerUrl>
         <fields>
             <field name="name" renameTo="wdsname" keepAfterCopy="true"/>
