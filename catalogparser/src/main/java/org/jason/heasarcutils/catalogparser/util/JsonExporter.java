@@ -198,6 +198,7 @@ public class JsonExporter {
 
     /**
      * Determine if the field name needs to be prefixed and do so if necessary
+     *
      * @param data
      * @param catalog
      * @return
@@ -247,18 +248,7 @@ public class JsonExporter {
                     result.remove(key);
                 }
             }
-
-            // we only want the fields where the FD object's included member is true
-//            if (fd.isIncluded() && key != null) {
-//                if (fd.getRenameTo() != null) {
-//                    result.put(fd.getRenameTo(), data.get(key));
-//                }
-//                else {
-//                    result.put(key, data.get(key));
-//                }
-            }
-
-        //}
+        }
 
         return result;
     }
