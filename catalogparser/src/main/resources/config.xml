@@ -41,7 +41,7 @@
             <field name="abs_vmag" renameTo="vmag" keepAfterCopy="false"/>
             <field name="hd_number" renameTo="hdname" prefix="HD " keepAfterCopy="false"/>
             <field name="dm_number" renameTo="dmname" keepAfterCopy="false"/>
-            <field name="lhs_number" renameTo="lhsname" prefix="LHS" keepAfterCopy="false"/>
+            <field name="lhs_number" renameTo="lhsname" prefix="LHS " keepAfterCopy="false"/>
             <field name="other_name" renameTo="alt_name" keepAfterCopy="false"/>
             <field name="class"/>
         </fields>
