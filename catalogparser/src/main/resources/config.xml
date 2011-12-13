@@ -120,6 +120,7 @@
     <catalog name="ppm" type="tdat">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ppm.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_pmn.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
         <fields>
             <field name="name" renameTo="ppmname" keepAfterCopy="true"/>
             <field name="dm_number" renameTo="dmname" keepAfterCopy="false"/>
@@ -161,6 +162,7 @@
     <catalog name="tycho2" type="tdat">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_tycho2.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_tycho2.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
         <fields>
             <field name="name" renameTo="t2name" keepAfterCopy="true" prefix="TYC "/>
             <field name="mean_ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -173,6 +175,7 @@
     <catalog name="ugc" type="tdat">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ugc.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ugc.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
         <fields>
             <field name="name" renameTo="ugcname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -186,6 +189,7 @@
     <catalog name="wds" type="tdat">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_wds.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_wds.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
         <fields>
             <field name="name" renameTo="wdsname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -196,9 +200,10 @@
             <field name="class"/>
         </fields>
     </catalog>
-    <catalog name="woolley">
+    <catalog name="woolley" type="tdat">
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_woolley.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_woolley.hdr.gz</headerUrl>
+        <epoch>J2000</epoch>
         <fields>
             <field name="name" renameTo="gliesename" keepAfterCopy="true"/>
             <field name="parallax"/>
@@ -241,6 +246,7 @@
     </catalog>
     <catalog name="crossindex" type="dat">
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/IV/22/index.dat.gz</url>
+        <epoch>J2000</epoch>
         <fields>
             <field name="fk5" start="1" end="4" prefix="FK5 "/>
             <field name="rah" start="7" end="8"/>
@@ -263,6 +269,7 @@
     </catalog>
         <catalog name="lhs" type="dat">
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/87B/catalog.dat.gz</url>
+            <epoch>J2000</epoch>
             <fields>
                 <field name="lhsname" start="1" end="5" prefix="LHS " />
                 <field name="othername" start="7" end="21" />
@@ -279,6 +286,7 @@
         </catalog>
         <catalog name="sharpless" type="dat">
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/VII/20/catalog.dat.gz</url>
+            <epoch>J2000</epoch>
             <fields>
                 <field name="sharpname" start="1" end="4" prefix="Sh2-" />
                 <field name="bii" start="13" end="16" />
