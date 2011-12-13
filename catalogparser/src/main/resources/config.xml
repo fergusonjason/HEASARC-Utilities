@@ -107,7 +107,7 @@
         </fields>
     </catalog>
     <catalog name="ngc2000" type="tdat">
-        <title>NGC2000</title>
+        <title>New General</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ngc2000.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ngc2000.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
@@ -183,7 +183,7 @@
         </fields>
     </catalog>
     <catalog name="ugc" type="tdat">
-        <title>UGC</title>
+        <title>Uppsala</title>
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ugc.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ugc.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
