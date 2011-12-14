@@ -29,6 +29,7 @@ public class TreePanel extends JPanel {
     JTree tree;
 
     public TreePanel() {
+        super(new FlowLayout());
         init();
     }
 
@@ -36,13 +37,14 @@ public class TreePanel extends JPanel {
      * Init components specific to this component
      */
     private void init() {
-        scrollPane = new JScrollPane();
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
         tree = new JTree(topNode);
 
         tree.setPreferredSize(new Dimension(200,600));
-        scrollPane.add(tree);
+
+        scrollPane = new JScrollPane(tree);
+
         add(scrollPane);
     }
 }

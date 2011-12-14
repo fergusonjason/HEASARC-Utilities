@@ -35,7 +35,7 @@ public class ApplicationFrame extends JFrame {
 
 
     public ApplicationFrame() throws HeadlessException {
-        init();
+        //init();
     }
 
     /**
@@ -59,12 +59,13 @@ public class ApplicationFrame extends JFrame {
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setPreferredSize(new Dimension(600, 400));
-        setSize(600, 400);
 
         applicationPanel.add(menuPanel, BorderLayout.NORTH);
         applicationPanel.add(treePanel, BorderLayout.WEST);
         applicationPanel.add(editorPanel, BorderLayout.CENTER);
         applicationPanel.add(statusBarPanel, BorderLayout.SOUTH);
+
+        setSize(600, 400);
 
         add(applicationPanel);
         setVisible(true);
