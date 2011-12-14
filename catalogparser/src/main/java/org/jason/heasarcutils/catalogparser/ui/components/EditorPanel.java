@@ -42,6 +42,8 @@ public class EditorPanel extends JPanel {
         editorPane.setBorder(BorderFactory.createLoweredBevelBorder());
 
         scrollPane.add(editorPane);
+
+        add(scrollPane);
     }
 
 

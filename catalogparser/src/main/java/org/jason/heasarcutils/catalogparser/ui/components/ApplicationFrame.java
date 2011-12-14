@@ -58,6 +58,7 @@ public class ApplicationFrame extends JFrame {
 
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setPreferredSize(new Dimension(600, 400));
         setSize(600, 400);
 
         applicationPanel.add(menuPanel, BorderLayout.NORTH);

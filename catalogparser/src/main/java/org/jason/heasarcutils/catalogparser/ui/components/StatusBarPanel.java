@@ -15,6 +15,8 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
+
 import javax.swing.*;
 
 /**
@@ -22,6 +24,8 @@ import javax.swing.*;
  * @author Jason Ferguson
  */
 public class StatusBarPanel extends JPanel{
+
+    JStatusBar statusBar;
 
     public StatusBarPanel() {
         init();
@@ -31,6 +35,7 @@ public class StatusBarPanel extends JPanel{
      * Init components specific to this component
      */
     private void init() {
-
+        statusBar = new JStatusBar();
+        add(statusBar);
     }
 }

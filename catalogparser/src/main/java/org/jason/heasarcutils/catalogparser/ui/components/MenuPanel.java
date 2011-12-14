@@ -16,6 +16,7 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -50,6 +51,10 @@ public class MenuPanel extends JPanel {
 
         // add menu to menubar
         menuBar.add(fileMenu);
+
+
+        menuBar.setPreferredSize(new Dimension(600, 25));
+        add(menuBar);
     }
 
     private class FileExitActionListener implements ActionListener {

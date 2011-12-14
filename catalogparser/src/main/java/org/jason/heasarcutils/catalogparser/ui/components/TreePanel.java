@@ -16,6 +16,8 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.*;
 
 /**
  * @author Jason Ferguson
@@ -35,6 +37,12 @@ public class TreePanel extends JPanel {
      */
     private void init() {
         scrollPane = new JScrollPane();
-        tree = new JTree();
+
+        DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
+        tree = new JTree(topNode);
+
+        tree.setPreferredSize(new Dimension(200,600));
+        scrollPane.add(tree);
+        add(scrollPane);
     }
 }
