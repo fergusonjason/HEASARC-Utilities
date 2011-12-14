@@ -25,11 +25,14 @@ import java.awt.*;
  */
 public class TreePanel extends JPanel {
 
+    JComponent parent;
     JScrollPane scrollPane;
     JTree tree;
 
-    public TreePanel() {
-        super(new FlowLayout());
+    // constructor takes a backref to the enclosing component so I can get its size, etc
+    public TreePanel(JComponent parent) {
+        super();
+        this.parent = parent;
         init();
     }
 

@@ -21,17 +21,12 @@ import java.awt.*;
 /**
  * Main Frame component for the application
  *
- * @since 0.2
  * @author Jason Ferguson
+ * @since 0.2
  */
 public class ApplicationFrame extends JFrame {
 
-    private JPanel applicationPanel = new JPanel(new BorderLayout());
-
-    private EditorPanel editorPanel;
-    private MenuPanel menuPanel;
-    private StatusBarPanel statusBarPanel;
-    private TreePanel treePanel;
+    private ApplicationPanel applicationPanel = new ApplicationPanel(this);
 
 
     public ApplicationFrame() throws HeadlessException {
@@ -51,22 +46,11 @@ public class ApplicationFrame extends JFrame {
             }
         }
 
-        editorPanel = new EditorPanel();
-        menuPanel = new MenuPanel();
-        statusBarPanel = new StatusBarPanel();
-        treePanel = new TreePanel();
-
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //setPreferredSize(new Dimension(600, 400));
 
-        applicationPanel.add(menuPanel, BorderLayout.NORTH);
-        applicationPanel.add(treePanel, BorderLayout.WEST);
-        applicationPanel.add(editorPanel, BorderLayout.CENTER);
-        applicationPanel.add(statusBarPanel, BorderLayout.SOUTH);
-
-        setSize(600, 400);
-
+        applicationPanel = new ApplicationPanel(this);
+        setSize(600,400);
         add(applicationPanel);
         setVisible(true);
     }
