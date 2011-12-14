@@ -23,15 +23,26 @@ import javax.swing.*;
  */
 public class EditorPanel extends JPanel {
 
+    JScrollPane scrollPane;
     JEditorPane editorPane;
+
+    public EditorPanel() {
+        init();
+
+    }
 
     /**
      * Init components specific to this component
      */
     private void init() {
-        editorPane = new JEditorPane();
-    }
+        scrollPane = new JScrollPane();
 
+        editorPane = new JEditorPane();
+        editorPane.setEditable(false);
+        editorPane.setBorder(BorderFactory.createLoweredBevelBorder());
+
+        scrollPane.add(editorPane);
+    }
 
 
 }
