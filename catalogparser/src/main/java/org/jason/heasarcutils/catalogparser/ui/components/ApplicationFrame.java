@@ -41,7 +41,7 @@ public class ApplicationFrame extends JFrame {
     /**
      * Init components specific to this component
      */
-    private void init() {
+    public void init() {
 
         if (System.getProperty("os.name").contains("indows")) {
             try {
@@ -65,6 +65,7 @@ public class ApplicationFrame extends JFrame {
         applicationPanel.add(editorPanel, BorderLayout.CENTER);
         applicationPanel.add(statusBarPanel, BorderLayout.SOUTH);
 
+        add(applicationPanel);
         setVisible(true);
     }
 }
