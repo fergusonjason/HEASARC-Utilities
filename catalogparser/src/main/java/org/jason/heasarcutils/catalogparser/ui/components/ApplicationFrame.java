@@ -15,8 +15,11 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import org.jason.heasarcutils.catalogparser.util.Catalog;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Main Frame component for the application
@@ -26,10 +29,13 @@ import java.awt.*;
  */
 public class ApplicationFrame extends JFrame {
 
-    private ApplicationPanel applicationPanel = new ApplicationPanel(this);
+    //private ApplicationPanel applicationPanel = new ApplicationPanel(this);
+    ApplicationPanel applicationPanel;
 
+    private Map<String, Catalog> config;
 
-    public ApplicationFrame() throws HeadlessException {
+    public ApplicationFrame(Map<String, Catalog> config) throws HeadlessException {
+        this.config = config;
         //init();
     }
 
@@ -37,6 +43,8 @@ public class ApplicationFrame extends JFrame {
      * Init components specific to this component
      */
     public void init() {
+
+        applicationPanel = new ApplicationPanel(this, config);
 
         if (System.getProperty("os.name").contains("indows")) {
             try {
@@ -49,7 +57,6 @@ public class ApplicationFrame extends JFrame {
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        applicationPanel = new ApplicationPanel(this);
         setSize(600,400);
         add(applicationPanel);
         setVisible(true);

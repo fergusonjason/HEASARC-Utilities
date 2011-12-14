@@ -15,9 +15,13 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * @author Jason Ferguson
@@ -25,9 +29,10 @@ import java.awt.*;
  */
 public class TreePanel extends JPanel {
 
-    JComponent parent;
-    JScrollPane scrollPane;
-    JTree tree;
+    private JComponent parent;
+    private JScrollPane scrollPane;
+    private JTree tree;
+    private CatalogPopupMenu popupMenu;
 
     // constructor takes a backref to the enclosing component so I can get its size, etc
     public TreePanel(JComponent parent) {
@@ -44,10 +49,54 @@ public class TreePanel extends JPanel {
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
         tree = new JTree(topNode);
 
-        tree.setPreferredSize(new Dimension(200,600));
+        // create the tree nodes
+
+        // set listeners on the tree
+        tree.addMouseListener(new TreeContextPopupMenuListener());
+        tree.setPreferredSize(new Dimension(200, 600));
 
         scrollPane = new JScrollPane(tree);
 
         add(scrollPane);
+    }
+
+
+    public JTree getTree() {
+        return tree;
+    }
+
+    public void setPopupMenu(CatalogPopupMenu popupMenu) {
+        this.popupMenu = popupMenu;
+    }
+
+    private class TreeContextPopupMenuListener implements MouseListener {
+
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        public void mousePressed(MouseEvent e) {
+            if (popupMenu != null) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show((Component) e.getSource(), e.getX(), e.getY());
+                }
+            }
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            if (popupMenu != null) {
+                if (e.isPopupTrigger()) {
+                    popupMenu.show((Component) e.getSource(), e.getX(), e.getY());
+                }
+            }
+        }
+
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        public void mouseExited(MouseEvent e) {
+
+        }
     }
 }

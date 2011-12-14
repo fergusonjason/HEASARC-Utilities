@@ -35,7 +35,7 @@ public class CatalogPopupMenu extends JPopupMenu {
     private Map<String, Catalog> config;
 
     // provide backreference to the JTree this will be attached to
-    public CatalogPopupMenu(JTree parent) {
+    public CatalogPopupMenu(JTree parent, Map<String, Catalog> config) {
         this.parent = parent;
 
         init();

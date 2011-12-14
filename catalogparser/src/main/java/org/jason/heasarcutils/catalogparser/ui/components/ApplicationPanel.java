@@ -15,8 +15,12 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
+import org.jason.heasarcutils.catalogparser.util.Catalog;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * @since 0.2
@@ -24,15 +28,19 @@ import java.awt.*;
  */
 public class ApplicationPanel extends JPanel {
 
-    JFrame parent;
+    private JFrame parent;
 
     private EditorPanel editorPanel;
     private MenuPanel menuPanel;
     private StatusBarPanel statusBarPanel;
     private TreePanel treePanel;
 
+    private CatalogPopupMenu popupMenu;
+
+    private Map<String, Catalog> config;
+
     // constructor takes reference to parent jframe
-    public ApplicationPanel(JFrame parent) {
+    public ApplicationPanel(JFrame parent, Map<String, Catalog> config) {
         super(new BorderLayout());
         this.parent = parent;
 
@@ -44,7 +52,8 @@ public class ApplicationPanel extends JPanel {
         menuPanel = new MenuPanel();
         statusBarPanel = new StatusBarPanel();
         treePanel = new TreePanel(this);
-
+        popupMenu = new CatalogPopupMenu(treePanel.getTree(), config);
+        treePanel.setPopupMenu(popupMenu);
         add(menuPanel, BorderLayout.NORTH);
         add(treePanel, BorderLayout.WEST);
         add(editorPanel, BorderLayout.CENTER);
