@@ -16,12 +16,17 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * @since 0.2
  * @author Jason Ferguson
+ * @since 0.2
  */
 public class MenuPanel extends JPanel {
+
+    JMenuBar menuBar;
+    JMenu fileMenu;
 
     public MenuPanel() {
         init();
@@ -31,6 +36,26 @@ public class MenuPanel extends JPanel {
      * Init components specific to this component
      */
     private void init() {
+        menuBar = new JMenuBar();
+        fileMenu = new JMenu("File");
 
+        // create File menu MenuItems
+        JMenuItem exitItem = new JMenuItem("Exit");
+
+        // configure menuitem action listeners
+        exitItem.addActionListener(new FileExitActionListener());
+
+        // added menu items to menu
+        fileMenu.add(exitItem);
+
+        // add menu to menubar
+        menuBar.add(fileMenu);
+    }
+
+    private class FileExitActionListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
     }
 }
