@@ -53,8 +53,6 @@ public class TreePanel extends JPanel {
     private void init() {
 
         popupMenu = new CatalogPopupMenu(eventBus, getTree(), config);
-        JMenuItem exportMenuItem = new JMenuItem("Export To JSON");
-        popupMenu.add(exportMenuItem);
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 

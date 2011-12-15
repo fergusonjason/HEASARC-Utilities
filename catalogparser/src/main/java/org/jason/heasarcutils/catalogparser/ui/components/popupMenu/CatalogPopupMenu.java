@@ -59,7 +59,7 @@ public class CatalogPopupMenu extends JPopupMenu {
         // add listeners to menu items
         exportToJsonMenuItem.addActionListener(new ExportToJsonListener(config));
 
-        popupMenu.add(exportToJsonMenuItem);
+        add(exportToJsonMenuItem);
     }
 
     public class ExportToJsonListener implements ActionListener {
