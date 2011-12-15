@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.common.eventbus.EventBus;
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 
@@ -28,6 +29,8 @@ import java.util.Map;
  */
 public class ApplicationPanel extends JPanel {
 
+    private EventBus eventBus;
+
     private JFrame parent;
 
     private EditorPanel editorPanel;
@@ -40,15 +43,17 @@ public class ApplicationPanel extends JPanel {
     private Map<String, Catalog> config;
 
     // constructor takes reference to parent jframe
-    public ApplicationPanel(JFrame parent, Map<String, Catalog> config) {
+    public ApplicationPanel(EventBus eventBus, JFrame parent, Map<String, Catalog> config) {
         super(new BorderLayout());
+        this.eventBus = eventBus;
         this.parent = parent;
+        this.config = config;
 
         init();
     }
 
     private void init() {
-        editorPanel = new EditorPanel();
+        editorPanel = new EditorPanel(eventBus);
         menuPanel = new MenuPanel();
         statusBarPanel = new StatusBarPanel();
         treePanel = new TreePanel(this);

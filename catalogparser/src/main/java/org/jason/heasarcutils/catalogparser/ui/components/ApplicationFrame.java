@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.common.eventbus.EventBus;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
@@ -29,14 +30,15 @@ import java.util.Map;
  */
 public class ApplicationFrame extends JFrame {
 
-    //private ApplicationPanel applicationPanel = new ApplicationPanel(this);
-    ApplicationPanel applicationPanel;
+    private EventBus eventBus;
+
+    private ApplicationPanel applicationPanel;
 
     private Map<String, Catalog> config;
 
-    public ApplicationFrame(Map<String, Catalog> config) throws HeadlessException {
+    public ApplicationFrame(EventBus eventBus, Map<String, Catalog> config) throws HeadlessException {
+        this.eventBus = eventBus;
         this.config = config;
-        //init();
     }
 
     /**
@@ -52,7 +54,7 @@ public class ApplicationFrame extends JFrame {
             }
         }
 
-        applicationPanel = new ApplicationPanel(this, config);
+        applicationPanel = new ApplicationPanel(eventBus, this, config);
 
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

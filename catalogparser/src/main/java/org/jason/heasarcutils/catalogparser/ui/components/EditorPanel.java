@@ -15,18 +15,32 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import org.jason.heasarcutils.catalogparser.ui.event.PopulateEditorEvent;
+
 import javax.swing.*;
 
 /**
+ * Represents the panel that contains the Editor pane.
+ *
+ * This class handles the following events:
+ * - PopulateEditorEvent - fired by the Tree panel when an item in the tree is highlighted. The editor pane is
+ *   <em>supposed</em> to load the first 20 or so lines of the associated catalog (in JSON format), or display
+ *   a message saying that the catalog needs to be populated
+ *
  * @author Jason Ferguson
  * @since 0.2
  */
 public class EditorPanel extends JPanel {
 
-    JScrollPane scrollPane;
-    JEditorPane editorPane;
+    private EventBus eventBus;
 
-    public EditorPanel() {
+    private JScrollPane scrollPane;
+    private JEditorPane editorPane;
+
+    public EditorPanel(EventBus eventBus) {
+        this.eventBus  = eventBus;
         init();
     }
 
@@ -45,4 +59,9 @@ public class EditorPanel extends JPanel {
         add(scrollPane);
     }
 
+    @Subscribe
+    public void handlePopulateEditor(PopulateEditorEvent event) {
+
+        editorPane.setText("This catalog has not been imported.");
+    }
 }
