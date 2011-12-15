@@ -31,17 +31,19 @@ import java.util.Map;
  * @author Jason Ferguson
  * @since 0.2
  */
+@SuppressWarnings({"FieldCanBeLocal"})
 public class CatalogPopupMenu extends JPopupMenu {
 
     private EventBus eventBus;
 
-    private JTree parent;
+    private JTree tree;
+    private JPopupMenu popupMenu;
     private Map<String, Catalog> config;
 
     // provide backreference to the JTree this will be attached to
-    public CatalogPopupMenu(EventBus eventBus, JTree parent, Map<String, Catalog> config) {
+    public CatalogPopupMenu(EventBus eventBus, JTree tree, Map<String, Catalog> config) {
+        this.tree = tree;
         this.eventBus = eventBus;
-        this.parent = parent;
         this.config = config;
 
         init();
@@ -49,11 +51,15 @@ public class CatalogPopupMenu extends JPopupMenu {
 
     private void init() {
 
+        popupMenu = new JPopupMenu();
+
         // create menu items
         JMenuItem exportToJsonMenuItem = new JMenuItem("Export to JSON");
 
         // add listeners to menu items
         exportToJsonMenuItem.addActionListener(new ExportToJsonListener(config));
+
+        popupMenu.add(exportToJsonMenuItem);
     }
 
     public class ExportToJsonListener implements ActionListener {
@@ -66,7 +72,7 @@ public class CatalogPopupMenu extends JPopupMenu {
 
         public void actionPerformed(ActionEvent e) {
 
-            TreePath[] treePaths = parent.getSelectionPaths();
+            TreePath[] treePaths = tree.getSelectionPaths();
             if (treePaths != null && treePaths.length > 0) {
                 TreePath path = treePaths[0];
                 String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();

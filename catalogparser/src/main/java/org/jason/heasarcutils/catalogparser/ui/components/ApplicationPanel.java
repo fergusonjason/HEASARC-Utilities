@@ -16,7 +16,6 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import com.google.common.eventbus.EventBus;
-import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
@@ -38,7 +37,7 @@ public class ApplicationPanel extends JPanel {
     private StatusBarPanel statusBarPanel;
     private TreePanel treePanel;
 
-    private CatalogPopupMenu popupMenu;
+    //private CatalogPopupMenu popupMenu;
 
     private Map<String, Catalog> config;
 
@@ -56,9 +55,8 @@ public class ApplicationPanel extends JPanel {
         editorPanel = new EditorPanel(eventBus);
         menuPanel = new MenuPanel();
         statusBarPanel = new StatusBarPanel();
-        treePanel = new TreePanel(this);
-        popupMenu = new CatalogPopupMenu(treePanel.getTree(), config);
-        treePanel.setPopupMenu(popupMenu);
+        treePanel = new TreePanel(eventBus, config);
+        //treePanel.setPopupMenu(popupMenu);
         add(menuPanel, BorderLayout.NORTH);
         add(treePanel, BorderLayout.WEST);
         add(editorPanel, BorderLayout.CENTER);
