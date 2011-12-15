@@ -15,14 +15,15 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.common.eventbus.EventBus;
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Map;
 
 /**
@@ -31,16 +32,17 @@ import java.util.Map;
  */
 public class TreePanel extends JPanel {
 
-    private JComponent parent;
     private JScrollPane scrollPane;
     private JTree tree;
-    private CatalogPopupMenu popupMenu;
+    protected CatalogPopupMenu popupMenu;
     private Map<String, Catalog> config;
 
+    private EventBus eventBus;
+
     // constructor takes a backref to the enclosing component so I can get its size, etc
-    public TreePanel(JComponent parent, Map<String, Catalog> config) {
+    public TreePanel(EventBus eventBus, Map<String, Catalog> config) {
         super();
-        this.parent = parent;
+        this.eventBus = eventBus;
         this.config = config;
         init();
     }
@@ -49,6 +51,10 @@ public class TreePanel extends JPanel {
      * Init components specific to this component
      */
     private void init() {
+
+        popupMenu = new CatalogPopupMenu(eventBus, getTree(), config);
+        JMenuItem exportMenuItem = new JMenuItem("Export To JSON");
+        popupMenu.add(exportMenuItem);
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
@@ -76,34 +82,28 @@ public class TreePanel extends JPanel {
         this.popupMenu = popupMenu;
     }
 
-    private class TreeContextPopupMenuListener implements MouseListener {
-
-        public void mouseClicked(MouseEvent e) {
-
-        }
+    class TreeContextPopupMenuListener extends MouseAdapter {
 
         public void mousePressed(MouseEvent e) {
+
             if (popupMenu != null) {
                 if (e.isPopupTrigger()) {
-                    popupMenu.show((Component) e.getSource(), e.getX(), e.getY());
+                    doPopup(e);
                 }
             }
         }
 
         public void mouseReleased(MouseEvent e) {
+
             if (popupMenu != null) {
                 if (e.isPopupTrigger()) {
-                    popupMenu.show((Component) e.getSource(), e.getX(), e.getY());
+                    doPopup(e);
                 }
             }
         }
 
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        public void mouseExited(MouseEvent e) {
-
+        public void doPopup(MouseEvent e) {
+            popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }
