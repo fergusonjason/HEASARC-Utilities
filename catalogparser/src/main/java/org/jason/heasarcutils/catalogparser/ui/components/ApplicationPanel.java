@@ -56,7 +56,7 @@ public class ApplicationPanel extends JPanel {
         menuPanel = new MenuPanel();
         statusBarPanel = new StatusBarPanel();
         treePanel = new TreePanel(eventBus, config);
-        //treePanel.setPopupMenu(popupMenu);
+
         add(menuPanel, BorderLayout.NORTH);
         add(treePanel, BorderLayout.WEST);
         add(editorPanel, BorderLayout.CENTER);

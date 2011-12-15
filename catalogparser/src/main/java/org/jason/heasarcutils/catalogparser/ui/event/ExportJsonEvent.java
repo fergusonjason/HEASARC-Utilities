@@ -15,6 +15,8 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.event;
 
+import org.jason.heasarcutils.catalogparser.util.Catalog;
+
 /**
  * Event "fired" when clicking on the Export to JSON popup menu item
  *
@@ -23,13 +25,14 @@ package org.jason.heasarcutils.catalogparser.ui.event;
  */
 public class ExportJsonEvent {
 
-    private String catalogName;
+    private Catalog catalog;
 
-    public ExportJsonEvent(String catalogName) {
-        this.catalogName = catalogName;
+    public ExportJsonEvent(Catalog catalog) {
+        this.catalog = catalog;
     }
 
-    public String getCatalogName() {
-        return catalogName;
+    public Catalog getCatalog() {
+        return catalog;
     }
+
 }

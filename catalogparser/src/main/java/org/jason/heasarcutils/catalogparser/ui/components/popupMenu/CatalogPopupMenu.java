@@ -16,6 +16,7 @@
 package org.jason.heasarcutils.catalogparser.ui.components.popupMenu;
 
 import com.google.common.eventbus.EventBus;
+import org.jason.heasarcutils.catalogparser.ui.event.ExportJsonEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.PopulateEditorEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.JsonExporter;
@@ -37,9 +38,16 @@ public class CatalogPopupMenu extends JPopupMenu {
     private EventBus eventBus;
 
     private JTree tree;
-    private JPopupMenu popupMenu;
     private Map<String, Catalog> config;
 
+    private Catalog catalog;
+
+    public CatalogPopupMenu(EventBus eventBus, Catalog catalog) {
+        this.eventBus = eventBus;
+        this.catalog = catalog;
+
+        init();
+    }
     // provide backreference to the JTree this will be attached to
     public CatalogPopupMenu(EventBus eventBus, JTree tree, Map<String, Catalog> config) {
         this.tree = tree;
@@ -51,12 +59,18 @@ public class CatalogPopupMenu extends JPopupMenu {
 
     private void init() {
 
-        popupMenu = new JPopupMenu();
-
         // create menu items
-        JMenuItem exportToJsonMenuItem = new JMenuItem("Export to JSON");
+        JMenuItem exportToJsonMenuItem = new JMenuItem("Export to JSON: " + catalog.getName());
 
         // add listeners to menu items
+        exportToJsonMenuItem.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // fire a ExportJSONAction
+                eventBus.post(new ExportJsonEvent(catalog));
+
+            }
+        });
         exportToJsonMenuItem.addActionListener(new ExportToJsonListener(config));
 
         add(exportToJsonMenuItem);
@@ -70,6 +84,7 @@ public class CatalogPopupMenu extends JPopupMenu {
             this.config = config;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
 
             TreePath[] treePaths = tree.getSelectionPaths();

@@ -20,6 +20,8 @@ import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopup
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -34,7 +36,7 @@ public class TreePanel extends JPanel {
 
     private JScrollPane scrollPane;
     private JTree tree;
-    protected CatalogPopupMenu popupMenu;
+    //protected CatalogPopupMenu popupMenu;
     private Map<String, Catalog> config;
 
     private EventBus eventBus;
@@ -52,7 +54,7 @@ public class TreePanel extends JPanel {
      */
     private void init() {
 
-        popupMenu = new CatalogPopupMenu(eventBus, getTree(), config);
+        //popupMenu = new CatalogPopupMenu(eventBus, getTree(), config);
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
@@ -63,7 +65,8 @@ public class TreePanel extends JPanel {
         }
         tree = new JTree(topNode);
         // set listeners on the tree
-        tree.addMouseListener(new TreeContextPopupMenuListener());
+        tree.addTreeSelectionListener(new TreePopupMenuListener());
+        //tree.addMouseListener(new TreeContextPopupMenuListener());
         tree.setPreferredSize(new Dimension(200, 600));
 
         scrollPane = new JScrollPane(tree);
@@ -76,12 +79,22 @@ public class TreePanel extends JPanel {
         return tree;
     }
 
-    public void setPopupMenu(CatalogPopupMenu popupMenu) {
-        this.popupMenu = popupMenu;
+    public class TreePopupMenuListener implements TreeSelectionListener {
+        @Override
+        public void valueChanged(TreeSelectionEvent e) {
+            Object o = tree.getLastSelectedPathComponent();
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
+            String title = (String) node.getUserObject();
+            System.out.println(o);
+        }
     }
 
-    class TreeContextPopupMenuListener extends MouseAdapter {
+    public class TreeContextPopupMenuListener extends MouseAdapter {
 
+        private CatalogPopupMenu popupMenu;
+
+
+        @Override
         public void mousePressed(MouseEvent e) {
 
             if (popupMenu != null) {
@@ -91,6 +104,7 @@ public class TreePanel extends JPanel {
             }
         }
 
+        @Override
         public void mouseReleased(MouseEvent e) {
 
             if (popupMenu != null) {
