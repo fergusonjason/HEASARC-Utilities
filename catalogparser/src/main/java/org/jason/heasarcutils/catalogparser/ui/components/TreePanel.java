@@ -16,12 +16,14 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
+import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -33,11 +35,13 @@ public class TreePanel extends JPanel {
     private JScrollPane scrollPane;
     private JTree tree;
     private CatalogPopupMenu popupMenu;
+    private Map<String, Catalog> config;
 
     // constructor takes a backref to the enclosing component so I can get its size, etc
-    public TreePanel(JComponent parent) {
+    public TreePanel(JComponent parent, Map<String, Catalog> config) {
         super();
         this.parent = parent;
+        this.config = config;
         init();
     }
 
@@ -47,10 +51,13 @@ public class TreePanel extends JPanel {
     private void init() {
 
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
-        tree = new JTree(topNode);
 
         // create the tree nodes
-
+        for (String key: config.keySet()) {
+            DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode(key);
+            topNode.add(treeNode);
+        }
+        tree = new JTree(topNode);
         // set listeners on the tree
         tree.addMouseListener(new TreeContextPopupMenuListener());
         tree.setPreferredSize(new Dimension(200, 600));
