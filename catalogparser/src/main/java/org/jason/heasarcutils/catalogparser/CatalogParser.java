@@ -15,6 +15,8 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
+import com.google.common.eventbus.EventBus;
+import org.jason.heasarcutils.catalogparser.ui.components.ApplicationFrame;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.ConfigParser;
 
@@ -31,16 +33,21 @@ import java.util.Map;
  */
 public class CatalogParser {
 
-    private static void createAndShowGUI(Map<String, Catalog> config) {
-        CatalogParserUserInterface ui = new CatalogParserUserInterface();
-        ui.createAndShowGUI(config);
+    private EventBus eventBus;
+
+    public CatalogParser() {
+        eventBus = new EventBus();
+    }
+
+    private void createAndShowGUI(Map<String, Catalog> config) {
+        ApplicationFrame ui2 = new ApplicationFrame(eventBus, config);
+        ui2.init();
     }
 
     public static void main(String[] args) {
         CatalogParser app = new CatalogParser();
         ConfigParser configParser = new ConfigParser("config.xml");
         Map<String, Catalog> config = configParser.getConfig();
-
-        createAndShowGUI(config);
+        app.createAndShowGUI(config);
     }
 }
