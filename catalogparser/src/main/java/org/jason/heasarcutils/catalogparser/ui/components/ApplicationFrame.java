@@ -43,16 +43,16 @@ public class ApplicationFrame extends JFrame {
      * Init components specific to this component
      */
     public void init() {
-
-        applicationPanel = new ApplicationPanel(this, config);
-
         if (System.getProperty("os.name").contains("indows")) {
             try {
                 UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                SwingUtilities.updateComponentTreeUI(ApplicationFrame.this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+        applicationPanel = new ApplicationPanel(this, config);
 
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
