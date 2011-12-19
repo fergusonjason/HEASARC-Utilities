@@ -15,10 +15,17 @@
  */
 package org.jason.heasarcutils.catalogparser.di;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
-import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
+import com.google.inject.Provides;
+import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
+import org.jason.heasarcutils.catalogparser.ui.components.*;
+import org.jason.heasarcutils.catalogparser.util.ConfigParser;
 
 /**
+ * Guice Module binding for application so I can inject the eventbus
+ *
+ * @since 0.2
  * @author Jason Ferguson
  */
 public class CatalogModule extends AbstractModule {
@@ -26,6 +33,22 @@ public class CatalogModule extends AbstractModule {
     @Override
     protected void configure() {
 
-        bind(CatalogPopupMenu.class);
+        // one eventbus to rule them all, and in the darkness bind them
+        bind(EventBus.class);
+
+        bind(ApplicationFrame.class).asEagerSingleton();
+        bind(ApplicationPanel.class).asEagerSingleton();
+        bind(MenuPanel.class).asEagerSingleton();
+        bind(StatusBarPanel.class).asEagerSingleton();
+        bind(TreePanel.class).asEagerSingleton();
+        bind(EditorPanel.class).asEagerSingleton();
     }
+
+    @Provides
+    ConfigMap provideConfig() {
+        ConfigMap config = new ConfigMap();
+        config.putAll(new ConfigParser("config.xml").getConfig());
+        return config;
+    }
+
 }
