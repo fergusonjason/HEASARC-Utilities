@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.inject.Inject;
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
 
 import javax.swing.*;
@@ -39,11 +40,19 @@ public class ApplicationPanel extends JPanel {
         init();
     }
 
+    @Inject
+    public ApplicationPanel(EditorPanel editorPanel, MenuPanel menuPanel, TreePanel treePanel, StatusBarPanel statusBarPanel) {
+        super(new BorderLayout());
+
+        this.editorPanel = editorPanel;
+        this.menuPanel = menuPanel;
+        this.treePanel = treePanel;
+        this.statusBarPanel = statusBarPanel;
+
+        init();
+    }
+
     private void init() {
-        editorPanel = new EditorPanel();
-        menuPanel = new MenuPanel();
-        statusBarPanel = new StatusBarPanel();
-        treePanel = new TreePanel();
         popupMenu = new CatalogPopupMenu();
 
         add(menuPanel, BorderLayout.NORTH);
