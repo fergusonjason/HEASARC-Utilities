@@ -16,14 +16,14 @@
 package org.jason.heasarcutils.catalogparser.ui.components.popupMenu;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
 import org.jason.heasarcutils.catalogparser.ui.event.ExportJsonEvent;
-import org.jason.heasarcutils.catalogparser.ui.event.PopulateEditorEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.ShowContextPopupEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
-import org.jason.heasarcutils.catalogparser.util.JsonExporter;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
@@ -36,44 +36,43 @@ import java.util.Map;
 public class CatalogPopupMenu extends JPopupMenu {
 
     private EventBus eventBus;
+    private ConfigMap config;
 
-    private JTree tree;
-    private Map<String, Catalog> config;
-
-    private Catalog catalog;
-
-    public CatalogPopupMenu(EventBus eventBus, Catalog catalog) {
-        this.eventBus = eventBus;
-        this.catalog = catalog;
-
-        init();
+    public CatalogPopupMenu() {
     }
-    // provide backreference to the JTree this will be attached to
-    public CatalogPopupMenu(EventBus eventBus, JTree tree, Map<String, Catalog> config) {
-        this.tree = tree;
-        this.eventBus = eventBus;
+
+    @Inject
+    public CatalogPopupMenu(ConfigMap config, EventBus eventBus) {
         this.config = config;
+        this.eventBus = eventBus;
 
         init();
     }
+
 
     private void init() {
 
-        // create menu items
-        JMenuItem exportToJsonMenuItem = new JMenuItem("Export to JSON: " + catalog.getName());
+        for (String catalogName : config.keySet()) {
+            // create menu items
+            final Catalog catalog = config.get(catalogName);
+            final String name = config.get(catalogName).getName();
 
-        // add listeners to menu items
-        exportToJsonMenuItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // fire a ExportJSONAction
-                eventBus.post(new ExportJsonEvent(catalog));
+            JMenuItem exportToJsonMenuItem = new JMenuItem("Export to JSON: " + name);
 
-            }
-        });
-        exportToJsonMenuItem.addActionListener(new ExportToJsonListener(config));
+            // add listeners to menu items
+            exportToJsonMenuItem.addActionListener(new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // fire a ExportJSONAction
+                    eventBus.post(new ExportJsonEvent(config.get(catalog)));
 
-        add(exportToJsonMenuItem);
+                }
+            });
+            exportToJsonMenuItem.addActionListener(new ExportToJsonListener(config));
+
+            add(exportToJsonMenuItem);
+        }
+
     }
 
     public class ExportToJsonListener implements ActionListener {
@@ -87,15 +86,21 @@ public class CatalogPopupMenu extends JPopupMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            TreePath[] treePaths = tree.getSelectionPaths();
-            if (treePaths != null && treePaths.length > 0) {
-                TreePath path = treePaths[0];
-                String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-                JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
-                jsonExporter.exportToJSON();
-                eventBus.post(new PopulateEditorEvent(catalog));
-                System.out.println("posted PopulateEditorEvent to event bus");
-            }
+//            TreePath[] treePaths = tree.getSelectionPaths();
+//            if (treePaths != null && treePaths.length > 0) {
+//                TreePath path = treePaths[0];
+//                String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
+//                JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
+//                jsonExporter.exportToJSON();
+//                eventBus.post(new PopulateEditorEvent(catalog));
+//                System.out.println("posted PopulateEditorEvent to event bus");
+//            }
         }
+    }
+
+    @Subscribe
+    public void handlePopupEvent(ShowContextPopupEvent e) {
+        System.out.println("Received ShowContextPopupEvent");
+        this.show(e.getComponent(), e.getX(), e.getY());
     }
 }
