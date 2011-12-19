@@ -15,12 +15,10 @@
  */
 package org.jason.heasarcutils.catalogparser;
 
-import com.google.common.eventbus.EventBus;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import org.jason.heasarcutils.catalogparser.di.CatalogModule;
 import org.jason.heasarcutils.catalogparser.ui.components.ApplicationFrame;
-import org.jason.heasarcutils.catalogparser.util.Catalog;
-import org.jason.heasarcutils.catalogparser.util.ConfigParser;
-
-import java.util.Map;
 
 /**
  * GUI-based application to import data from the HEASARC and Vizier archives
@@ -33,21 +31,21 @@ import java.util.Map;
  */
 public class CatalogParser {
 
-    private EventBus eventBus;
+    public CatalogParser() {}
 
-    public CatalogParser() {
-        eventBus = new EventBus();
-    }
-
-    private void createAndShowGUI(Map<String, Catalog> config) {
-        ApplicationFrame ui2 = new ApplicationFrame(eventBus, config);
+    private void createAndShowGUI() {
+        ApplicationFrame ui2 = new ApplicationFrame();
         ui2.init();
     }
 
+    @SuppressWarnings("unused")
     public static void main(String[] args) {
+
+        // Create the guice injector
+        Injector injector = Guice.createInjector(new CatalogModule());
+
+        // run this biatch
         CatalogParser app = new CatalogParser();
-        ConfigParser configParser = new ConfigParser("config.xml");
-        Map<String, Catalog> config = configParser.getConfig();
-        app.createAndShowGUI(config);
+        app.createAndShowGUI();
     }
 }
