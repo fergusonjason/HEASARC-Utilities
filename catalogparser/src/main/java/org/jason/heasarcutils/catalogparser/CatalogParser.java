@@ -31,10 +31,13 @@ import org.jason.heasarcutils.catalogparser.ui.components.ApplicationFrame;
  */
 public class CatalogParser {
 
+    private static Injector injector;
+
     public CatalogParser() {}
 
     private void createAndShowGUI() {
-        ApplicationFrame ui2 = new ApplicationFrame();
+        ApplicationFrame ui2 = injector.getInstance(ApplicationFrame.class);
+
         ui2.init();
     }
 
@@ -42,7 +45,7 @@ public class CatalogParser {
     public static void main(String[] args) {
 
         // Create the guice injector
-        Injector injector = Guice.createInjector(new CatalogModule());
+        injector = Guice.createInjector(new CatalogModule());
 
         // run this biatch
         CatalogParser app = new CatalogParser();
