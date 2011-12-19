@@ -17,6 +17,8 @@ package org.jason.heasarcutils.catalogparser.ui.components;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.ui.event.PopulateEditorEvent;
 
 import javax.swing.*;
@@ -32,6 +34,7 @@ import javax.swing.*;
  * @author Jason Ferguson
  * @since 0.2
  */
+@Singleton
 public class EditorPanel extends JPanel {
 
     private EventBus eventBus;
@@ -39,6 +42,10 @@ public class EditorPanel extends JPanel {
     private JScrollPane scrollPane;
     private JEditorPane editorPane;
 
+    public EditorPanel() {
+    }
+
+    @Inject
     public EditorPanel(EventBus eventBus) {
         this.eventBus  = eventBus;
         init();
