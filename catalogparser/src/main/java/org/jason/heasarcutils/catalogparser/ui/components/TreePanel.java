@@ -16,19 +16,20 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
+import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
-import org.jason.heasarcutils.catalogparser.util.Catalog;
+import org.jason.heasarcutils.catalogparser.ui.event.ShowContextPopupEvent;
 
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Map;
 
 /**
+ * JPanel containing the tree control
+ *
  * @author Jason Ferguson
  * @since 0.2
  */
@@ -36,13 +37,13 @@ public class TreePanel extends JPanel {
 
     private JScrollPane scrollPane;
     private JTree tree;
-    //protected CatalogPopupMenu popupMenu;
-    private Map<String, Catalog> config;
-
+    private ConfigMap config;
     private EventBus eventBus;
 
-    // constructor takes a backref to the enclosing component so I can get its size, etc
-    public TreePanel(EventBus eventBus, Map<String, Catalog> config) {
+    public TreePanel() {}
+
+    @Inject
+    public TreePanel(EventBus eventBus, ConfigMap config) {
         super();
         this.eventBus = eventBus;
         this.config = config;
@@ -54,8 +55,6 @@ public class TreePanel extends JPanel {
      */
     private void init() {
 
-        //popupMenu = new CatalogPopupMenu(eventBus, getTree(), config);
-
         DefaultMutableTreeNode topNode = new DefaultMutableTreeNode("Catalogs");
 
         // create the tree nodes
@@ -65,28 +64,12 @@ public class TreePanel extends JPanel {
         }
         tree = new JTree(topNode);
         // set listeners on the tree
-        tree.addTreeSelectionListener(new TreePopupMenuListener());
-        //tree.addMouseListener(new TreeContextPopupMenuListener());
+        tree.addMouseListener(new TreeContextPopupMenuListener());
         tree.setPreferredSize(new Dimension(200, 600));
 
         scrollPane = new JScrollPane(tree);
 
         add(scrollPane);
-    }
-
-
-    public JTree getTree() {
-        return tree;
-    }
-
-    public class TreePopupMenuListener implements TreeSelectionListener {
-        @Override
-        public void valueChanged(TreeSelectionEvent e) {
-            Object o = tree.getLastSelectedPathComponent();
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
-            String title = (String) node.getUserObject();
-            System.out.println(o);
-        }
     }
 
     public class TreeContextPopupMenuListener extends MouseAdapter {
@@ -96,6 +79,8 @@ public class TreePanel extends JPanel {
 
         @Override
         public void mousePressed(MouseEvent e) {
+
+            doPopup(e);
 
             if (popupMenu != null) {
                 if (e.isPopupTrigger()) {
@@ -107,6 +92,8 @@ public class TreePanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
 
+            doPopup(e);
+
             if (popupMenu != null) {
                 if (e.isPopupTrigger()) {
                     doPopup(e);
@@ -115,7 +102,8 @@ public class TreePanel extends JPanel {
         }
 
         public void doPopup(MouseEvent e) {
-            popupMenu.show(e.getComponent(), e.getX(), e.getY());
+            eventBus.post(new ShowContextPopupEvent(e.getComponent(), e.getX(), e.getY()));
+            //popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }
