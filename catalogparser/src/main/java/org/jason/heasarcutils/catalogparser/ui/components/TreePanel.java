@@ -103,7 +103,6 @@ public class TreePanel extends JPanel {
 
         public void doPopup(MouseEvent e) {
             eventBus.post(new ShowContextPopupEvent(e.getComponent(), e.getX(), e.getY()));
-            //popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
     }
 }
