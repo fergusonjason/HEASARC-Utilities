@@ -15,6 +15,8 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.inject.Inject;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,6 +32,13 @@ public class ApplicationFrame extends JFrame {
 
     public ApplicationFrame() throws HeadlessException {}
 
+    @Inject
+    public ApplicationFrame(ApplicationPanel applicationPanel) throws HeadlessException {
+        this.applicationPanel = applicationPanel;
+
+        init();
+    }
+
     /**
      * Init components specific to this component
      */
@@ -42,8 +51,6 @@ public class ApplicationFrame extends JFrame {
                 e.printStackTrace();
             }
         }
-
-        applicationPanel = new ApplicationPanel();
 
         setTitle("Astronomical Catalog Parser");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
