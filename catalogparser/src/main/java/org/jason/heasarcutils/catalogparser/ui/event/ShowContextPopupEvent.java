@@ -34,4 +34,16 @@ public class ShowContextPopupEvent {
         this.x = x;
         this.y = y;
     }
+
+    public Component getComponent() {
+        return component;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }
