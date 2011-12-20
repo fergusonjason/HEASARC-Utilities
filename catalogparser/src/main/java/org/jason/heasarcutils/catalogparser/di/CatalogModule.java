@@ -22,6 +22,8 @@ import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
 import org.jason.heasarcutils.catalogparser.ui.components.*;
 import org.jason.heasarcutils.catalogparser.util.ConfigParser;
 
+import javax.inject.Singleton;
+
 /**
  * Guice Module binding for application so I can inject the eventbus
  *
@@ -34,14 +36,8 @@ public class CatalogModule extends AbstractModule {
     protected void configure() {
 
         // one eventbus to rule them all, and in the darkness bind them
-        bind(EventBus.class);
+        bind(EventBus.class).in(Singleton.class);
 
-        bind(ApplicationFrame.class).asEagerSingleton();
-        bind(ApplicationPanel.class).asEagerSingleton();
-        bind(MenuPanel.class).asEagerSingleton();
-        bind(StatusBarPanel.class).asEagerSingleton();
-        bind(TreePanel.class).asEagerSingleton();
-        bind(EditorPanel.class).asEagerSingleton();
     }
 
     @Provides
