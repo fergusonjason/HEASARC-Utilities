@@ -219,7 +219,7 @@ public class JsonManager {
             FieldData fd = catalog.getFieldData().get(key);
             if (fd.isIncluded()) {
                 if (data.get(key) != null) {
-                    if (fd.getPrefix() != null && data.get(key).indexOf(fd.getPrefix()) == -1) {
+                    if (fd.getPrefix() != null && data.get(key).contains(fd.getPrefix())) {
                         result.put(key, fd.getPrefix() + data.get(key));
                     } else {
                         result.put(key, data.get(key));
