@@ -65,7 +65,7 @@ public class JsonManager {
     /**
      * Import a TDAT file
      *
-     * @param fileURL   String representing the URL of the file to import
+     * @param fileURL String representing the URL of the file to import
      */
     private void importTdatFile(String fileURL) {
 
@@ -75,53 +75,40 @@ public class JsonManager {
             URL url = new URL(fileURL);
 
             // set up input
-            GZIPInputStream gzis;
-            if (new File(filename).isFile()) {
-                InputStream is = ClassLoader.getSystemResourceAsStream(fileURL);
-                gzis = new GZIPInputStream(is);
-                System.out.println("Using tdat header from classes directory");
-            } else {
-                gzis = new GZIPInputStream(url.openStream());
-            }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
+            BufferedReader reader = getReader(fileURL);
 
             // set up output
             BufferedWriter writer = new BufferedWriter(new FileWriter(catalog.getName() + ".json"));
 
-            // create a template so I only have to create a map once
-            Map<String, String> template = new LinkedHashMap<String, String>(catalog.getFieldData().size());
-            for (String fieldName : catalog.getFieldData().keySet()) {
-                template.put(fieldName, null);
-            }
-
             // start processing
             while (reader.ready()) {
                 String line = reader.readLine();
-                if (line.matches("^(.*?\\|)*$")) {
-                    Map<String, String> result = new HashMap<String, String>();
-                    String[] fieldNames = catalog.getFieldData().keySet().toArray(new String[]{});
-                    String[] fieldValues = line.split("\\|");
-
-                    for (int i = 0; i < fieldValues.length; i++) {
-                        FieldData fd = catalog.getFieldData().get(fieldNames[i]);
-                        if (catalog.getFieldDataSet().contains(fd)) {
-                            result.put(fieldNames[i], fieldValues[i]);
-                        }
-                    }
-
-                    result = removeNulls(result);
-                    result = removeUnwantedFields(result, catalog);
-                    result = fixFieldPrefixes(result, catalog);
-                    result = fixFieldNames(result, catalog);
-
-                    writer.write(getJsonLine(result));
-
+                if (!line.matches("^(.*?\\|)*$")) {
+                    continue;
                 }
+                Map<String, String> result = new HashMap<String, String>();
+                String[] fieldNames = catalog.getFieldData().keySet().toArray(new String[]{});
+                String[] fieldValues = line.split("\\|");
+
+                for (int i = 0; i < fieldValues.length; i++) {
+                    FieldData fd = catalog.getFieldData().get(fieldNames[i]);
+                    if (catalog.getFieldDataSet().contains(fd)) {
+                        result.put(fieldNames[i], fieldValues[i]);
+                    }
+                }
+
+                result = removeNulls(result);
+                result = removeUnwantedFields(result, catalog);
+                result = fixFieldPrefixes(result, catalog);
+                result = fixFieldNames(result, catalog);
+
+                writer.write(getJsonLine(result));
+
             }
 
             writer.close();
             reader.close();
-            gzis.close();
+            //gzis.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -134,8 +121,7 @@ public class JsonManager {
         try {
             URL url = new URL(filename);
             // set up the data input
-            GZIPInputStream gzis = new GZIPInputStream(url.openStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
+            BufferedReader reader = getReader(filename);
 
             // set up the data output
             BufferedWriter writer = new BufferedWriter(new FileWriter(catalog.getName() + ".json"));
@@ -168,12 +154,29 @@ public class JsonManager {
             writer.close();
 
             reader.close();
-            gzis.close();
+            //gzis.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private BufferedReader getReader(final String fileUrl) throws IOException {
+        final String filename = getFilename(fileUrl) + ".gz";
+        final URL url = new URL(fileUrl);
+        final InputStream stream;
+        if (new File(filename).isFile()) {
+            stream = ClassLoader.getSystemResourceAsStream(fileUrl);
+            System.out.println("Using tdat header from classes directory");
+        } else {
+            stream = url.openStream();
+        }
+        final GZIPInputStream gzipStream = new GZIPInputStream(stream);
+        final InputStreamReader gzipStreamReader =
+            new InputStreamReader(gzipStream, "UTF-8");
+        final BufferedReader reader = new BufferedReader(gzipStreamReader);
+        return reader;
     }
 
     private Map<String, String> removeNulls(Map<String, String> map) {
