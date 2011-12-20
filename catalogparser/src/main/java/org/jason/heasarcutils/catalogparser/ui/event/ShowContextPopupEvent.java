@@ -23,7 +23,7 @@ import java.awt.*;
  * @since 0.2
  * @author Jason Ferguson
  */
-public class ShowContextPopupEvent {
+public class ShowContextPopupEvent implements ApplicationEvent {
 
     private Component component;
     private int x;
