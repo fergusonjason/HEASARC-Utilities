@@ -28,6 +28,7 @@ import java.awt.*;
  * @since 0.2
  */
 @Singleton
+@SuppressWarnings({"unused"})
 public class ApplicationFrame extends JFrame {
 
     private ApplicationPanel applicationPanel;
