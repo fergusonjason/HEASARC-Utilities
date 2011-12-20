@@ -50,16 +50,16 @@ public class JsonExporter {
         if (catalog.getType().equals("tdat")) {
             // import tdat file
             String filename = catalog.getUrl();
-            processTdatFile(filename);
+            importTdatFile(filename);
         } else {
             // import dat file
             String filename = catalog.getUrl();
-            processDatFile(filename);
+            importDatFile(filename);
         }
 
     }
 
-    private void processTdatFile(String fileURL) {
+    private void importTdatFile(String fileURL) {
 
         //String filename = "classes" + System.getProperty("file.separator") + getFilename(fileURL) + ".gz";
         String filename = getFilename(fileURL) + ".gz";
@@ -122,7 +122,7 @@ public class JsonExporter {
         }
     }
 
-    private void processDatFile(String filename) {
+    private void importDatFile(String filename) {
 
         try {
             URL url = new URL(filename);
