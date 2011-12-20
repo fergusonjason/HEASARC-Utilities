@@ -26,13 +26,12 @@ import org.jason.heasarcutils.catalogparser.util.Catalog;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 /**
  * @author Jason Ferguson
  * @since 0.2
  */
-@SuppressWarnings({"FieldCanBeLocal"})
+@SuppressWarnings({"FieldCanBeLocal","unused"})
 public class CatalogPopupMenu extends JPopupMenu {
 
     private EventBus eventBus;
@@ -48,7 +47,6 @@ public class CatalogPopupMenu extends JPopupMenu {
 
         init();
 
-        //eventBus.register(this);
 
     }
 
