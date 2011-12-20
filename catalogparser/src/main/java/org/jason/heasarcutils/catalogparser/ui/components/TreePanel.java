@@ -34,6 +34,7 @@ import java.awt.event.MouseEvent;
  * @author Jason Ferguson
  * @since 0.2
  */
+@SuppressWarnings({"unused"})
 @Singleton
 public class TreePanel extends JPanel {
 
