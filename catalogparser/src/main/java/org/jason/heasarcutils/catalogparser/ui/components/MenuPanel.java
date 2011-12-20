@@ -15,6 +15,8 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.inject.Singleton;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,6 +26,7 @@ import java.awt.event.ActionListener;
  * @author Jason Ferguson
  * @since 0.2
  */
+@Singleton
 public class MenuPanel extends JPanel {
 
     JMenuBar menuBar;

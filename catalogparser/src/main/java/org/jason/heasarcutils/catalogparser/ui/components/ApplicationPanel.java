@@ -15,7 +15,9 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
 
 import javax.swing.*;
@@ -25,7 +27,10 @@ import java.awt.*;
  * @since 0.2
  * @author Jason Ferguson
  */
+@Singleton
 public class ApplicationPanel extends JPanel {
+
+    private EventBus eventBus;
 
     private EditorPanel editorPanel;
     private MenuPanel menuPanel;
@@ -41,19 +46,31 @@ public class ApplicationPanel extends JPanel {
     }
 
     @Inject
-    public ApplicationPanel(EditorPanel editorPanel, MenuPanel menuPanel, TreePanel treePanel, StatusBarPanel statusBarPanel) {
+    public ApplicationPanel(EventBus eventBus,
+                            EditorPanel editorPanel,
+                            MenuPanel menuPanel,
+                            TreePanel treePanel,
+                            StatusBarPanel statusBarPanel,
+                            CatalogPopupMenu popupMenu) {
         super(new BorderLayout());
+
+        this.eventBus = eventBus;
 
         this.editorPanel = editorPanel;
         this.menuPanel = menuPanel;
         this.treePanel = treePanel;
         this.statusBarPanel = statusBarPanel;
+        this.popupMenu = popupMenu;
+
+        eventBus.register(this.editorPanel);
+        eventBus.register(this.popupMenu);
 
         init();
     }
 
     private void init() {
-        popupMenu = new CatalogPopupMenu();
+        //popupMenu = new CatalogPopupMenu();
+        //eventBus.register(popupMenu);
 
         add(menuPanel, BorderLayout.NORTH);
         add(treePanel, BorderLayout.WEST);

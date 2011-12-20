@@ -47,10 +47,14 @@ public class CatalogPopupMenu extends JPopupMenu {
         this.eventBus = eventBus;
 
         init();
+
+        //eventBus.register(this);
+
     }
 
 
     private void init() {
+
 
         for (String catalogName : config.keySet()) {
             // create menu items
@@ -68,7 +72,7 @@ public class CatalogPopupMenu extends JPopupMenu {
 
                 }
             });
-            exportToJsonMenuItem.addActionListener(new ExportToJsonListener(config));
+            exportToJsonMenuItem.addActionListener(new ExportToJsonListener());
 
             add(exportToJsonMenuItem);
         }
@@ -76,12 +80,6 @@ public class CatalogPopupMenu extends JPopupMenu {
     }
 
     public class ExportToJsonListener implements ActionListener {
-
-        private Map<String, Catalog> config;
-
-        public ExportToJsonListener(Map<String, Catalog> config) {
-            this.config = config;
-        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -100,7 +98,6 @@ public class CatalogPopupMenu extends JPopupMenu {
 
     @Subscribe
     public void handlePopupEvent(ShowContextPopupEvent e) {
-        System.out.println("Received ShowContextPopupEvent");
         this.show(e.getComponent(), e.getX(), e.getY());
     }
 }

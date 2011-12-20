@@ -17,6 +17,7 @@ package org.jason.heasarcutils.catalogparser.ui.components;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
 import org.jason.heasarcutils.catalogparser.ui.components.popupMenu.CatalogPopupMenu;
 import org.jason.heasarcutils.catalogparser.ui.event.ShowContextPopupEvent;
@@ -33,6 +34,7 @@ import java.awt.event.MouseEvent;
  * @author Jason Ferguson
  * @since 0.2
  */
+@Singleton
 public class TreePanel extends JPanel {
 
     private JScrollPane scrollPane;
@@ -80,13 +82,8 @@ public class TreePanel extends JPanel {
         @Override
         public void mousePressed(MouseEvent e) {
 
-            doPopup(e);
+//            doPopup(e);
 
-            if (popupMenu != null) {
-                if (e.isPopupTrigger()) {
-                    doPopup(e);
-                }
-            }
         }
 
         @Override
@@ -94,15 +91,11 @@ public class TreePanel extends JPanel {
 
             doPopup(e);
 
-            if (popupMenu != null) {
-                if (e.isPopupTrigger()) {
-                    doPopup(e);
-                }
-            }
         }
 
         public void doPopup(MouseEvent e) {
-            eventBus.post(new ShowContextPopupEvent(e.getComponent(), e.getX(), e.getY()));
+            ShowContextPopupEvent event = new ShowContextPopupEvent(e.getComponent(), e.getX(), e.getY());
+            eventBus.post(event);
         }
     }
 }

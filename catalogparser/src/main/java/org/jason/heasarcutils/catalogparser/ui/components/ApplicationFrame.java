@@ -16,6 +16,7 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +27,7 @@ import java.awt.*;
  * @author Jason Ferguson
  * @since 0.2
  */
+@Singleton
 public class ApplicationFrame extends JFrame {
 
     private ApplicationPanel applicationPanel;

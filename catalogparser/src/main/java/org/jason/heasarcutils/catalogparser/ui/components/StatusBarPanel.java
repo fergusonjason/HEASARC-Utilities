@@ -15,6 +15,7 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ import javax.swing.*;
  * @since 0.2
  * @author Jason Ferguson
  */
+@Singleton
 public class StatusBarPanel extends JPanel{
 
     JStatusBar statusBar;
