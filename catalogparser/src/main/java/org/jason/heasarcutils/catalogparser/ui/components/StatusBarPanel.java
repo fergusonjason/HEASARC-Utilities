@@ -16,9 +16,11 @@
 package org.jason.heasarcutils.catalogparser.ui.components;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
+import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
 
 import javax.swing.*;
 
@@ -53,5 +55,10 @@ public class StatusBarPanel extends JPanel{
     private void init() {
         statusBar = new JStatusBar();
         add(statusBar);
+    }
+
+    @Subscribe
+    public void updateStatusBarText(SetStatusBarTextEvent e) {
+        statusBar.setText(e.getText());
     }
 }
