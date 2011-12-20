@@ -83,14 +83,14 @@ public class TreePanel extends JPanel {
         @Override
         public void mousePressed(MouseEvent e) {
 
-//            doPopup(e);
-
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
 
-            doPopup(e);
+            if (e.isPopupTrigger()) {
+                doPopup(e);
+            }
 
         }
 
