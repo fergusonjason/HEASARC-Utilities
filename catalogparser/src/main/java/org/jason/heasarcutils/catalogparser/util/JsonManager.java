@@ -35,7 +35,7 @@ public class JsonManager {
 
     private Catalog catalog;
 
-    public JsonManager getJsonExporter() {
+    public JsonManager getJsonManager() {
         return this;
     }
 
@@ -44,7 +44,9 @@ public class JsonManager {
         return this;
     }
 
-
+    /**
+     * Method to determine what type of catalog is being imported and call the appropriate import method.
+     */
     public void exportToJSON() {
 
         System.out.println("Exporting " + catalog.getName());
@@ -60,9 +62,13 @@ public class JsonManager {
 
     }
 
+    /**
+     * Import a TDAT file
+     *
+     * @param fileURL   String representing the URL of the file to import
+     */
     private void importTdatFile(String fileURL) {
 
-        //String filename = "classes" + System.getProperty("file.separator") + getFilename(fileURL) + ".gz";
         String filename = getFilename(fileURL) + ".gz";
 
         try {
