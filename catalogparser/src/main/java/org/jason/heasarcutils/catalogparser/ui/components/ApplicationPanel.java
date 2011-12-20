@@ -80,6 +80,7 @@ public class ApplicationPanel extends JPanel {
 
         eventBus.register(this.editorPanel);
         eventBus.register(this.popupMenu);
+        eventBus.register(this.statusBarPanel);
 
         init();
     }
