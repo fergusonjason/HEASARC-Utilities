@@ -27,7 +27,7 @@ import java.awt.*;
  * @since 0.2
  * @author Jason Ferguson
  */
-@SuppressWarnings({"FieldCanBeLocal"})
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 @Singleton
 public class ApplicationPanel extends JPanel {
 
