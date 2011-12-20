@@ -23,6 +23,7 @@ import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
 import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Represents the status bar at the bottom of the UI
@@ -54,6 +55,7 @@ public class StatusBarPanel extends JPanel{
      */
     private void init() {
         statusBar = new JStatusBar();
+        statusBar.setPreferredSize(new Dimension(600,25));
         add(statusBar);
     }
 
