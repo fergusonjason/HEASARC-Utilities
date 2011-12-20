@@ -19,13 +19,12 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
-import org.jason.heasarcutils.catalogparser.ui.event.ExportJsonEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.ShowContextPopupEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Jason Ferguson
@@ -37,9 +36,17 @@ public class CatalogPopupMenu extends JPopupMenu {
     private EventBus eventBus;
     private ConfigMap config;
 
-    public CatalogPopupMenu() {
-    }
+    /**
+     * Empty constructor, do NOT directly instantiate this. Guice will be mad.
+     */
+    public CatalogPopupMenu() {}
 
+    /**
+     * Guice'd constructor, w/ injected fields
+     *
+     * @param config     ConfigMap holding the catalog configurations
+     * @param eventBus   Guava EventBus singleton
+     */
     @Inject
     public CatalogPopupMenu(ConfigMap config, EventBus eventBus) {
         this.config = config;
@@ -47,12 +54,10 @@ public class CatalogPopupMenu extends JPopupMenu {
 
         init();
 
-
     }
 
 
     private void init() {
-
 
         for (String catalogName : config.keySet()) {
             // create menu items
@@ -66,32 +71,15 @@ public class CatalogPopupMenu extends JPopupMenu {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     // fire a ExportJSONAction
-                    eventBus.post(new ExportJsonEvent(config.get(catalog)));
+                    eventBus.post(new SetStatusBarTextEvent("Exporting catalog"));
+                    //eventBus.post(new ExportJsonEvent(config.get(catalog)));
 
                 }
             });
-            exportToJsonMenuItem.addActionListener(new ExportToJsonListener());
 
             add(exportToJsonMenuItem);
         }
 
-    }
-
-    public class ExportToJsonListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-//            TreePath[] treePaths = tree.getSelectionPaths();
-//            if (treePaths != null && treePaths.length > 0) {
-//                TreePath path = treePaths[0];
-//                String catalog = (String) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject();
-//                JsonExporter jsonExporter = new JsonExporter().setCatalog(config.get(catalog));
-//                jsonExporter.exportToJSON();
-//                eventBus.post(new PopulateEditorEvent(catalog));
-//                System.out.println("posted PopulateEditorEvent to event bus");
-//            }
-        }
     }
 
     @Subscribe
