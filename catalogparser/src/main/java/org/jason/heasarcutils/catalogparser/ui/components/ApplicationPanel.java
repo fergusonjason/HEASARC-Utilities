@@ -27,6 +27,7 @@ import java.awt.*;
  * @since 0.2
  * @author Jason Ferguson
  */
+@SuppressWarnings({"FieldCanBeLocal"})
 @Singleton
 public class ApplicationPanel extends JPanel {
 
@@ -39,12 +40,27 @@ public class ApplicationPanel extends JPanel {
 
     private CatalogPopupMenu popupMenu;
 
+    /**
+     * Empty constructor so Java doesn't bitch when I initialize it. Guava will take over and use the other
+     * constructor to initialize.
+     */
     public ApplicationPanel() {
         super(new BorderLayout());
 
         init();
     }
 
+    /**
+     * Guice'd version of the constructor, annotated w/ @Inject in order to inject the various components of the
+     * Swing UI.
+     *
+     * @param eventBus          Guava EventBus (initialized as a Singleton in the Module class)
+     * @param editorPanel       JPanel containing the editor window
+     * @param menuPanel         JPanel containing the application menubar
+     * @param treePanel         JPanel containing the application tree control
+     * @param statusBarPanel    JPanel containing the application status bar
+     * @param popupMenu         JPopupMenu containing the context popup menu used with the tree control
+     */
     @Inject
     public ApplicationPanel(EventBus eventBus,
                             EditorPanel editorPanel,
@@ -68,9 +84,10 @@ public class ApplicationPanel extends JPanel {
         init();
     }
 
+    /**
+     * Method to initialize the component
+     */
     private void init() {
-        //popupMenu = new CatalogPopupMenu();
-        //eventBus.register(popupMenu);
 
         add(menuPanel, BorderLayout.NORTH);
         add(treePanel, BorderLayout.WEST);
