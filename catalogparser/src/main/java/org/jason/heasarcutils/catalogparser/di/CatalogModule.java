@@ -19,7 +19,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
-import org.jason.heasarcutils.catalogparser.ui.components.*;
 import org.jason.heasarcutils.catalogparser.util.ConfigParser;
 
 import javax.inject.Singleton;
