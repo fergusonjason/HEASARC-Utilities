@@ -13,17 +13,11 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.jason.heasarcutils.catalogparser.util;
-
-import java.util.Comparator;
+package org.jason.heasarcutils.catalogparser.util.io;
 
 /**
- * @since 0.1
+ * @since 0.2
  * @author Jason Ferguson
  */
-public class FieldDataNameFieldComparator implements Comparator<FieldData> {
-
-    public int compare(FieldData o1, FieldData o2) {
-        return o1.getName().compareTo(o2.getName());
-    }
+public class DataExporter {
 }
