@@ -15,21 +15,35 @@
  */
 package org.jason.heasarcutils.catalogparser.ui.components;
 
+import com.google.common.eventbus.EventBus;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
 
 import javax.swing.*;
 
 /**
+ * Represents the status bar at the bottom of the UI
+ *
  * @since 0.2
  * @author Jason Ferguson
  */
+@SuppressWarnings({"unused","FieldCanBeLocal"})
 @Singleton
 public class StatusBarPanel extends JPanel{
 
-    JStatusBar statusBar;
+    private EventBus eventBus;
+
+    private JStatusBar statusBar;
 
     public StatusBarPanel() {
+        init();
+    }
+
+    @Inject
+    public StatusBarPanel(EventBus eventBus) {
+        this.eventBus = eventBus;
+
         init();
     }
 
