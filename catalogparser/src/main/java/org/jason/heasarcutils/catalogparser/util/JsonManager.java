@@ -30,15 +30,16 @@ import java.util.zip.GZIPInputStream;
  * @author Jason Ferguson
  * @since 0.1
  */
-public class JsonExporter {
+@SuppressWarnings({"unused"})
+public class JsonManager {
 
     private Catalog catalog;
 
-    public JsonExporter getJsonExporter() {
+    public JsonManager getJsonExporter() {
         return this;
     }
 
-    public JsonExporter setCatalog(Catalog catalog) {
+    public JsonManager setCatalog(Catalog catalog) {
         this.catalog = catalog;
         return this;
     }
