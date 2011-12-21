@@ -28,7 +28,7 @@ public class UpdateStatusBarEvent implements ApplicationEvent {
     private int max;
     private int value;
 
-    public UpdateStatusBarEvent(int max, String message, int min, int value) {
+    public UpdateStatusBarEvent(String message, int min, int max, int value) {
         this.max = max;
         this.message = message;
         this.min = min;
