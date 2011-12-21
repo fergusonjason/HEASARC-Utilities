@@ -23,6 +23,7 @@ import org.jason.heasarcutils.catalogparser.ui.event.RequestCatalogLinesEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.ProcessCatalogEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.SendCatalogLinesEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.statusBar.UpdateStatusBarEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.FieldData;
 
@@ -111,6 +112,7 @@ public class DataManager {
             }
             writer = getWriter(catalog.getName());
 
+            int counter = 0;
             while (reader.ready()) {
                 String line = reader.readLine();
                 Map<String, String> data = context.processLine(line);
@@ -120,7 +122,12 @@ public class DataManager {
                 data = filterResults(data, catalog);
                 String jsonLine = getJsonLine(data);
                 writer.write(jsonLine);
+                counter++;
+                if (counter % 500 == 0) {
+                    eventBus.post(new UpdateStatusBarEvent("Importing",0,catalog.getTotalRecords(), counter));
+                }
             }
+            eventBus.post(new UpdateStatusBarEvent("Import complete", 0, catalog.getTotalRecords(), counter));
         } finally {
             closeQuietly(reader);
             closeQuietly(writer);
