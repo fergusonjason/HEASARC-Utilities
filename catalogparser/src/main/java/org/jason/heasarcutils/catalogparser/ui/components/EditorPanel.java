@@ -19,9 +19,10 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.jason.heasarcutils.catalogparser.ui.event.PopulateEditorEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.SendCatalogLinesEvent;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Represents the panel that contains the Editor pane.
@@ -35,6 +36,7 @@ import javax.swing.*;
  * @since 0.2
  */
 @Singleton
+@SuppressWarnings({"unused"})
 public class EditorPanel extends JPanel {
 
     private EventBus eventBus;
@@ -49,6 +51,8 @@ public class EditorPanel extends JPanel {
     public EditorPanel(EventBus eventBus) {
         this.eventBus  = eventBus;
         init();
+
+        eventBus.register(this);
     }
 
     /**
@@ -66,9 +70,20 @@ public class EditorPanel extends JPanel {
         add(scrollPane);
     }
 
+    /**
+     * Event to populate the Editor pane upon receipt of a SendCatalogLinesEvent
+     *
+     * @param e SendCatalogLinesEvent
+     */
     @Subscribe
-    public void handlePopulateEditor(PopulateEditorEvent event) {
+    public void handlePopulateEditor(SendCatalogLinesEvent e) {
 
-        editorPane.setText("This catalog has not been imported.");
+        List<String> lines = e.getLines();
+        StringBuffer sb = new StringBuffer();
+        for (String line: lines) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        editorPane.setText(sb.toString());
     }
 }
