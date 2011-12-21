@@ -21,6 +21,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.jason.heasarcutils.catalogparser.misc.JStatusBar;
 import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.statusBar.UpdateStatusBarEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,5 +63,10 @@ public class StatusBarPanel extends JPanel{
     @Subscribe
     public void updateStatusBarText(SetStatusBarTextEvent e) {
         statusBar.setText(e.getText());
+    }
+
+    @Subscribe
+    public void updateStatusBarProgress(UpdateStatusBarEvent e) {
+        statusBar.setStatusBarProgress(e.getMessage(), e.getMin(), e.getMax(), e.getValue());
     }
 }
