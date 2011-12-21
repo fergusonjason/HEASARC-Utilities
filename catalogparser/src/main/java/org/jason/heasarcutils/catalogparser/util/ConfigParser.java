@@ -44,15 +44,9 @@ import java.util.zip.GZIPInputStream;
 public class ConfigParser {
 
     private String configFile;
-    private InputSource configFileInputSource;
 
     public ConfigParser(String configFile) {
         this.configFile = "classes" + System.getProperty("file.separator") + configFile;
-        try {
-            this.configFileInputSource = new InputSource(new FileReader(this.configFile));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     public Map<String, Catalog> getConfig() {
