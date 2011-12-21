@@ -19,6 +19,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
+import org.jason.heasarcutils.catalogparser.ui.event.PopulateEditorEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.ProcessCatalogEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.ShowContextPopupEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
@@ -97,6 +98,7 @@ public class CatalogPopupMenu extends JPopupMenu {
                 Catalog catalog = config.get(text);
                 // fire the event to process the catalog
                 eventBus.post(new ProcessCatalogEvent(catalog));
+                eventBus.post(new PopulateEditorEvent(catalog.getName()));
             }
         });
 
