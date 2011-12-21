@@ -16,7 +16,11 @@
 package org.jason.heasarcutils.catalogparser.util.io;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import org.jason.heasarcutils.catalogparser.ui.event.ProcessCatalogEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.FieldData;
 
@@ -34,6 +38,8 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
  * @author Jason Ferguson
  * @since 0.2
  */
+@Singleton
+@SuppressWarnings({"FieldCanBeLocal","unused"})
 public class DataImporter {
 
     private EventBus eventBus;
@@ -41,8 +47,23 @@ public class DataImporter {
     @Inject
     public DataImporter(EventBus eventBus) {
         this.eventBus = eventBus;
+
+        eventBus.register(this);
     }
 
+    @Subscribe
+    public void processCatalog(ProcessCatalogEvent e) {
+
+        Catalog catalog = e.getCatalog();
+        System.out.println("Received catalog: " + catalog.getName());
+        try {
+            eventBus.post(new SetStatusBarTextEvent("Importing " + catalog.getName()));
+            processFile(catalog);
+            eventBus.post(new SetStatusBarTextEvent("Completed import"));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
     /**
      * Single point of entry for the Importer
      *
@@ -72,6 +93,9 @@ public class DataImporter {
             while (reader.ready()) {
                 String line = reader.readLine();
                 Map<String, String> data = context.processLine(line);
+                if (data == null) {
+                    continue;
+                }
                 data = filterResults(data, catalog);
                 String jsonLine = getJsonLine(data);
                 writer.write(jsonLine);
@@ -94,7 +118,10 @@ public class DataImporter {
     }
 
     private boolean isGzipFile(String filename) {
-        return filename.matches("\\.gz^");
+        int dot = filename.lastIndexOf(".");
+        String extension = filename.substring(dot + 1);
+
+        return extension.equalsIgnoreCase("gz");
     }
 
     private BufferedReader createGzipReader(String fileUrl) throws IOException {
@@ -133,6 +160,12 @@ public class DataImporter {
         return result;
     }
 
+    /**
+     * Remove unwanted fields from the map based on data from the catalog
+     * @param data
+     * @param catalog
+     * @return
+     */
     private Map<String, String> removeUnwantedFields(Map<String, String> data, Catalog catalog) {
         Map<String, String> result = new HashMap<String, String>();
         for (String key : catalog.getFieldData().keySet()) {
@@ -176,9 +209,9 @@ public class DataImporter {
     /**
      * Determine if the field needs to be renamed and fix it if necessary
      *
-     * @param data
-     * @param catalog
-     * @return
+     * @param data          Map<String, String> to process the field names for
+     * @param catalog       Catalog object stating how to process the names
+     * @return      Map<String, String> with renamed fields
      */
     private Map<String, String> fixFieldNames(Map<String, String> data, Catalog catalog) {
         // Set result to be the input value, we'll remove values rather than add
@@ -266,6 +299,7 @@ public class DataImporter {
         /**
          * Process a line returned from a file
          *
+         * @param line  String representing a single line of data
          * @return a Map<String, String> containing data read from the file matched to it's key
          */
         public Map<String, String> processLine(String line);
@@ -300,9 +334,11 @@ public class DataImporter {
 
         @Override
         public Map<String, String> processLine(String line) {
+            // make sure the line is a pipe-deliniated set of data
             if (!line.matches("^(.*?\\|)*$")) {
                 return null;
             }
+
             Map<String, String> result = new HashMap<String, String>();
             String[] fieldNames = catalog.getFieldData().keySet().toArray(new String[]{});
             String[] fieldValues = line.split("\\|");
