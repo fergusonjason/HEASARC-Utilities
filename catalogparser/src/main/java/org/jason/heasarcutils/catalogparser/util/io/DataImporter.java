@@ -324,14 +324,32 @@ public class DataImporter {
     public class DatStrategy implements Strategy {
 
         private Catalog catalog;
+        private Map<String, String> template;
 
         public DatStrategy(Catalog catalog) {
             this.catalog = catalog;
+
+            // set up the template
+            this.template = new LinkedHashMap<String, String>(catalog.getFieldData().size());
+            for (String fieldName : catalog.getFieldData().keySet()) {
+                template.put(fieldName, null);
+            }
         }
 
         @Override
         public Map<String, String> processLine(String line) {
-            return null;
+
+            Map<String, String> result = template;
+            for (String key : catalog.getFieldData().keySet()) {
+                FieldData fd = catalog.getFieldData().get(key);
+                if (fd.getPrefix() != null) {
+                    result.put(fd.getRenameTo(), line.substring(fd.getStart() - 1, fd.getEnd()).trim());
+                } else {
+                    result.put(key, line.substring(fd.getStart() - 1, fd.getEnd()).trim());
+                }
+            }
+
+            return result;
         }
     }
 }
