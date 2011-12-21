@@ -42,7 +42,7 @@ public class EditorPanel extends JPanel {
     private EventBus eventBus;
 
     private JScrollPane scrollPane;
-    private JEditorPane editorPane;
+    private JTextArea textArea;
 
     public EditorPanel() {
     }
@@ -60,12 +60,10 @@ public class EditorPanel extends JPanel {
      */
     private void init() {
 
-        editorPane = new JEditorPane();
+        textArea = new JTextArea();
+        textArea.setEditable(false);
 
-        editorPane.setEditable(true);
-        editorPane.setBorder(BorderFactory.createLoweredBevelBorder());
-
-        scrollPane = new JScrollPane(editorPane);
+        scrollPane = new JScrollPane(textArea);
 
         add(scrollPane);
     }
@@ -84,6 +82,6 @@ public class EditorPanel extends JPanel {
             sb.append(line);
             sb.append("\n");
         }
-        editorPane.setText(sb.toString());
+        textArea.setText(sb.toString());
     }
 }
