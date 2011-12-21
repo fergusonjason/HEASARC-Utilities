@@ -19,7 +19,9 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.jason.heasarcutils.catalogparser.ui.event.RequestCatalogLinesEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.ProcessCatalogEvent;
+import org.jason.heasarcutils.catalogparser.ui.event.SendCatalogLinesEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.statusBar.SetStatusBarTextEvent;
 import org.jason.heasarcutils.catalogparser.util.Catalog;
 import org.jason.heasarcutils.catalogparser.util.FieldData;
@@ -27,9 +29,7 @@ import org.jason.heasarcutils.catalogparser.util.FieldData;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
@@ -374,6 +374,36 @@ public class DataManager {
      */
     private boolean isNumber(String value) {
         return (isInteger(value) || isDouble(value));
+    }
+
+    /**
+     * Read an arbitrary number of lines from the generated JSON file and fire a SendCatalogLinesEvent
+     * containing those lines
+     *
+     * @param e RequestCatalogLinesEvent
+     */
+    @Subscribe
+    public void readLines(RequestCatalogLinesEvent e) {
+
+        List<String> stringList = new ArrayList<String>();
+        Catalog catalog = e.getCatalog();
+        int numLines = e.getNumLines();
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(catalog.getName() + ".json"));
+            for (int i=0; i<numLines; i++) {
+                String line = reader.readLine();
+                stringList.add(line);
+            }
+
+            reader.close();
+            eventBus.post(new SendCatalogLinesEvent(stringList));
+
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     /**
