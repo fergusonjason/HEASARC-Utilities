@@ -20,7 +20,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
 import org.jason.heasarcutils.catalogparser.util.ConfigParser;
-import org.jason.heasarcutils.catalogparser.util.io.DataImporter;
+import org.jason.heasarcutils.catalogparser.util.io.DataManager;
 
 import javax.inject.Singleton;
 
@@ -38,7 +38,7 @@ public class CatalogModule extends AbstractModule {
         // one eventbus to rule them all, and in the darkness bind them
         bind(EventBus.class).in(Singleton.class);
 
-        bind(DataImporter.class).asEagerSingleton();
+        bind(DataManager.class).asEagerSingleton();
     }
 
     @Provides
