@@ -30,32 +30,52 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 import static org.apache.commons.io.IOUtils.closeQuietly;
 
 /**
+ * Utility class to manage the application data
+ *
+ * The only way this class should be accessed is via its eventhandler methods, which are annotated
+ * with the Guava @Subscribe annotation. This class is also configured to be an eager singleton in
+ * the Application Module so that it is initialized once at startup.
+ *
+ * This class is also my first attempt at implementing a Strategy pattern. The processing for
+ * TDAT and DAT files is slightly different, so I created the following:
+ *
+ * - Strategy - interface for different implementations of processLine(String)
+ * - Context - holder class for the strategy
+ * - DatStrategy - implementation of Strategy to process lines read from a DAT file
+ * - TdatStrategy - implementation of Strategy to process lines read from a TDAT file
+ *
  * @author Jason Ferguson
  * @since 0.2
  */
 @Singleton
-@SuppressWarnings({"FieldCanBeLocal","unused"})
-public class DataImporter {
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
+public class DataManager {
 
     private EventBus eventBus;
 
     @Inject
-    public DataImporter(EventBus eventBus) {
+    public DataManager(EventBus eventBus) {
         this.eventBus = eventBus;
 
         eventBus.register(this);
     }
 
+    /**
+     * Event handler method, which starts the ball rolling when another class fires/posts a
+     * ProcessCatalogEvent
+     *
+     * @param e     ProcessCatalogEvent class
+     */
     @Subscribe
     public void processCatalog(ProcessCatalogEvent e) {
 
         Catalog catalog = e.getCatalog();
-        System.out.println("Received catalog: " + catalog.getName());
         try {
             eventBus.post(new SetStatusBarTextEvent("Importing " + catalog.getName()));
             processFile(catalog);
@@ -64,13 +84,14 @@ public class DataImporter {
             e1.printStackTrace();
         }
     }
+
     /**
-     * Single point of entry for the Importer
+     * "Top-level" method which configures the readers
      *
      * @param catalog Catalog object representing to astronomical catalog to process into JSON
+     * @throws IOException  something went wrong when setting up the reader, writer, or URL
      */
-
-    public void processFile(Catalog catalog) throws IOException {
+    private void processFile(Catalog catalog) throws IOException {
 
         String fileUrl = catalog.getUrl();
         BufferedReader reader = null;
@@ -107,6 +128,13 @@ public class DataImporter {
 
     }
 
+    /**
+     * Method to process the Map of data (unwanted fields/nulls/prefixes/etc)
+     *
+     * @param results   Map<String, String> to process
+     * @param catalog   Catalog telling how to process the data
+     * @return  processed Map<String, String>
+     */
     private Map<String, String> filterResults(Map<String, String> results, Catalog catalog) {
 
         results = removeNulls(results);
@@ -117,6 +145,12 @@ public class DataImporter {
         return results;
     }
 
+    /**
+     * Quick and dirty utility method to determine if the file is a gzip file
+     *
+     * @param filename  filename to check
+     * @return  true if the extension is gz, false otherwise
+     */
     private boolean isGzipFile(String filename) {
         int dot = filename.lastIndexOf(".");
         String extension = filename.substring(dot + 1);
@@ -124,6 +158,14 @@ public class DataImporter {
         return extension.equalsIgnoreCase("gz");
     }
 
+    /**
+     * Create a Buffered Reader based on a GZipInputStream, since there isn't any sort of
+     * GZipReader class)
+     *
+     * @param fileUrl   String representing the URL of the remote file
+     * @return  a BufferedReader from the URL
+     * @throws IOException  thrown when something goes wrong creating a reader
+     */
     private BufferedReader createGzipReader(String fileUrl) throws IOException {
 
         GZIPInputStream gzis = new GZIPInputStream(createInputStream(fileUrl));
@@ -132,21 +174,35 @@ public class DataImporter {
         return new BufferedReader(isr);
     }
 
+    /**
+     * Create an InputStream from a String representing a remote URL
+     *
+     * @param urlLocation   String representing the URL of the remote file
+     * @return  an InputStream from the remote file
+     * @throws IOException thrown when something goes wrong creating a reader
+     */
     private InputStream createInputStream(String urlLocation) throws IOException {
         URL url = new URL(urlLocation);
         return url.openStream();
     }
 
+    /**
+     *
+     * @param catalogName   name of catalog, used to determine output file name
+     * @return  BufferedWriter to send output to
+     * @throws IOException thrown when something goes wrong creating a writer
+     */
     private BufferedWriter getWriter(String catalogName) throws IOException {
 
         FileWriter writer = new FileWriter(catalogName + ".json");
         return new BufferedWriter(writer);
     }
 
-    protected String getFilename(String url) {
-        return url.substring(url.lastIndexOf('/') + 1, url.length() - 1);
-    }
-
+    /**
+     * Remove null values from a map.
+     * @param map   Map to remove null values from
+     * @return  Map with null values removed
+     */
     private Map<String, String> removeNulls(Map<String, String> map) {
 
         Map<String, String> result = new LinkedHashMap<String, String>();
@@ -162,9 +218,10 @@ public class DataImporter {
 
     /**
      * Remove unwanted fields from the map based on data from the catalog
-     * @param data
-     * @param catalog
-     * @return
+     *
+     * @param data  Map to remove unwanted key-value pairs from
+     * @param catalog   Catalog telling how to process the data
+     * @return  Map with the unwanted fields removed
      */
     private Map<String, String> removeUnwantedFields(Map<String, String> data, Catalog catalog) {
         Map<String, String> result = new HashMap<String, String>();
@@ -183,9 +240,9 @@ public class DataImporter {
     /**
      * Determine if the field name needs to be prefixed and do so if necessary
      *
-     * @param data
-     * @param catalog
-     * @return
+     * @param data      Map<String, String> to fix the field names for
+     * @param catalog   Catalog telling how to process the data
+     * @return      Map with prefixes added to field values, as determined by the Catalog object
      */
     private Map<String, String> fixFieldPrefixes(Map<String, String> data, Catalog catalog) {
         Map<String, String> result = new HashMap<String, String>();
@@ -209,9 +266,9 @@ public class DataImporter {
     /**
      * Determine if the field needs to be renamed and fix it if necessary
      *
-     * @param data          Map<String, String> to process the field names for
-     * @param catalog       Catalog object stating how to process the names
-     * @return      Map<String, String> with renamed fields
+     * @param data    Map<String, String> to process the field names for
+     * @param catalog Catalog object stating how to process the names
+     * @return Map<String,String> with renamed fields
      */
     private Map<String, String> fixFieldNames(Map<String, String> data, Catalog catalog) {
         // Set result to be the input value, we'll remove values rather than add
@@ -243,6 +300,13 @@ public class DataImporter {
         return result;
     }
 
+    /**
+     * Convert a Map<String, String> to a line of JSON. Determines if a value is a number and if so,
+     * doesn't put quotes and rounds it to 4 decimal places.
+     *
+     * @param data  Map to convert to a JSON string
+     * @return  String representing the Map in JSON form
+     */
     private String getJsonLine(Map<String, String> data) {
         StringBuffer sb = new StringBuffer();
         sb.append("{");
@@ -270,22 +334,48 @@ public class DataImporter {
         return sb.toString();
     }
 
+    /**
+     * Quick and dirty method to determine if a String represents an integer. It's not too robust, but works
+     * for what I need it for.
+     *
+     * @param value     String to check if is an integer
+     * @return  true is value represents an integer, false otherwise
+     */
+    @SuppressWarnings({"SimplifiableIfStatement"})
     private boolean isInteger(String value) {
         if (value == null) {
             return false;
         }
-        String pattern = "^\\s*[\\+,-]?[0-9]+$";
-        return value.matches(pattern);
+
+        return Pattern.matches("^\\s*[\\+,-]?[0-9]+$", value);
+//        String pattern = "^\\s*[\\+,-]?[0-9]+$";
+//        return value.matches(pattern);
     }
 
+    /**
+     * Quick and dirty method to determine if a String represents a double. Not too robust, but works for
+     * what I need
+     *
+     * @param value String to check
+     * @return  true if value represents a double, false otherwise
+     */
+    @SuppressWarnings({"SimplifiableIfStatement"})
     private boolean isDouble(String value) {
         if (value == null) {
             return false;
         }
-        String pattern = "^\\s*[\\+,-]?[0-9]*\\.[0-9]*$";
-        return value.matches(pattern);
+
+        return Pattern.matches("^\\s*[\\+,-]?[0-9]*\\.[0-9]*$", value);
+//        String pattern = "^\\s*[\\+,-]?[0-9]*\\.[0-9]*$";
+//        return value.matches(pattern);
     }
 
+    /**
+     * Quick and dirty method to determine if a string is any type of number, integer or double
+     *
+     * @param value String to check
+     * @return  true if String represents a number, false otherwise
+     */
     private boolean isNumber(String value) {
         return (isInteger(value) || isDouble(value));
     }
@@ -299,7 +389,7 @@ public class DataImporter {
         /**
          * Process a line returned from a file
          *
-         * @param line  String representing a single line of data
+         * @param line String representing a single line of data
          * @return a Map<String, String> containing data read from the file matched to it's key
          */
         public Map<String, String> processLine(String line);
