@@ -348,8 +348,6 @@ public class DataManager {
         }
 
         return Pattern.matches("^\\s*[\\+,-]?[0-9]+$", value);
-//        String pattern = "^\\s*[\\+,-]?[0-9]+$";
-//        return value.matches(pattern);
     }
 
     /**
@@ -366,8 +364,6 @@ public class DataManager {
         }
 
         return Pattern.matches("^\\s*[\\+,-]?[0-9]*\\.[0-9]*$", value);
-//        String pattern = "^\\s*[\\+,-]?[0-9]*\\.[0-9]*$";
-//        return value.matches(pattern);
     }
 
     /**
