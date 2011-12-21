@@ -113,6 +113,7 @@ public class ConfigParser {
         catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setHeaderUrl(getHeaderUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
+        catalog.setTotalRecords(new Integer(getTextValue(catalogNode, "totalRecords")));
         catalog.setFieldDataSet(getFieldData2(catalogNode));  // get the "wanted" fields from the config
 
         String[] fields = getFieldNamesFromTdatHeader(catalog.getHeaderUrl());
@@ -143,6 +144,7 @@ public class ConfigParser {
         catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setUrl(getUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
+        catalog.setTotalRecords(new Integer(getTextValue(catalogNode, "totalRecords")));
         catalog.setFieldDataSet(getFieldData2(catalogNode));
 
         Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
