@@ -33,6 +33,7 @@ public class Catalog implements Serializable {
     private String url;
     private String headerUrl;
     private String epoch;
+    private int totalRecords;
 
     private Map<String, FieldData> fieldData = new LinkedHashMap<String, FieldData>();
     private Set<FieldData> fieldDataSet = new TreeSet<FieldData>(new FieldDataStartFieldComparator());
@@ -91,6 +92,15 @@ public class Catalog implements Serializable {
 
     public void setEpoch(String epoch) {
         this.epoch = epoch;
+    }
+
+
+    public int getTotalRecords() {
+        return totalRecords;
+    }
+
+    public void setTotalRecords(int totalRecords) {
+        this.totalRecords = totalRecords;
     }
 
     public Map<String, FieldData> getFieldData() {
