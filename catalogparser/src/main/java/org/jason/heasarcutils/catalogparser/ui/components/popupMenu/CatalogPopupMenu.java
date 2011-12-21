@@ -19,13 +19,17 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import org.jason.heasarcutils.catalogparser.misc.ConfigMap;
+import org.jason.heasarcutils.catalogparser.ui.event.ProcessCatalogEvent;
 import org.jason.heasarcutils.catalogparser.ui.event.ShowContextPopupEvent;
+import org.jason.heasarcutils.catalogparser.util.Catalog;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.ActionEvent;
 
 /**
+ * Popup menu for use with the JTree
+ *
  * @author Jason Ferguson
  * @since 0.2
  */
@@ -57,36 +61,49 @@ public class CatalogPopupMenu extends JPopupMenu {
 
     private void init() {
 
+        // nothing here since I'm dynamically generating this in the event handler method
+
     }
 
+    /**
+     * Event handler method to manage actions when a ShowContextPopupEvent is received (which is fired
+     * when a right click occurs in the tree)
+     *
+     * @param e     ShowContextPopupEvent
+     */
     @Subscribe
     public void handlePopupEvent(ShowContextPopupEvent e) {
 
         // generate the popup menu on the fly based one what we've got selected
         removeAll();
 
+        // Get the highlighted node
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) ((JTree) e.getComponent()).getLastSelectedPathComponent();
+
+        // If no node was selected during the right click, do nothing
+        if (node == null) {
+            return;
+        }
+
+        // get the text of the object
         final String text = (String) node.getUserObject();
 
+        // Create menu item and set its listener
         JMenuItem importItem = new JMenuItem("Import");
         importItem.addActionListener(new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Importing catalog " + text);
+                // get the catalog
+                Catalog catalog = config.get(text);
+                // fire the event to process the catalog
+                eventBus.post(new ProcessCatalogEvent(catalog));
             }
         });
 
-        JMenuItem exportItem = new JMenuItem("Export");
-        exportItem.addActionListener(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Exporting catalog " + text);
-            }
-        });
-
+        // add the item to the popup menu
         add(importItem);
-        add(exportItem);
 
+        // show the popup menu at the designated location
         this.show(e.getComponent(), e.getX(), e.getY());
     }
 }
