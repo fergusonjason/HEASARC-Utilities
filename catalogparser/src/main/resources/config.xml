@@ -6,6 +6,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_bsc5p.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_bsc5p.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>9110</totalRecords>
         <fields>
             <field name="name" renameTo="bscname" keepAfterCopy="true" prefix="HR "/>
             <field name="ads"/>
@@ -32,6 +33,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_cns3.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_cns3.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>3803</totalRecords>
         <fields>
             <field name="name" renameTo="cns3name" keepAfterCopy="true"/>
             <field name="component"/>
@@ -54,6 +56,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_hd.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_hd.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>272150</totalRecords>
         <fields>
             <field name="bii"/>
             <field name="class"/>
@@ -70,6 +73,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_hipparcos.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_hipparcos.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>118218</totalRecords>
         <fields>
             <field name="name" renameTo="hipname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -94,6 +98,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_messier.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_messier.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>109</totalRecords>
         <fields>
             <field name="alt_name"/>
             <field name="bii"/>
@@ -111,6 +116,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ngc2000.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ngc2000.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>13226</totalRecords>
         <fields>
             <field name="name" renameTo="ngc2000name" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -129,6 +135,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ppm.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_pmn.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>50814</totalRecords>
         <fields>
             <field name="name" renameTo="ppmname" keepAfterCopy="true"/>
             <field name="dm_number" renameTo="dmname" keepAfterCopy="false"/>
@@ -151,6 +158,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_sao.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_sao.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>258944</totalRecords>
         <fields>
             <field name="name" renameTo="saoname" keepAfterCopy="false"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -173,6 +181,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_tycho2.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_tycho2.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>2539913</totalRecords>
         <fields>
             <field name="name" renameTo="t2name" keepAfterCopy="true" prefix="TYC "/>
             <field name="mean_ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -187,6 +196,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_ugc.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_ugc.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>12939</totalRecords>
         <fields>
             <field name="name" renameTo="ugcname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -202,6 +212,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_wds.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_wds.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>115714</totalRecords>
         <fields>
             <field name="name" renameTo="wdsname" keepAfterCopy="true"/>
             <field name="ra" renameTo="radeg" keepAfterCopy="false"/>
@@ -217,6 +228,7 @@
         <url>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/dump/heasarc_woolley.tdat.gz</url>
         <headerUrl>http://heasarc.gsfc.nasa.gov/FTP/heasarc/dbase/tdat_headers/heasarc_woolley.hdr.gz</headerUrl>
         <epoch>J2000</epoch>
+        <totalRecords>2150</totalRecords>
         <fields>
             <field name="name" renameTo="gliesename" keepAfterCopy="true"/>
             <field name="parallax"/>
@@ -239,6 +251,7 @@
         <title>Boss</title>
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/113A/catalog.dat.gz</url>
         <epoch>J2000</epoch>
+        <totalRecords>33342</totalRecords>
         <fields>
             <field name="gcname" start="1" end="5" prefix="GC "/>
             <field name="vmag" start="7" end="10"/>
@@ -262,6 +275,7 @@
         <title>Cross Reference Index</title>
         <url>ftp://cdsarc.u-strasbg.fr/pub/cats/IV/22/index.dat.gz</url>
         <epoch>J2000</epoch>
+        <totalRecords>1535</totalRecords>
         <fields>
             <field name="fk5" start="1" end="4" prefix="FK5 "/>
             <field name="rah" start="7" end="8"/>
@@ -286,6 +300,7 @@
             <title>Lutyen</title>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/I/87B/catalog.dat.gz</url>
             <epoch>J2000</epoch>
+            <totalRecords>4470</totalRecords>
             <fields>
                 <field name="lhsname" start="1" end="5" prefix="LHS " />
                 <field name="othername" start="7" end="21" />
@@ -304,6 +319,7 @@
             <title>Sharpless</title>
             <url>ftp://cdsarc.u-strasbg.fr/pub/cats/VII/20/catalog.dat.gz</url>
             <epoch>J2000</epoch>
+            <totalRecords>313</totalRecords>
             <fields>
                 <field name="sharpname" start="1" end="4" prefix="Sh2-" />
                 <field name="bii" start="13" end="16" />
