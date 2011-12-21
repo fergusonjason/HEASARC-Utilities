@@ -6,7 +6,7 @@
     <groupId>org.jason.heasarcutils</groupId>
     <artifactId>catalogparser</artifactId>
     <packaging>jar</packaging>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2.0</version>
     <name>catalogparser</name>
     <description>Utility to parse HEASARC and Vizier catalog files and output to JSON (and maybe other formats).
     </description>
@@ -44,7 +44,11 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>2.7.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
