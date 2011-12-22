@@ -39,6 +39,9 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
 /**
  * Parsers for configuration XML. Uses DOM for XML processing, not SAX
  *
+ * This class demonstrates the implementation of the Strategy pattern (though the Visitor
+ * pattern probably would have worked just as well).
+ *
  * @author Jason Ferguson
  * @since 0.1
  */
@@ -50,6 +53,11 @@ public class ConfigParser {
         this.configFile = "classes" + System.getProperty("file.separator") + configFile;
     }
 
+    /**
+     * Public entry to config parser class
+     *
+     * @return  a Map containing catalog names mapped to the corresponding Catalog objects
+     */
     public Map<String, Catalog> getCatalogs() {
         Map<String, Catalog> catalogMap = new HashMap<String, Catalog>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -72,21 +80,28 @@ public class ConfigParser {
         return catalogMap;
     }
 
+    /**
+     * Create a single Catalog object from an Element representing a <catalog> tag
+     *
+     * @param catalogNode   Element representing a single <catalog> node
+     * @return  a Catalog object populated from the Element contents
+     */
     private Catalog getCatalog(Element catalogNode) {
 
         Catalog catalog = new Catalog();
-        // set the initial values
 
         // get basic info from the attributes of the <catalog> tag
         catalog.setName(catalogNode.getAttribute("name"));
         catalog.setType(catalogNode.getAttribute("type"));
 
+        // get the information from the sub-elements of the <catalog>
         catalog.setUrl(getTextValue(catalogNode, "url"));
         catalog.setTitle(getTextValue(catalogNode, "title"));
         catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setEpoch(getTextValue(catalogNode, "epoch"));
         catalog.setTotalRecords(Integer.valueOf(getTextValue(catalogNode, "totalRecords")));
 
+        // create the Strategy context to determine how to process the file based on its type
         Context context;
         if (catalog.getType().equalsIgnoreCase("TDAT")) {
             context = new Context(new TdatStrategy(catalog, catalogNode));
@@ -94,6 +109,7 @@ public class ConfigParser {
             context = new Context(new DatStrategy(catalog, catalogNode));
         }
 
+        // process the fields
         context.processFields();
 
         return catalog;
@@ -190,8 +206,8 @@ public class ConfigParser {
          * that sorted on the FieldData object's start field in order to keep them in proper order when the
          * file is being read later.
          *
-         * @param catalogNode
-         * @return
+         * @param catalogNode Element representing contents of s single <catalog>
+         * @return a Set of FieldData objects, each representing a <field> element
          */
         protected Set<FieldData> getFieldData2(Element catalogNode) {
             Set<FieldData> result = new HashSet<FieldData>();
@@ -241,13 +257,21 @@ public class ConfigParser {
      */
     private class DatStrategy extends AbstractStrategy {
 
-        private DatStrategy(Catalog catalog, Element catalogNode) {
-            super(catalog, catalogNode);
+        private DatStrategy(Catalog thisCatalog, Element catalogNode) {
+            super(thisCatalog, catalogNode);
         }
 
+        /**
+         * DAT-specific implementation of processFields(). Not as complex as the TDAT implementation,
+         * but there aren't any header files to make this easier
+         */
         @Override
         public void processFields() {
-            //return null;
+
+            Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
+            for (FieldData fd : fieldDataSet) {
+                thisCatalog.getFieldData().put(fd.getName(), fd);
+            }
         }
     }
 
@@ -261,11 +285,13 @@ public class ConfigParser {
             super(thisCatalog, catalogNode);
         }
 
+        /**
+         * TDAT specific  implementation of processFields
+         */
         @Override
         public void processFields() {
 
             thisCatalog.setHeaderUrl(getTextValue(catalogNode, "headerUrl"));
-            //thisCatalog.setFieldDataSet(super.getFieldData2(catalogNode));
             Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
             for (FieldData fd : fieldDataSet) {
                 thisCatalog.getFieldData().put(fd.getName(), fd);
@@ -282,6 +308,13 @@ public class ConfigParser {
 
         }
 
+        /**
+         * Since TDAT files have an associated header, we can get the field names from the line[n]
+         * within that file
+         *
+         * @param headerFile String representing location of the header file
+         * @return String array containing the fields defined by the tdat header
+         */
         private String[] getFieldNamesFromTdatHeader(String headerFile) {
 
             BufferedReader reader = null;
@@ -291,9 +324,7 @@ public class ConfigParser {
                 reader = createGzipReader(headerFile);
                 while (reader.ready()) {
                     String line = reader.readLine();
-                    if (!line.matches(linePattern)) {
-                        continue;
-                    } else {
+                    if (line.matches(linePattern)) {
                         Pattern pattern = Pattern.compile(linePattern);
                         Matcher matcher = pattern.matcher(line);
                         if (matcher.find()) {
