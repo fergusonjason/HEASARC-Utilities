@@ -43,13 +43,13 @@ import static org.apache.commons.io.IOUtils.closeQuietly;
  * with the Guava @Subscribe annotation. This class is also configured to be an eager singleton in
  * the Application Module so that it is initialized once at startup.
  *
- * This class is also my first attempt at implementing a Strategy pattern. The processing for
+ * This class is also my first attempt at implementing a ImportStrategy pattern. The processing for
  * TDAT and DAT files is slightly different, so I created the following:
  *
- * - Strategy - interface for different implementations of processLine(String)
- * - Context - holder class for the strategy
- * - DatStrategy - implementation of Strategy to process lines read from a DAT file
- * - TdatStrategy - implementation of Strategy to process lines read from a TDAT file
+ * - ImportStrategy - interface for different implementations of processLine(String)
+ * - ImportContext - holder class for the strategy
+ * - DatImportStrategy - implementation of ImportStrategy to process lines read from a DAT file
+ * - TdatImportStrategy - implementation of ImportStrategy to process lines read from a TDAT file
  *
  * @author Jason Ferguson
  * @since 0.2
@@ -99,11 +99,11 @@ public class DataManager {
         BufferedWriter writer = null;
 
         // set up a context to determine if we are processing a TDAT or DAT. Yay strategy pattern!
-        Context context;
+        ImportContext context;
         if (catalog.getType().equalsIgnoreCase("tdat")) {
-            context = new Context(new TdatStrategy(catalog));
+            context = new ImportContext(new TdatImportStrategy(catalog));
         } else {
-            context = new Context(new DatStrategy(catalog));
+            context = new ImportContext(new DatImportStrategy(catalog));
         }
         try {
             // technically we could check for GZ, ZIP, or uncompressed files here.
@@ -414,10 +414,10 @@ public class DataManager {
     }
 
     /**
-     * Attempt to implement Strategy design pattern to determine whether to process a line of input
+     * Attempt to implement ImportStrategy design pattern to determine whether to process a line of input
      * as being from a DAT or a TDAT file (or potentially something entirely separate)
      */
-    public interface Strategy {
+    public interface ImportStrategy {
 
         /**
          * Process a line returned from a file
@@ -431,11 +431,11 @@ public class DataManager {
     /**
      * Holder class for the strategy
      */
-    public class Context {
+    public class ImportContext {
 
-        private Strategy strategy;
+        private ImportStrategy strategy;
 
-        public Context(Strategy strategy) {
+        public ImportContext(ImportStrategy strategy) {
             this.strategy = strategy;
         }
 
@@ -445,13 +445,13 @@ public class DataManager {
     }
 
     /**
-     * Implementation of Strategy to deal with TDAT files
+     * Implementation of ImportStrategy to deal with TDAT files
      */
-    public class TdatStrategy implements Strategy {
+    public class TdatImportStrategy implements ImportStrategy {
 
         private Catalog catalog;
 
-        public TdatStrategy(Catalog catalog) {
+        public TdatImportStrategy(Catalog catalog) {
             this.catalog = catalog;
         }
 
@@ -478,14 +478,14 @@ public class DataManager {
     }
 
     /**
-     * Implementation of Strategy to deal with DAT files
+     * Implementation of ImportStrategy to deal with DAT files
      */
-    public class DatStrategy implements Strategy {
+    public class DatImportStrategy implements ImportStrategy {
 
         private Catalog catalog;
         private Map<String, String> template;
 
-        public DatStrategy(Catalog catalog) {
+        public DatImportStrategy(Catalog catalog) {
             this.catalog = catalog;
 
             // set up the template
