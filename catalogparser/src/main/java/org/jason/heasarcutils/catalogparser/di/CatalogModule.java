@@ -44,7 +44,7 @@ public class CatalogModule extends AbstractModule {
     @Provides
     ConfigMap provideConfig() {
         ConfigMap config = new ConfigMap();
-        config.putAll(new ConfigParser("config.xml").getConfig());
+        config.putAll(new ConfigParser("config.xml").getCatalogs());
         return config;
     }
 
