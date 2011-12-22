@@ -19,7 +19,6 @@ import org.jason.heasarcutils.catalogparser.misc.ConfigurationParseException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,6 +34,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
+import static org.apache.commons.io.IOUtils.closeQuietly;
+
 /**
  * Parsers for configuration XML. Uses DOM for XML processing, not SAX
  *
@@ -49,35 +50,17 @@ public class ConfigParser {
         this.configFile = "classes" + System.getProperty("file.separator") + configFile;
     }
 
-    public Map<String, Catalog> getConfig() {
-        Map<String, Catalog> resultMap = new HashMap<String, Catalog>();
-
+    public Map<String, Catalog> getCatalogs() {
+        Map<String, Catalog> catalogMap = new HashMap<String, Catalog>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document document = db.parse(new File(configFile)); // TODO: This should probably use getResourceAsStream
             NodeList catalogNodes = document.getElementsByTagName("catalog");
             for (int i = 0; i < catalogNodes.getLength(); i++) {
-                Catalog catalog;
                 Element catalogNode = (Element) catalogNodes.item(i);
-
-                String name = catalogNode.getAttribute("name");
-                if (name.isEmpty()) {
-                    throw new ConfigurationParseException("Attribute 'name' of tag 'catalog' cannot be empty");
-                }
-                String type = catalogNode.getAttribute("type");
-                if (type == null || type.isEmpty()) {
-                    throw new ConfigurationParseException("Attribute 'type' of tag 'catalog' cannot be null or empty");
-                }
-                if (!(type.equals("tdat") || type.equals("dat"))) {
-                    throw new ConfigurationParseException("Attribute value for 'type' must be 'tdat' or 'dat");
-                }
-                if (type.equals("tdat")) {
-                    catalog = getTdatConfig(catalogNode);
-                } else {
-                    catalog = getDatConfig(catalogNode);
-                }
-                resultMap.put(name, catalog);
+                Catalog catalog = getCatalog(catalogNode);
+                catalogMap.put(catalog.getName(), catalog);
             }
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
@@ -86,106 +69,62 @@ public class ConfigParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return resultMap;
+        return catalogMap;
     }
 
-    /**
-     * Read configuration for TDAT file
-     *
-     * @param catalogNode   Element containing contents of a <catalog> element
-     * @return
-     */
-    private Catalog getTdatConfig(Element catalogNode) {
+    private Catalog getCatalog(Element catalogNode) {
 
         Catalog catalog = new Catalog();
         // set the initial values
-        catalog.setType("tdat");
+
+        // get basic info from the attributes of the <catalog> tag
         catalog.setName(catalogNode.getAttribute("name"));
-        catalog.setUrl(getUrl(catalogNode));
+        catalog.setType(catalogNode.getAttribute("type"));
+
+        catalog.setUrl(getTextValue(catalogNode, "url"));
         catalog.setTitle(getTextValue(catalogNode, "title"));
         catalog.setDescription(getTextValue(catalogNode, "description"));
-        catalog.setHeaderUrl(getHeaderUrl(catalogNode));
-        catalog.setEpoch(getEpoch(catalogNode));
-        catalog.setTotalRecords(Integer.valueOf(getTextValue(catalogNode,"totalRecords")));
-        catalog.setFieldDataSet(getFieldData2(catalogNode));  // get the "wanted" fields from the config
+        catalog.setEpoch(getTextValue(catalogNode, "epoch"));
+        catalog.setTotalRecords(Integer.valueOf(getTextValue(catalogNode, "totalRecords")));
 
-        String[] fields = getFieldNamesFromTdatHeader(catalog.getHeaderUrl());
-        // create empty FD objects for each field. By default, we won't include them
-        for (String field : fields) {
-            catalog.getFieldData().put(field, new FieldData(false));
+        Context context;
+        if (catalog.getType().equalsIgnoreCase("TDAT")) {
+            context = new Context(new TdatStrategy(catalog, catalogNode));
+        } else {
+            context = new Context(new DatStrategy(catalog, catalogNode));
         }
 
-        for (FieldData fd : catalog.getFieldDataSet()) {
-            catalog.getFieldData().put(fd.getName(), fd);
-        }
+        context.processFields();
 
         return catalog;
     }
 
     /**
-     * Read configuration for a file in DAT format
+     * Create a Buffered Reader based on a GZipInputStream, since there isn't any sort of
+     * GZipReader class)
      *
-     * @param catalogNode   Element containing <catalog> contents
-     * @return
+     * @param fileUrl String representing the URL of the remote file
+     * @return a BufferedReader from the URL
+     * @throws IOException thrown when something goes wrong creating a reader
      */
-    private Catalog getDatConfig(Element catalogNode) {
+    private BufferedReader createGzipReader(String fileUrl) throws IOException {
 
-        Catalog catalog = new Catalog();
-        catalog.setType("dat");
-        catalog.setName(catalogNode.getAttribute("name"));
-        catalog.setTitle(getTextValue(catalogNode, "title"));
-        catalog.setDescription(getTextValue(catalogNode, "description"));
-        catalog.setUrl(getUrl(catalogNode));
-        catalog.setEpoch(getEpoch(catalogNode));
-        catalog.setTotalRecords(Integer.valueOf(getTextValue(catalogNode,"totalRecords")));
-        catalog.setFieldDataSet(getFieldData2(catalogNode));
+        GZIPInputStream gzis = new GZIPInputStream(createInputStream(fileUrl));
+        InputStreamReader isr = new InputStreamReader(gzis, "UTF-8");
 
-        Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
-        for (FieldData fd : fieldDataSet) {
-            catalog.getFieldData().put(fd.getName(), fd);
-        }
-        return catalog;
+        return new BufferedReader(isr);
     }
 
-    private String[] getFieldNamesFromTdatHeader(String headerFile) {
-
-        GZIPInputStream gzis = null;
-        try {
-            String filename = headerFile.substring(headerFile.lastIndexOf("/") + 1, headerFile.length());
-            InputStream is = this.getClass().getClassLoader().getResourceAsStream(filename);
-            if (is == null) {
-                is = new URL(headerFile).openStream();
-            }
-            gzis = new GZIPInputStream(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String[] fields = null;
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(gzis));
-            String line = reader.readLine();
-            while (line != null) {
-                if (line.matches("line\\[1\\] = (.*)")) {
-                    Pattern pattern1 = Pattern.compile("line\\[1\\] = (.*)");
-                    Matcher matcher1 = pattern1.matcher(line);
-                    if (matcher1.find()) {
-                        fields = matcher1.group(1).split("\\s");
-                        break;
-                    }
-                }
-
-                line = reader.readLine();
-            }
-            reader.close();
-            gzis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return fields;
+    /**
+     * Create an InputStream from a String representing a remote URL
+     *
+     * @param urlLocation String representing the URL of the remote file
+     * @return an InputStream from the remote file
+     * @throws IOException thrown when something goes wrong creating a reader
+     */
+    private InputStream createInputStream(String urlLocation) throws IOException {
+        URL url = new URL(urlLocation);
+        return url.openStream();
     }
 
 
@@ -201,88 +140,176 @@ public class ConfigParser {
     }
 
 
-    private String getUrl(Element catalogNode) {
-        String url = getTextValue(catalogNode, "url");
-        if (url.isEmpty()) {
-            throw new ConfigurationParseException("Attribute 'url' cannot be empty.");
-        }
-        return url;
-    }
-
-    private String getHeaderUrl(Element catalogNode) {
-        String headerUrl = getTextValue(catalogNode, "headerUrl");
-        if (headerUrl.isEmpty()) {
-            throw new ConfigurationParseException("Attribute 'headerUrl' cannot be empty.");
-        }
-
-        return headerUrl;
-    }
-
-    private String getEpoch(Element catalogNode) {
-        String epoch = getTextValue(catalogNode, "epoch");
-        if (epoch.isEmpty()) {
-            throw new ConfigurationParseException("Attribute 'epoch' cannot be empty");
-        }
-        return epoch;
-    }
-
-    /**
-     * Method to get field data as a Sorted Set. The sorted set has to be defined using a comparator
-     * that sorted on the FieldData object's start field in order to keep them in proper order when the
-     * file is being read later.
-     *
-     * @param catalogNode
-     * @return
-     */
-    private Set<FieldData> getFieldData2(Element catalogNode) {
-        Set<FieldData> result = new HashSet<FieldData>();
-
-        Element fieldsNode = (Element) catalogNode.getElementsByTagName("fields").item(0);
-        NodeList fieldNodeList = fieldsNode.getElementsByTagName("field");
-        for (int i = 0; i < fieldNodeList.getLength(); i++) {
-            Element fieldNode = (Element) fieldNodeList.item(i);
-            String name = fieldNode.getAttribute("name");
-            if (name.isEmpty()) {
-                throw new ConfigurationParseException("Attribute 'name' of tag 'field' cannot be empty.");
-            }
-            String rename = fieldNode.getAttribute("renameTo");
-            String prefix = fieldNode.getAttribute("prefix");
-            String keepAfterCopy = fieldNode.getAttribute("keepAfterCopy");
-            String start = fieldNode.getAttribute("start");
-            String end = fieldNode.getAttribute("end");
-
-            FieldData fd = new FieldData();
-            fd.setName(name);
-            if (!rename.isEmpty()) {
-                fd.setRenameTo(rename);
-            }
-            if (!prefix.isEmpty()) {
-                fd.setPrefix(prefix);
-            }
-            if (!keepAfterCopy.isEmpty()) {
-                boolean kac = Boolean.valueOf(keepAfterCopy);
-                fd.setKeepAfterCopy(kac);
-            }
-            if (isInteger(start)) {
-                fd.setStart(Integer.parseInt(start));
-            }
-            if (isInteger(end)) {
-                fd.setEnd(Integer.parseInt(end));
-            }
-            fd.setIncluded(true);
-            result.add(fd);
-        }
-
-        return result;
-    }
-
     private boolean isInteger(String value) {
         String pattern = "^[0-9]+$";
         return value.matches(pattern);
     }
 
+    /**
+     * Interface for Strategy objects used to decide how to process objects being read from an external file
+     */
     private interface Strategy {
 
-        Catalog getConfig();
+        void processFields();
+    }
+
+    /**
+     * Holder object for the strategy
+     */
+    private class Context {
+
+        Strategy strategy;
+
+        public Context(Strategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public void processFields() {
+            this.strategy.processFields();
+        }
+
+    }
+
+    /**
+     * Parent class for Strategy implementations. Defines getFieldData2() since (so far) all implementations use it
+     */
+    private abstract class AbstractStrategy implements Strategy {
+
+        protected Element catalogNode;
+        protected Catalog thisCatalog;
+
+        protected AbstractStrategy(Catalog thisCatalog, Element catalogNode) {
+            this.thisCatalog = thisCatalog;
+            this.catalogNode = catalogNode;
+        }
+
+        public abstract void processFields();
+
+        /**
+         * Method to get field data as a Set. The sorted set has to be defined using a comparator
+         * that sorted on the FieldData object's start field in order to keep them in proper order when the
+         * file is being read later.
+         *
+         * @param catalogNode
+         * @return
+         */
+        protected Set<FieldData> getFieldData2(Element catalogNode) {
+            Set<FieldData> result = new HashSet<FieldData>();
+
+            Element fieldsNode = (Element) catalogNode.getElementsByTagName("fields").item(0);
+            NodeList fieldNodeList = fieldsNode.getElementsByTagName("field");
+            for (int i = 0; i < fieldNodeList.getLength(); i++) {
+                Element fieldNode = (Element) fieldNodeList.item(i);
+                String name = fieldNode.getAttribute("name");
+                if (name.isEmpty()) {
+                    throw new ConfigurationParseException("Attribute 'name' of tag 'field' cannot be empty.");
+                }
+                String rename = fieldNode.getAttribute("renameTo");
+                String prefix = fieldNode.getAttribute("prefix");
+                String keepAfterCopy = fieldNode.getAttribute("keepAfterCopy");
+                String start = fieldNode.getAttribute("start");
+                String end = fieldNode.getAttribute("end");
+
+                FieldData fd = new FieldData();
+                fd.setName(name);
+                if (!rename.isEmpty()) {
+                    fd.setRenameTo(rename);
+                }
+                if (!prefix.isEmpty()) {
+                    fd.setPrefix(prefix);
+                }
+                if (!keepAfterCopy.isEmpty()) {
+                    boolean kac = Boolean.valueOf(keepAfterCopy);
+                    fd.setKeepAfterCopy(kac);
+                }
+                if (isInteger(start)) {
+                    fd.setStart(Integer.parseInt(start));
+                }
+                if (isInteger(end)) {
+                    fd.setEnd(Integer.parseInt(end));
+                }
+                fd.setIncluded(true);
+                result.add(fd);
+            }
+
+            return result;
+        }
+    }
+
+    /**
+     * Strategy for handling Dat objects
+     */
+    private class DatStrategy extends AbstractStrategy {
+
+        private DatStrategy(Catalog catalog, Element catalogNode) {
+            super(catalog, catalogNode);
+        }
+
+        @Override
+        public void processFields() {
+            //return null;
+        }
+    }
+
+    /**
+     * Strategy for handling TDAT objects. Contains getFieldNamesFromTdatHeader() since it's only needed to input
+     * TDAT files
+     */
+    private class TdatStrategy extends AbstractStrategy {
+
+        private TdatStrategy(Catalog thisCatalog, Element catalogNode) {
+            super(thisCatalog, catalogNode);
+        }
+
+        @Override
+        public void processFields() {
+
+            thisCatalog.setHeaderUrl(getTextValue(catalogNode, "headerUrl"));
+            //thisCatalog.setFieldDataSet(super.getFieldData2(catalogNode));
+            Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
+            for (FieldData fd : fieldDataSet) {
+                thisCatalog.getFieldData().put(fd.getName(), fd);
+            }
+            String[] fields = getFieldNamesFromTdatHeader(thisCatalog.getHeaderUrl());
+
+            for (String field : fields) {
+                thisCatalog.getFieldData().put(field, new FieldData(false));
+            }
+
+            for (FieldData fd : thisCatalog.getFieldDataSet()) {
+                thisCatalog.getFieldData().put(fd.getName(), fd);
+            }
+
+        }
+
+        private String[] getFieldNamesFromTdatHeader(String headerFile) {
+
+            BufferedReader reader = null;
+            String linePattern = "line\\[1\\] = (.*)";
+            String[] fields = null;
+            try {
+                reader = createGzipReader(headerFile);
+                while (reader.ready()) {
+                    String line = reader.readLine();
+                    if (!line.matches(linePattern)) {
+                        continue;
+                    } else {
+                        Pattern pattern = Pattern.compile(linePattern);
+                        Matcher matcher = pattern.matcher(line);
+                        if (matcher.find()) {
+                            fields = matcher.group(1).split("\\s");
+                            break;
+                        }
+                    }
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                closeQuietly(reader);
+            }
+
+            return fields;
+        }
     }
 }
