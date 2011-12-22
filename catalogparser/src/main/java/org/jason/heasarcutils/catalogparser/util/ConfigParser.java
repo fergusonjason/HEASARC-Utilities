@@ -107,7 +107,7 @@ public class ConfigParser {
         catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setHeaderUrl(getHeaderUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
-        catalog.setTotalRecords(new Integer(getTextValue(catalogNode, "totalRecords")));
+        catalog.setTotalRecords(Integer.valueOf(getTextValue(catalogNode,"totalRecords")));
         catalog.setFieldDataSet(getFieldData2(catalogNode));  // get the "wanted" fields from the config
 
         String[] fields = getFieldNamesFromTdatHeader(catalog.getHeaderUrl());
@@ -138,7 +138,7 @@ public class ConfigParser {
         catalog.setDescription(getTextValue(catalogNode, "description"));
         catalog.setUrl(getUrl(catalogNode));
         catalog.setEpoch(getEpoch(catalogNode));
-        catalog.setTotalRecords(new Integer(getTextValue(catalogNode, "totalRecords")));
+        catalog.setTotalRecords(Integer.valueOf(getTextValue(catalogNode,"totalRecords")));
         catalog.setFieldDataSet(getFieldData2(catalogNode));
 
         Set<FieldData> fieldDataSet = getFieldData2(catalogNode);
@@ -279,5 +279,10 @@ public class ConfigParser {
     private boolean isInteger(String value) {
         String pattern = "^[0-9]+$";
         return value.matches(pattern);
+    }
+
+    private interface Strategy {
+
+        Catalog getConfig();
     }
 }
